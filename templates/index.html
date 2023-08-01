@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static%}
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+<br>
+<hr>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container text-center">
+            <h1>Welcome to My Creative Website</h1>
+            <p class="lead">Explore the world of creativity and innovation.</p>
+            <a href="#" class="btn btn-primary btn-lg">Learn More</a>
+        </div>
+    </div>
+<br><br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{% static 'images/banner/nose-banner2.png' %}" class="img-fluid" alt="Feature 1">
+                <h2>Feature 1</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor felis eget erat cursus
+                    accumsan. Ut auctor massa eu est hendrerit, quis congue elit sodales.</p>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'images/banner/nose-banner3.png' %}" class="img-fluid" alt="Feature 2">
+                <h2>Feature 2</h2>
+                <p>Maecenas interdum ex eu tellus bibendum, nec cursus orci vehicula. Vestibulum interdum ipsum id
+                    diam malesuada, non ultricies sem interdum.</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
