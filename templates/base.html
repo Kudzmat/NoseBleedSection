@@ -14,7 +14,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="{% url 'home' %}">
             <img src="{% static 'images/banner/logo.png' %}" alt="Logo" height="80">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -31,7 +31,7 @@
                     <a class="nav-link" href="#">NBA NEWS</a>
                 </li>
                  <li class="nav-item">
-                    <a class="nav-link" href="#">NBA STATS</a>
+                    <a class="nav-link" href="{% url 'nba_stats:player_search' %}">NBA STATS</a>
                 </li>
             </ul>
         </div>

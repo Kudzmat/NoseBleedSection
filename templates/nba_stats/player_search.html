@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Search Player
+{% endblock %}
+{% block content %}
+<h1>Enter a player's <span>Name</span></h1>
+<br>
+<section id="about-us" class="about-us">
+      <div class="container" data-aos="fade-up">
+        <div class="row content">
+          <div class="col-lg-6" data-aos="fade-right">
+              <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+                  <button type="submit" class="btn btn-primary btn-sm">Search Player</button>
+</form>
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-left">
+            <img src="{% static 'images/players2.png' %}" style="height: 500px; width: 500px">
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

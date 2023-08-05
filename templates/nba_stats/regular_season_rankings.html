@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load custom_tags %}
+{% load static %}
+{% block title %}
+Regular Season Rankings
+{% endblock %}
+
+{% block content %}
+ <div class="container mt-4">
+        <!-- Player Image and Name Section -->
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{{ player_headshot }}" alt="Player Image" class="img-fluid">
+            </div>
+            <div class="col-md-8">
+                <h1>{{ player_full_name }}</h1>
+            </div>
+        </div>
+
+        <!-- Player Details Table -->
+        <div class="row">
+        <div class="col-md-12"> <!-- Use col-md-12 to take the full width of the container -->
+            <h2 class="mt-4">Regular Season Rankings</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered mt-2">
+            <thead>
+                <tr>
+                    <th>Season</th>
+                    <th>Team</th>
+                    <th>Points</th>
+                    <th>Assists</th>
+                    <th>Blocks</th>
+                    <th>Steals</th>
+                    <th>Rebounds</th>
+                    <th>Defensive Rebs</th>
+                    <th>Offensive Rebs</th>
+                    <th>3pt Attempts</th>
+                    <th>3pt Makes</th>
+                    <th>3pt %</th>
+                    <th>FG Attempts</th>
+                    <th>FG Makes</th>
+                    <th>FG %</th>
+                    <th>FT Attempts</th>
+                    <th>FT Makes</th>
+                    <th>FT %</th>
+                    <th>Turnovers</th>
+                    <th>Minutes</th>
+                </tr>
+            </thead>
+           <tbody>
+            {% for season_data in player_stats %}
+            <tr>
+                    <td>{{ season_data.SEASON_ID }}</td>
+                    <td>{{ season_data.TEAM_ABBREVIATION }}</td>
+                     <td>{{ season_data.RANK_PTS|intcomma }}</td>
+                    <td>{{ season_data.RANK_AST|intcomma }}</td>
+                    <td>{{ season_data.RANK_BLK|intcomma }}</td>
+                    <td>{{ season_data.RANK_STL|intcomma }}</td>
+                    <td>{{ season_data.RANK_REB|intcomma }}</td>
+                    <td>{{ season_data.RANK_DREB|intcomma }}</td>
+                    <td>{{ season_data.RANK_OREB|intcomma }}</td>
+                    <td>{{ season_data.RANK_FG3A|intcomma }}</td>
+                    <td>{{ season_data.RANK_FG3M|intcomma }}</td>
+                    <td>{{ season_data.RANK_FG3_PCT }}</td>
+                    <td>{{ season_data.RANK_FGA|intcomma }}</td>
+                    <td>{{ season_data.RANK_FGM|intcomma }}</td>
+                    <td>{{ season_data.RANK_FG_PCT }}</td>
+                    <td>{{ season_data.RANK_FTA|intcomma }}</td>
+                    <td>{{ season_data.RANK_FTM|intcomma }}</td>
+                    <td>{{ season_data.RANK_FT_PCT }}</td>
+                    <td>{{ season_data.RANK_TOV|intcomma }}</td>
+                    <td>{{ season_data.RANK_MIN|intcomma }}</td>
+    </tr>
+{% endfor %}
+            </tbody>
+        </table>
+            </div>
+        </div>
+    </div>
+ </div>
+     <br><br>
+{% endblock %}
