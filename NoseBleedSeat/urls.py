@@ -21,4 +21,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.home, name='home'),
     path("stats", include('nba_stats.urls')),
+    path("nba-news", include('nba_news.urls')),
 ]

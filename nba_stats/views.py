@@ -40,6 +40,39 @@ def player_details(request, player_full_name, player_id):
     # Get player career stats
     player_stats = player_career_numbers(player_id)
 
+    # getting per game averages
+    for season_data in player_stats:
+
+        # points per game
+        if season_data['GP'] > 0:
+            season_data['PPG'] = round(season_data['PTS'] / season_data['GP'],2)
+        else:
+            season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
+
+        # assists per game
+        if season_data['GP'] > 0:
+            season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
+        else:
+            season_data['APG'] = 0
+
+        # blocks per game
+        if season_data['GP'] > 0:
+            season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
+        else:
+            season_data['BLKPG'] = 0
+
+        # rebounds per game
+        if season_data['GP'] > 0:
+            season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
+        else:
+            season_data['RPG'] = 0
+
+        # steals per game
+        if season_data['GP'] > 0:
+            season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
+        else:
+            season_data['STLPG'] = 0
+
     # stats dropdown form
     form = StatsDropdownForm()
 
@@ -49,10 +82,10 @@ def player_details(request, player_full_name, player_id):
             stats_option = form.cleaned_data['option']
 
             # regular season numbers
-            if stats_option == 'Reg. Season Totals':
+            if stats_option == 'Reg. Season':
                 return redirect('nba_stats:regular_season', player_id=player_id, player_full_name=player_full_name)
 
-            elif stats_option == 'Post Season Totals':
+            elif stats_option == 'Post Season':
                 return redirect('nba_stats:post_season', player_id=player_id, player_full_name=player_full_name)
 
             elif stats_option == 'Reg. Season Rankings':
@@ -69,6 +102,7 @@ def player_details(request, player_full_name, player_id):
     context = {'player_headshot': player_headshot,
                'player_full_name': player_full_name,
                'player_stats': player_stats,
+               'player_id': player_id,
                'form': form
                }
 
@@ -83,9 +117,43 @@ def regular_season(request, player_full_name, player_id):
     # Get players yearly numbers
     player_stats = player_regular_season(player_id)
 
+    # getting per game averages
+    for season_data in player_stats:
+
+        # points per game
+        if season_data['GP'] > 0:
+            season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
+        else:
+            season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
+
+        # assists per game
+        if season_data['GP'] > 0:
+            season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
+        else:
+            season_data['APG'] = 0
+
+        # blocks per game
+        if season_data['GP'] > 0:
+            season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
+        else:
+            season_data['BLKPG'] = 0
+
+        # rebounds per game
+        if season_data['GP'] > 0:
+            season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
+        else:
+            season_data['RPG'] = 0
+
+        # steals per game
+        if season_data['GP'] > 0:
+            season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
+        else:
+            season_data['STLPG'] = 0
+
     context = {'player_headshot': player_headshot,
                'player_full_name': player_full_name,
                'player_stats': player_stats,
+               'player_id': player_id,
                }
 
     return render(request, 'nba_stats/regular_season.html', context=context)
@@ -99,9 +167,43 @@ def post_season(request, player_full_name, player_id):
     # Get players yearly numbers
     player_stats = player_post_season(player_id)
 
+    # getting per game averages
+    for season_data in player_stats:
+
+        # points per game
+        if season_data['GP'] > 0:
+            season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
+        else:
+            season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
+
+        # assists per game
+        if season_data['GP'] > 0:
+            season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
+        else:
+            season_data['APG'] = 0
+
+        # blocks per game
+        if season_data['GP'] > 0:
+            season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
+        else:
+            season_data['BLKPG'] = 0
+
+        # rebounds per game
+        if season_data['GP'] > 0:
+            season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
+        else:
+            season_data['RPG'] = 0
+
+        # steals per game
+        if season_data['GP'] > 0:
+            season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
+        else:
+            season_data['STLPG'] = 0
+
     context = {'player_headshot': player_headshot,
                'player_full_name': player_full_name,
                'player_stats': player_stats,
+               'player_id': player_id
                }
 
     return render(request, 'nba_stats/post_season.html', context=context)
@@ -118,6 +220,7 @@ def regular_season_rankings(request, player_full_name, player_id):
     context = {'player_headshot': player_headshot,
                'player_full_name': player_full_name,
                'player_stats': player_stats,
+               'player_id': player_id
                }
 
     return render(request, 'nba_stats/regular_season_rankings.html', context=context)
@@ -134,6 +237,7 @@ def post_season_rankings(request, player_full_name, player_id):
     context = {'player_headshot': player_headshot,
                'player_full_name': player_full_name,
                'player_stats': player_stats,
+               'player_id': player_id
                }
 
     return render(request, 'nba_stats/post_season_rankings.html', context=context)

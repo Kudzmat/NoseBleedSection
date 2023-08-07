@@ -1,6 +1,9 @@
-.navbar {
-background-color: white;
-}
+.custom-banner {
+            background-image: url("{% static 'images/nose-players.png' %}");
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            }
 
 .jumbotron {
     background-color: #f8f9fa;
@@ -46,3 +49,18 @@ background-color: white;
 .table tbody td {
     text-align: center;
 }
+
+.news-title {
+            margin-bottom: 10px;
+        }
+.news-link {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+.news-link:hover {
+            background-color: #0056b3;
+   }

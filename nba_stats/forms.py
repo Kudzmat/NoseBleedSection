@@ -2,9 +2,9 @@ from django import forms
 from django.core import validators
 
 STAT_OPTIONS = (
-    ('--- View More Stats ---', '--- View More Stats ---'),
-    ('Reg. Season Totals', 'Reg. Season Totals'),
-    ('Post Season Totals', 'Post Season Totals'),
+    ('--- Stats By Year ---', '--- Stats By Year  ---'),
+    ('Reg. Season', 'Reg. Season'),
+    ('Post Season', 'Post Season'),
     ('Reg. Season Rankings', 'Reg. Season Rankings'),
     ('Post Season Rankings', 'Post Season Rankings'),
 

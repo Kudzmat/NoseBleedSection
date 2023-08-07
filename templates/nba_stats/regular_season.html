@@ -11,7 +11,9 @@ Regular Season Totals
         <!-- Player Image and Name Section -->
         <div class="row">
             <div class="col-md-4">
-                <img src="{{ player_headshot }}" alt="Player Image" class="img-fluid">
+                <a href="{% url 'nba_stats:player_details' player_full_name=player_full_name player_id=player_id %}">
+                    <img src="{{ player_headshot }}" alt="Player Image" class="img-fluid">
+                </a>
             </div>
             <div class="col-md-8">
                 <h1>{{ player_full_name }}</h1>
@@ -30,10 +32,15 @@ Regular Season Totals
                     <th>Team</th>
                     <th>Age</th>
                     <th>Points</th>
-                    <th>Assists</th>
-                    <th>Blocks</th>
-                    <th>Steals</th>
+                    <th>Points Per Game</th>
                     <th>Rebounds</th>
+                    <th>Rebounds Per Game</th>
+                    <th>Assists</th>
+                    <th>Assists Per Game</th>
+                    <th>Blocks</th>
+                    <th>Blocks Per Game</th>
+                    <th>Steals</th>
+                    <th>Steals Per Game</th>
                     <th>Defensive Rebs</th>
                     <th>Offensive Rebs</th>
                     <th>3pt Attempts</th>
@@ -58,10 +65,15 @@ Regular Season Totals
                     <td>{{ season_data.TEAM_ABBREVIATION }}</td>
                     <td>{{ season_data.PLAYER_AGE }}</td>
                     <td>{{ season_data.PTS|intcomma }}</td>
-                    <td>{{ season_data.AST|intcomma }}</td>
-                    <td>{{ season_data.BLK|intcomma }}</td>
-                    <td>{{ season_data.STL|intcomma }}</td>
+                    <td>{{ season_data.PPG }}</td>
                     <td>{{ season_data.REB|intcomma }}</td>
+                    <td>{{ season_data.RPG }}</td>
+                    <td>{{ season_data.AST|intcomma }}</td>
+                    <td>{{ season_data.APG }}</td>
+                    <td>{{ season_data.BLK|intcomma }}</td>
+                    <td>{{ season_data.BLKPG }}</td>
+                    <td>{{ season_data.STL|intcomma }}</td>
+                    <td>{{ season_data.STLPG }}</td>
                     <td>{{ season_data.DREB|intcomma }}</td>
                     <td>{{ season_data.OREB|intcomma }}</td>
                     <td>{{ season_data.FG3A|intcomma }}</td>

@@ -11,17 +11,25 @@ Career Stat Totals
         <!-- Player Image and Name Section -->
         <div class="row">
             <div class="col-md-4">
-                <img src="{{ player_headshot }}" alt="Player Image" class="img-fluid">
+                <a href="{% url 'nba_stats:player_details' player_full_name=player_full_name player_id=player_id %}">
+                    <img src="{{ player_headshot }}" alt="Player Image" class="img-fluid">
+                </a>
+
             </div>
             <div class="col-md-8">
                 <h1>{{ player_full_name }}</h1>
+                <h6>Points Per Game: {{ player_stats.0.PPG }}</h6>
+                <h6>Rebounds Per Game: {{ player_stats.0.RPG }}</h6>
+                <h6>Assists Per Game: {{ player_stats.0.APG }}</h6>
+                <h6>Blocks Per Game: {{ player_stats.0.BLKPG }}</h6>
+                <h6>Steals Per Game: {{ player_stats.0.STLPG }}</h6>
             </div>
         </div>
 
         <!-- Player Details Table -->
         <div class="row">
         <div class="col-md-12"> <!-- Use col-md-12 to take the full width of the container -->
-            <h2 class="mt-4">Player Statistics</h2>
+            <h2 class="mt-4">Career Totals</h2>
             <div class="table-responsive">
                 <table class="table table-bordered mt-2">
             <thead>
@@ -83,7 +91,7 @@ Career Stat Totals
          <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">More Stats!</button>
+        <button class="btn btn-primary btn-lg" type="submit">More Stats!</button>
     </form>
      </div>
 {% endblock %}

@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container">
         <a class="navbar-brand" href="{% url 'home' %}">
             <img src="{% static 'images/banner/logo.png' %}" alt="Logo" height="80">
@@ -28,7 +28,7 @@
                     <a class="nav-link" href="{% url 'home' %}">HOME</a>
                 </li>
                  <li class="nav-item">
-                    <a class="nav-link" href="#">NBA NEWS</a>
+                    <a class="nav-link" href="{% url 'nba_news:ringer_news' %}">NBA NEWS</a>
                 </li>
                  <li class="nav-item">
                     <a class="nav-link" href="{% url 'nba_stats:player_search' %}">NBA STATS</a>
@@ -37,13 +37,14 @@
         </div>
     </div>
 </nav>
-
 <div class="container mt-4">
+    <br>
+    <hr>
     {% block content %}
     {% endblock %}
 </div>
-
-<footer class="footer mt-auto py-3 bg-light">
+<br><br><br><br><br>
+<footer class="footer mt-auto py-3 bg-light bg-white">
     <div class="container text-center">
 
         <img src="{% static 'images/banner/logo.png' %}" alt="Footer Logo" height="30">

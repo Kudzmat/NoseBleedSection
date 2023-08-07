@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Search Player
+{% endblock %}
+{% block content %}
+<div class="container-fluid p-0">
+            <div class="jumbotron jumbotron-fluid">
+        <div class="container text-center">
+            <h2>NBA News From The Ringer.com</h2>
+        </div>
+    </div>
+    </div>
+<br>
+    <div class="container">
+        {% for number,story in news.items %}
+        <div class="news-title">
+            <h3>{{ story.0 }}</h3>
+            <a class="news-link" href="{{ story.1 }}">Read More</a>
+        </div>
+        <br>
+        <hr>
+        {% endfor %}
+    </div>
+{% endblock %}
