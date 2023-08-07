@@ -22,7 +22,7 @@ It serves as a one-stop platform for users to stay informed about the latest hap
 
 To run the Project Name locally on your machine, follow these steps:
 
-- Clone the repository: git clone [https://github.com/your-username/project-name.git](https://github.com/Kudzmat/NoseBleedSection.git)
+- Clone the repository: git clone https://github.com/Kudzmat/NoseBleedSection.git
 - Navigate to the project directory: cd project-name
 - Create a virtual environment: python -m venv venv
 - Activate the virtual environment:
