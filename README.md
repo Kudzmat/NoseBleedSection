@@ -1,6 +1,7 @@
 # NoseBleedSection
 
-![logo](https://github.com/Kudzmat/NoseBleedSection/assets/65554208/bbcee266-19a4-489f-94e8-2b3303aedc62)
+
+![nose-beed-logo](https://github.com/Kudzmat/NoseBleedSection/assets/65554208/ab826d4c-46a3-46d9-b417-e18cb07f45ef)
 
 
 ## Description
