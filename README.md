@@ -6,8 +6,8 @@
 
 ## Description
 
-Nosebleed Section is a Django web application that provides basketball enthusiasts with up-to-date NBA news and player statistics. 
-It serves as a one-stop platform for users to stay informed about the latest happenings in the world of the National Basketball Association.
+Nosebleed Section is a Django web application that provides basketball enthusiasts with up-to-date NBA news and player statistics. Through the use of nba_api and beautifulsoup -
+it serves as a one-stop platform for users to stay informed about the latest happenings in the world of the National Basketball Association.
 
 ## Table of Contents
 
@@ -19,6 +19,12 @@ It serves as a one-stop platform for users to stay informed about the latest hap
 - [License](#license)
 
 ## Installation
+
+- nba_api is an API Client for www.nba.com. It requires Python 3.7+
+  ```
+  pip install nba_api
+  ```
+  
 
 To run the Project Name locally on your machine, follow these steps:
 
