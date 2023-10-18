@@ -19,3 +19,15 @@ class PlayerSearchForm(forms.Form):
 # form for getting more stats
 class StatsDropdownForm(forms.Form):
     option = forms.ChoiceField(choices=STAT_OPTIONS, label="")
+
+
+# form for artist search
+class PlayerCompareForm(forms.Form):
+    player1 = forms.CharField(
+        validators=[validators.MaxLengthValidator(50), validators.MinLengthValidator(1)],
+        widget=forms.TextInput(attrs={'placeholder': 'Enter Player 1', 'style': 'width:300px'}),
+    ),
+    player2 = forms.CharField(
+        validators=[validators.MaxLengthValidator(50), validators.MinLengthValidator(1)],
+        widget=forms.TextInput(attrs={'placeholder': 'Enter Player 2', 'style': 'width:300px'}),
+    )
