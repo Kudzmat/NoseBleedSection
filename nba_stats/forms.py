@@ -25,9 +25,8 @@ class StatsDropdownForm(forms.Form):
 class PlayerCompareForm(forms.Form):
     player1 = forms.CharField(
         validators=[validators.MaxLengthValidator(50), validators.MinLengthValidator(1)],
-        widget=forms.TextInput(attrs={'placeholder': 'Enter Player 1', 'style': 'width:300px'}),
-    ),
+        widget=forms.TextInput(attrs={'placeholder': 'Enter Player 1', 'style': 'width:300px'}))
+
     player2 = forms.CharField(
         validators=[validators.MaxLengthValidator(50), validators.MinLengthValidator(1)],
-        widget=forms.TextInput(attrs={'placeholder': 'Enter Player 2', 'style': 'width:300px'}),
-    )
+        widget=forms.TextInput(attrs={'placeholder': 'Enter Player 2', 'style': 'width:300px'}))

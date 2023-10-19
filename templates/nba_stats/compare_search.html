@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Compare Players
+{% endblock %}
+{% block content %}
+<div class="container-fluid p-0">
+            <div class="jumbotron jumbotron-fluid">
+        <div class="container text-center">
+            <h1>Enter 2 player's name</h1>
+            <p class="lead">Explore the world of creativity and innovation.</p>
+        </div>
+    </div>
+    </div>
+<br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}<button type="submit" class="btn btn-primary btn-sm">Search Players</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'images/about/stats.png' %}" class="img-fluid" alt="Feature 2">
+            </div>
+        </div>
+    </div>
+{% endblock %}

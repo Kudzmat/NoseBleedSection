@@ -242,49 +242,104 @@ def post_season_rankings(request, player_full_name, player_id):
 
     return render(request, 'nba_stats/post_season_rankings.html', context=context)
 
+
 # still working on this view
 def compare_players(request):
     if request.method == 'POST':
-        form = PlayerSearchForm(request.POST)
+        form = PlayerCompareForm(request.POST)
         if form.is_valid():
             # Get the player name from the form's cleaned data
-            player_name = form.cleaned_data['player_name']
-            player_name.title()  # NBA API is case sensitive
+            player1 = form.cleaned_data['player1']
+            player1.title()  # NBA API is case sensitive
+
+            player2 = form.cleaned_data['player2']
+            player2.title()
 
             # Use the NBA API to find the player's ID based on the name
-            player_info = players.find_players_by_full_name(player_name)
+            player1_info = players.find_players_by_full_name(player1)
+            player2_info = players.find_players_by_full_name(player2)
 
-            # Redirect to the search results page
-            if player_info:
-                player_id = player_info[0]['id']
-                player_full_name = player_info[0]['full_name']
-                return redirect('nba_stats:player_details', player_id=player_id, player_full_name=player_full_name)
+            # Redirect to the search results page if both player are valid
+            if player1_info and player2_info:
+                player1_id = player1_info[0]['id']
+                player1_full_name = player1_info[0]['full_name']
+
+                player2_id = player2_info[0]['id']
+                player2_full_name = player2_info[0]['full_name']
+
+                # store players info into a list
+                players_info = [player1_id, player2_id, player1_full_name, player2_full_name]
+
+                # store players info in a session for use in next view
+                request.session['players_info'] = players_info
+
+                return redirect('nba_stats:compare_profiles')
             else:
                 # If player not found, show an error message or handle it as needed
                 # For simplicity, we'll just redirect back to the search form with an error message
                 return redirect('nba_stats:player_search')
     else:
-        form = PlayerSearchForm()
+        form = PlayerCompareForm()
 
     context = {'form': form}
 
+    return render(request, "nba_stats/compare_search.html", context)
 
-    new_form = PlayerCompareForm()
-    player_list = []  # each player will be appended to this list
-    context = {}
 
-    if request.method == 'POST':
-        new_form = PlayerCompareForm(request.POST)
+# view fo rcomparison home page
+def compare_profiles(request):
+    # get players info from session
+    players_info = request.session.get('players_info')
 
-        player1 = request.POST.get('player1')
-        player_list.append(player1)
+    # get players headshots
+    player1_headshot = get_player_image(players_info[0])
+    player2_headshot = get_player_image(players_info[1])
 
-        player2 = request.POST.get('player2')
-        player_list.append(player2)
+    # Get players career stats
+    player1_stats = player_career_numbers(players_info[0])
+    player2_stats = player_career_numbers(players_info[1])
 
-        request.session['artist_list'] = artist_list
-        return redirect('vibe_check')  # redirect to vibe_check
+    # getting per game averages
+    for season_data in player1_stats and player2_stats:
 
-    context.update({'vibe_form': new_form})
+        # points per game
+        if season_data['GP'] > 0:
+            season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
+        else:
+            season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
 
-    return render(request, 'playlist/vibe_check.html', context=context)
+        # assists per game
+        if season_data['GP'] > 0:
+            season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
+        else:
+            season_data['APG'] = 0
+
+        # blocks per game
+        if season_data['GP'] > 0:
+            season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
+        else:
+            season_data['BLKPG'] = 0
+
+        # rebounds per game
+        if season_data['GP'] > 0:
+            season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
+        else:
+            season_data['RPG'] = 0
+
+        # steals per game
+        if season_data['GP'] > 0:
+            season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
+        else:
+            season_data['STLPG'] = 0
+
+    context = {'player1_headshot': player1_headshot,
+               'player2_headshot': player2_headshot,
+               'player1_full_name': players_info[2],
+               'player2_full_name': players_info[3],
+               'player1_stats': player1_stats,
+               'player2_stats': player2_stats,
+               'player1_id': players_info[0],
+               'player2_id': players_info[1],
+               }
+
+    return render(request, "nba_stats/comparison.html", context)
