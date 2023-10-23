@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import PlayerSearchForm, StatsDropdownForm, PlayerCompareForm
+from .forms import PlayerSearchForm, StatsDropdownForm, PlayerCompareForm, StatsCompForm
 from nba_api.stats.static import players
 from .functions import player_career_numbers, get_player_image, player_regular_season, player_post_season, \
     rankings_regular_season, rankings_post_season

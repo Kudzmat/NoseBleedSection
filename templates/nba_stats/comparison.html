@@ -13,7 +13,9 @@ Career Stat Totals
              <a href="{% url 'nba_stats:player_details' player_full_name=player1_full_name player_id=player1_id %}">
             <img src="{{ player1_headshot }}" alt="{{ player1_full_name }} Headshot" height="100">
              </a>
+        </div>
             <h3>Career Stats</h3>
+
             <div class="table-responsive">
             <table class="table table-bordered mt-2">
                 <thead>
@@ -68,7 +70,6 @@ Career Stat Totals
                 </tbody>
             </table>
             </div>
-        </div>
       <br>
       <hr>
 
@@ -77,6 +78,7 @@ Career Stat Totals
             <a href="{% url 'nba_stats:player_details' player_full_name=player2_full_name player_id=player2_id %}">
             <img src="{{ player2_headshot }}" alt="{{ player2_full_name }} Headshot" height="100">
             </a>
+        </div>
             <h3>Career Stats</h3>
             <div class="table-responsive">
             <table class="table table-bordered mt-2">
@@ -133,6 +135,5 @@ Career Stat Totals
             </table>
             </div>
         </div>
-    </div>
      <br><br>
 {% endblock %}
