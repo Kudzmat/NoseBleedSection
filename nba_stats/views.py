@@ -277,7 +277,7 @@ def compare_players(request):
             else:
                 # If player not found, show an error message or handle it as needed
                 # For simplicity, we'll just redirect back to the search form with an error message
-                return redirect('nba_stats:player_search')
+                return redirect('nba_stats:compare_players')
     else:
         form = PlayerCompareForm()
 
@@ -286,7 +286,7 @@ def compare_players(request):
     return render(request, "nba_stats/compare_search.html", context)
 
 
-# view fo rcomparison home page
+# view for comparison home page
 def compare_profiles(request):
     # get players info from session
     players_info = request.session.get('players_info')
@@ -331,6 +331,19 @@ def compare_profiles(request):
             season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
         else:
             season_data['STLPG'] = 0
+
+        # stats dropdown form
+    form = StatsCompForm()
+
+    if request.method == 'POST':
+        form = StatsCompForm(request.POST)
+
+        # get selected option
+        if form.is_valid():
+            comp_option = form.cleaned_data['option']
+
+        else:
+            return redirect('nba_stats:compare_players')
 
     context = {'player1_headshot': player1_headshot,
                'player2_headshot': player2_headshot,
