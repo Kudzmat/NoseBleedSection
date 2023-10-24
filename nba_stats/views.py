@@ -353,6 +353,7 @@ def compare_profiles(request):
                'player2_stats': player2_stats,
                'player1_id': players_info[0],
                'player2_id': players_info[1],
+               'form': form
                }
 
     return render(request, "nba_stats/comparison.html", context)

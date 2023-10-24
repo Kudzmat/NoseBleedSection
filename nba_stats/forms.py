@@ -11,7 +11,7 @@ STAT_OPTIONS = (
 )
 
 COMP_OPTIONS = (
-    ('--- Stats By Season ---', '--- Stats By Season ---'),
+    ('--- Compare Stats By Season ---', '--- Compare Stats By Season ---'),
     ('Points Per Game', 'Points Per Game'),
     ('Rebs Per Game', 'Rebs Per Game'),
     ('Assists Per Game', 'Assists Per Game'),

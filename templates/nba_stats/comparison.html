@@ -136,4 +136,12 @@ Career Stat Totals
             </div>
         </div>
      <br><br>
+<div class="container">
+         <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary btn-lg" type="submit">Compare Players</button>
+    </form>
+     </div>
+
 {% endblock %}
