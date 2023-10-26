@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import PlayerSearchForm, StatsDropdownForm, PlayerCompareForm, StatsCompForm
 from nba_api.stats.static import players
-from .functions import player_career_numbers, get_player_image, player_regular_season, player_post_season, \
-    rankings_regular_season, rankings_post_season
+from .functions import *
 
 
 def player_search(request):
@@ -243,7 +242,7 @@ def post_season_rankings(request, player_full_name, player_id):
     return render(request, 'nba_stats/post_season_rankings.html', context=context)
 
 
-# still working on this view
+
 def compare_players(request):
     if request.method == 'POST':
         form = PlayerCompareForm(request.POST)
@@ -295,9 +294,13 @@ def compare_profiles(request):
     player1_headshot = get_player_image(players_info[0])
     player2_headshot = get_player_image(players_info[1])
 
-    # Get players career stats
-    player1_stats = player_career_numbers(players_info[0])
-    player2_stats = player_career_numbers(players_info[1])
+    # Get players yearly stats
+    player1_stats = player_regular_season(players_info[0])
+    player2_stats = player_regular_season(players_info[1])
+
+    # Get player names
+    player1_full_name = players_info[2]
+    player2_full_name = players_info[3]
 
     # getting per game averages
     for season_data in player1_stats and player2_stats:
@@ -341,14 +344,21 @@ def compare_profiles(request):
         # get selected option
         if form.is_valid():
             comp_option = form.cleaned_data['option']
+            title = form.get_graph_title(comp_option)
+            graph = get_graph(player1_stats, player1_full_name, player2_stats, player2_full_name, comp_option, title)
+
+            # Append graph to players info list and store in session for use in next view
+            players_info.append(graph)
+            request.session['players_info'] = players_info
+            return redirect('nba_stats:show_graph')
 
         else:
             return redirect('nba_stats:compare_players')
 
     context = {'player1_headshot': player1_headshot,
                'player2_headshot': player2_headshot,
-               'player1_full_name': players_info[2],
-               'player2_full_name': players_info[3],
+               'player1_full_name': player1_full_name,
+               'player2_full_name': player2_full_name,
                'player1_stats': player1_stats,
                'player2_stats': player2_stats,
                'player1_id': players_info[0],
@@ -357,3 +367,31 @@ def compare_profiles(request):
                }
 
     return render(request, "nba_stats/comparison.html", context)
+
+
+def show_graph(request):
+
+    # Get players
+    players_info = request.session.get('players_info')
+
+    # get players headshots
+    player1_headshot = get_player_image(players_info[0])
+    player2_headshot = get_player_image(players_info[1])
+
+    # Get player names
+    player1_full_name = players_info[2]
+    player2_full_name = players_info[3]
+
+    # Get graph
+    graph = players_info[4]
+
+    context = {'player1_headshot': player1_headshot,
+               'player2_headshot': player2_headshot,
+               'player1_full_name': player1_full_name,
+               'player2_full_name': player2_full_name,
+               'graph': graph,
+               'player1_id': players_info[0],
+               'player2_id': players_info[1],
+               }
+
+    return render(request, "nba_stats/graph_comparison.html", context)

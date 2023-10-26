@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load custom_tags %}
+{% load static %}
+{% block title %}
+Comparison Visual
+{% endblock %}
+
+{% block content %}
+<h1>Player Comparison</h1>
+
+    <div style="display: flex; justify-content: space-between;">
+        <div>
+            <h2>{{ player1_full_name }}</h2>
+            <img src="{{ player1_headshot }}" alt="{{ player1_full_name }} Headshot" height="100">
+            <h3>Career Stats</h3>
+        </div>
+
+        <div>
+            <h2>{{ player2_full_name }}</h2>
+            <img src="{{ player2_headshot }}" alt="{{ player2_full_name }} Headshot" height="100">
+            <h3>Career Stats</h3>
+        </div>
+    </div>
+<br><br>
+<div class="text-center">
+    <img src="data:image/png;base64,{{ graph }}" alt="graph" style="max-width: 100%; height: auto;">
+</div>
+
+
+{% endblock %}
+

@@ -10,20 +10,21 @@ STAT_OPTIONS = (
 
 )
 
+# tuple where the first element is the value stored in the dictionary, and the second element is the user-readable
+# option.
 COMP_OPTIONS = (
     ('--- Compare Stats By Season ---', '--- Compare Stats By Season ---'),
-    ('Points Per Game', 'Points Per Game'),
-    ('Rebs Per Game', 'Rebs Per Game'),
-    ('Assists Per Game', 'Assists Per Game'),
-    ('Blocks Per Game', 'Blocks Per Game'),
-    ('Steals Per Game', 'Steals Per Game'),
-    ('FG%', 'FG%'),
-    ('3pt%', '3pt%'),
-    ('FT%', 'FT%'),
-    ('Games Played', 'Games Played'),
-    ('Games Started', 'Games Started'),
-    ('Minutes', 'Minutes')
-
+    ('PPG', 'Points Per Game'),
+    ('RPG', 'Rebs Per Game'),
+    ('APG', 'Assists Per Game'),
+    ('BLKPG', 'Blocks Per Game'),
+    ('STLPG', 'Steals Per Game'),
+    ('FG_PCT', 'Field Goal %'),
+    ('FG3_PCT', '3 Point %'),
+    ('FT_PCT', 'Free Thrown%'),
+    ('GP', 'Games Played'),
+    ('GS', 'Games Started'),
+    ('MIN', 'Minutes')
 )
 
 
@@ -40,6 +41,14 @@ class StatsDropdownForm(forms.Form):
 # form for stats comparison
 class StatsCompForm(forms.Form):
     option = forms.ChoiceField(choices=COMP_OPTIONS, label="")
+
+    # this method will allow me to get the selected option's readable value to use for the graph's title
+    def get_graph_title(self, selected_option):
+        for dict_value, reader_value in COMP_OPTIONS:
+            if dict_value == selected_option:
+                title = reader_value
+
+        return title
 
 
 # form for artist search
