@@ -242,7 +242,6 @@ def post_season_rankings(request, player_full_name, player_id):
     return render(request, 'nba_stats/post_season_rankings.html', context=context)
 
 
-
 def compare_players(request):
     if request.method == 'POST':
         form = PlayerCompareForm(request.POST)
@@ -290,21 +289,56 @@ def compare_profiles(request):
     # get players info from session
     players_info = request.session.get('players_info')
 
+    # get player IDs
+    player1_id = players_info[0]
+    player2_id = players_info[1]
+
     # get players headshots
-    player1_headshot = get_player_image(players_info[0])
-    player2_headshot = get_player_image(players_info[1])
+    player1_headshot = get_player_image(player1_id)
+    player2_headshot = get_player_image(player2_id)
 
     # Get players yearly stats
-    player1_stats = player_regular_season(players_info[0])
-    player2_stats = player_regular_season(players_info[1])
+    player1_stats = player_career_numbers(player1_id)
+    player2_stats = player_career_numbers(player2_id)
 
     # Get player names
     player1_full_name = players_info[2]
     player2_full_name = players_info[3]
 
     # getting per game averages
-    for season_data in player1_stats and player2_stats:
+    for season_data in player1_stats:
 
+        # points per game
+        if season_data['GP'] > 0:
+            season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
+        else:
+            season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
+
+        # assists per game
+        if season_data['GP'] > 0:
+            season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
+        else:
+            season_data['APG'] = 0
+
+        # blocks per game
+        if season_data['GP'] > 0:
+            season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
+        else:
+            season_data['BLKPG'] = 0
+
+        # rebounds per game
+        if season_data['GP'] > 0:
+            season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
+        else:
+            season_data['RPG'] = 0
+
+        # steals per game
+        if season_data['GP'] > 0:
+            season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
+        else:
+            season_data['STLPG'] = 0
+
+    for season_data in player2_stats:
         # points per game
         if season_data['GP'] > 0:
             season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
@@ -345,11 +379,13 @@ def compare_profiles(request):
         if form.is_valid():
             comp_option = form.cleaned_data['option']
             title = form.get_graph_title(comp_option)
-            graph = get_graph(player1_stats, player1_full_name, player2_stats, player2_full_name, comp_option, title)
+            graph = get_graph(player1_id, player1_full_name, player2_id, player2_full_name, comp_option, title)
 
             # Append graph to players info list and store in session for use in next view
-            players_info.append(graph)
-            request.session['players_info'] = players_info
+            # This list will hold all the info we need for the comparison view
+            comparison_info = [player1_id, player2_id, player1_headshot, player2_headshot, player1_full_name,
+                               player2_full_name, graph]
+            request.session['comparison_info'] = comparison_info
             return redirect('nba_stats:show_graph')
 
         else:
@@ -369,29 +405,33 @@ def compare_profiles(request):
     return render(request, "nba_stats/comparison.html", context)
 
 
+# This view will show the comparison graph for the two players
 def show_graph(request):
-
     # Get players
-    players_info = request.session.get('players_info')
+    comparison_info = request.session.get('comparison_info')
+
+    # get player IDs
+    player1_id = comparison_info[0]
+    player2_id = comparison_info[1]
 
     # get players headshots
-    player1_headshot = get_player_image(players_info[0])
-    player2_headshot = get_player_image(players_info[1])
+    player1_headshot = comparison_info[2]
+    player2_headshot = comparison_info[3]
 
     # Get player names
-    player1_full_name = players_info[2]
-    player2_full_name = players_info[3]
+    player1_full_name = comparison_info[4]
+    player2_full_name = comparison_info[5]
 
     # Get graph
-    graph = players_info[4]
+    graph = comparison_info[6]
 
     context = {'player1_headshot': player1_headshot,
                'player2_headshot': player2_headshot,
                'player1_full_name': player1_full_name,
                'player2_full_name': player2_full_name,
                'graph': graph,
-               'player1_id': players_info[0],
-               'player2_id': players_info[1],
+               'player1_id': player1_id,
+               'player2_id': player2_id,
                }
 
     return render(request, "nba_stats/graph_comparison.html", context)

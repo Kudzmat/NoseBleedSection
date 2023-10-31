@@ -21,10 +21,15 @@ Career Stat Totals
                 <thead>
                     <tr>
                     <th>Points</th>
-                    <th>Assists</th>
-                    <th>Blocks</th>
-                    <th>Steals</th>
+                    <th>Points Per Game</th>
                     <th>Rebounds</th>
+                    <th>Rebounds Per Game</th>
+                    <th>Assists</th>
+                    <th>Assists Per Game</th>
+                    <th>Blocks</th>
+                    <th>Blocks Per Game</th>
+                    <th>Steals</th>
+                    <th>Steals Per Game</th>
                     <th>Defensive Rebs</th>
                     <th>Offensive Rebs</th>
                     <th>3pt Attempts</th>
@@ -46,10 +51,15 @@ Career Stat Totals
                     {% for season_data in player1_stats %}
                         <tr>
                     <td>{{ season_data.PTS|intcomma }}</td>
-                    <td>{{ season_data.AST|intcomma }}</td>
-                    <td>{{ season_data.BLK|intcomma }}</td>
-                    <td>{{ season_data.STL|intcomma }}</td>
+                    <td>{{ season_data.PPG }}</td>
                     <td>{{ season_data.REB|intcomma }}</td>
+                    <td>{{ season_data.RPG }}</td>
+                    <td>{{ season_data.AST|intcomma }}</td>
+                    <td>{{ season_data.APG }}</td>
+                    <td>{{ season_data.BLK|intcomma }}</td>
+                    <td>{{ season_data.BLKPG }}</td>
+                    <td>{{ season_data.STL|intcomma }}</td>
+                    <td>{{ season_data.STLPG }}</td>
                     <td>{{ season_data.DREB|intcomma }}</td>
                     <td>{{ season_data.OREB|intcomma }}</td>
                     <td>{{ season_data.FG3A|intcomma }}</td>
@@ -85,10 +95,15 @@ Career Stat Totals
                 <thead>
                       <tr>
                     <th>Points</th>
-                    <th>Assists</th>
-                    <th>Blocks</th>
-                    <th>Steals</th>
+                    <th>Points Per Game</th>
                     <th>Rebounds</th>
+                    <th>Rebounds Per Game</th>
+                    <th>Assists</th>
+                    <th>Assists Per Game</th>
+                    <th>Blocks</th>
+                    <th>Blocks Per Game</th>
+                    <th>Steals</th>
+                    <th>Steals Per Game</th>
                     <th>Defensive Rebs</th>
                     <th>Offensive Rebs</th>
                     <th>3pt Attempts</th>
@@ -110,10 +125,15 @@ Career Stat Totals
                     {% for season_data in player2_stats %}
                           <tr>
                     <td>{{ season_data.PTS|intcomma }}</td>
-                    <td>{{ season_data.AST|intcomma }}</td>
-                    <td>{{ season_data.BLK|intcomma }}</td>
-                    <td>{{ season_data.STL|intcomma }}</td>
+                    <td>{{ season_data.PPG }}</td>
                     <td>{{ season_data.REB|intcomma }}</td>
+                    <td>{{ season_data.RPG }}</td>
+                    <td>{{ season_data.AST|intcomma }}</td>
+                    <td>{{ season_data.APG }}</td>
+                    <td>{{ season_data.BLK|intcomma }}</td>
+                    <td>{{ season_data.BLKPG }}</td>
+                    <td>{{ season_data.STL|intcomma }}</td>
+                    <td>{{ season_data.STLPG }}</td>
                     <td>{{ season_data.DREB|intcomma }}</td>
                     <td>{{ season_data.OREB|intcomma }}</td>
                     <td>{{ season_data.FG3A|intcomma }}</td>
