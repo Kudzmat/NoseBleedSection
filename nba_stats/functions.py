@@ -195,7 +195,7 @@ def get_graph(player1_id, player1_name, player2_id, player2_name, stat_category,
 
     # Chart labels
     plt.title(f'{player1_name} and {player2_name} {title} Comparison')
-    plt.xlabel('Season')
+    plt.xlabel('Year')
     plt.ylabel(title)
     plt.legend()
     plt.grid(True)

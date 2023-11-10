@@ -72,6 +72,10 @@ def player_details(request, player_full_name, player_id):
         else:
             season_data['STLPG'] = 0
 
+        # Certain players (specifically from before 1980) don't have a 3pt %
+        if season_data['FG3_PCT'] is None:
+            season_data['FG3_PCT'] = 0
+
     # stats dropdown form
     form = StatsDropdownForm()
 
@@ -149,6 +153,10 @@ def regular_season(request, player_full_name, player_id):
         else:
             season_data['STLPG'] = 0
 
+        # Certain players (specifically from before 1980) don't have a 3pt %
+        if season_data['FG3_PCT'] is None:
+            season_data['FG3_PCT'] = 0
+
     context = {'player_headshot': player_headshot,
                'player_full_name': player_full_name,
                'player_stats': player_stats,
@@ -198,6 +206,10 @@ def post_season(request, player_full_name, player_id):
             season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
         else:
             season_data['STLPG'] = 0
+
+        # Certain players (specifically from before 1980) don't have a 3pt %
+        if season_data['FG3_PCT'] is None:
+            season_data['FG3_PCT'] = 0
 
     context = {'player_headshot': player_headshot,
                'player_full_name': player_full_name,
@@ -338,6 +350,10 @@ def compare_profiles(request):
         else:
             season_data['STLPG'] = 0
 
+        # Certain players (specifically from before 1980) don't have a 3pt %
+        if season_data['FG3_PCT'] is None:
+            season_data['FG3_PCT'] = 0
+
     for season_data in player2_stats:
         # points per game
         if season_data['GP'] > 0:
@@ -368,6 +384,10 @@ def compare_profiles(request):
             season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
         else:
             season_data['STLPG'] = 0
+
+        # Certain players (specifically from before 1980) don't have a 3pt %
+        if season_data['FG3_PCT'] is None:
+            season_data['FG3_PCT'] = 0
 
         # stats dropdown form
     form = StatsCompForm()
