@@ -97,4 +97,5 @@ To run the Project Name locally on your machine, follow these steps:
 ## Contributing
 
 We welcome contributions from the open-source community. If you find any issues or want to suggest enhancements, feel free to create a pull request or submit an issue.
+For more information on contributing visit CONTRIBUTING.md
 
