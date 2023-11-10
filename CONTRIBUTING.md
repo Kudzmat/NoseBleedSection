@@ -1,9 +1,28 @@
-# Contributing
+# CONTRIBUTING
 
 When contributing to this repository, please first discuss the change you wish to make via issue,
 email, or any other method with the owners of this repository before making a change. 
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
+
+## Installation
+
+If you would like to contribute to this project,please follow the following setup to install this project
+
+1. Create a fork to your github repository
+
+2. Clone the fork to your local machine 
+
+3. Create a virtual environment `python3 -m venv venv`
+
+4. Activate the local environment `. venv/bin/activate`
+
+5. Install the dependencies for this project: `pip install -r requirements.txt`
+
+6. Make database migrations `python manage.py migrate`
+
+7. Run the server `python manage.py runserver`  
+
 
 ## Pull Request Process
 
@@ -17,6 +36,7 @@ Please note we have a code of conduct, please follow it in all your interactions
    do not have permission to do that, you may request the second reviewer to merge it for you.
 
 ## Code of Conduct
+
 
 ### Our Pledge
 
