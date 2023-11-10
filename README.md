@@ -54,7 +54,8 @@ To run the Project Name locally on your machine, follow these steps:
   
 Use the player search feature to find specific player information by entering their name.
 
-![7](https://github.com/Kudzmat/NoseBleedSection/assets/65554208/ba3e0974-d052-42f7-9d1a-fd9958532fee)
+<img width="1353" alt="Screen Shot 2023-08-07 at 8 02 24 PM" src="https://github.com/Kudzmat/NoseBleedSection/assets/65554208/889ef29c-c6c9-4bec-a835-31a3b43b6439">
+
 
 Browse through various statistical categories for both the regular season and playoffs.
 
@@ -62,6 +63,9 @@ Browse through various statistical categories for both the regular season and pl
 ![8](https://github.com/Kudzmat/NoseBleedSection/assets/65554208/9f5095eb-04ca-4e78-b236-4f99f26701a7)
 
 Use the News feature to catch up on the latest stories and events happening in the association 
+
+<img width="1356" alt="Screen Shot 2023-08-07 at 8 03 53 PM" src="https://github.com/Kudzmat/NoseBleedSection/assets/65554208/9e088068-9e44-47f6-85d6-1ab54e2409ad">
+
 
 
 ## Technologies Used
