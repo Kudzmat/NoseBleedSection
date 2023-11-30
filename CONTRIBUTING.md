@@ -36,7 +36,7 @@ If you would like to contribute to this project,please follow the following setu
    do not have permission to do that, you may request the second reviewer to merge it for you.
 
 ## Code of Conduct
-
+This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to <>.
 
 ### Our Pledge
 
