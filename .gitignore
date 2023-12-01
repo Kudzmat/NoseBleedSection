@@ -28,11 +28,6 @@ local_settings.py
 node_modules/
 *.npm
 
-# Docker
-Dockerfile
-docker-compose.yml
-.docker/
-
 # Media
 media/
 
