@@ -17,13 +17,14 @@ def get_scores():
 
     # pprint.pprint(results[0]['awayTeam'])
 
+
 def get_team_image(team_id):
     #  the image will be attained from this url
     url = f'https://www.nba.com/team/{team_id}'
 
     # Make an HTTP GET request to the URL
     response = requests.get(url)
-    #response.raise_for_status()  # Raise an exception for 4xx and 5xx status codes
+    # response.raise_for_status()  # Raise an exception for 4xx and 5xx status codes
 
     # Parse the HTML content using BeautifulSoup
     soup = BeautifulSoup(response.content, 'html.parser')
@@ -38,41 +39,21 @@ def get_team_image(team_id):
 
     return None
 
-results = get_scores()
-#pprint.pprint(results)
-#pprint.pprint(game_results)
-#team_id = game_results[0]['awayTeam']['teamId']
 
-""""
-logos = []
-i = 0
-while i < len(results):
-    # Get home teams logos
-    team_id = results[i]['homeTeam']['teamId']
-    # Get team logo
-    logo = get_team_image(team_id)
-    logos.append(logo)
+#results = get_scores()
+# pprint.pprint(results)
+# pprint.pprint(game_results)
+# team_id = game_results[0]['awayTeam']['teamId']
 
-    #game['teamLogo'] = logo
-    #print(logo)
 
-    # Get away teams logos
-    team_id = results[i]['awayTeam']['teamId']
-    # Get team logo
-    away_logo = get_team_image(team_id)
-    logos.append(away_logo)
 
-    i += 1
+# game['teamLogo'] = logo
+# print(logo"""
+# print(logos)
+
+# denver = get_team_image("1610612743")
+# print(denver)
 """
-
-    #game['teamLogo'] = logo
-    #print(logo)
-
-#print(logos)
-
-#denver = get_team_image("1610612743")
-#print(denver)
-
 for game in results:
     home_team = game['homeTeam']['teamName']
     home_team_id = game['homeTeam']['teamId']
@@ -84,4 +65,4 @@ for game in results:
 
     print(f"{home_team}: {home_team_logo} vs {away_team} {away_team_logo}")
     print()
-
+"""

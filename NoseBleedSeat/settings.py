@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "nba_news",
     "nba_stats",
+    "nba_today",
     "crispy_forms",
     "crispy_bootstrap5"
 ]

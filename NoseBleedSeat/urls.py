@@ -22,4 +22,5 @@ urlpatterns = [
     path("", views.home, name='home'),
     path("stats", include('nba_stats.urls')),
     path("nba-news", include('nba_news.urls')),
+    path("nba-today", include('nba_today.urls')),
 ]
