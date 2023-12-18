@@ -4,34 +4,8 @@ import requests
 from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
 import base64
-import numpy as np
+from .models import PlayerHeadshot
 from io import BytesIO
-
-
-# This function will get a player's head shot image
-def get_player_image(player_id):
-    #  the image will be attained from this url
-    url = f'https://www.nba.com/stats/player/{player_id}'
-
-    # Make an HTTP GET request to the URL
-    response = requests.get(url)
-    response.raise_for_status()  # Raise an exception for 4xx and 5xx status codes
-
-    # Parse the HTML content using BeautifulSoup
-    soup = BeautifulSoup(response.content, 'html.parser')
-
-    # Find the player image tag within the appropriate element and class
-    player_image_div = soup.find('div', {'class': 'PlayerSummary_mainInnerTeam____nFZ'})
-
-    # finding the head shot using tag and class
-    if player_image_div:
-        img_tag = player_image_div.find('img', {'class': 'PlayerImage_image__wH_YX PlayerSummary_playerImage__sysif'})
-        if img_tag:
-            img_src = img_tag['src']
-            return img_src
-
-    return None
-
 
 # career stats
 def player_career_numbers(player_id):
@@ -81,30 +55,43 @@ def rankings_post_season(player_id):
     return post_season_rankings
 
 
-def get_player_image(player_id):
-    url = f'https://www.nba.com/stats/player/{player_id}'
+def get_player_image(player_id, player_name):
+    # Check for player image
+    player = PlayerHeadshot.objects.filter(player_id=player_id).first()
 
-    # Make an HTTP GET request to the URL
-    response = requests.get(url)
-    response.raise_for_status()  # Raise an exception for 4xx and 5xx status codes
+    if player:
+        return player.head_shot_url
 
-    # Parse the HTML content using BeautifulSoup
-    soup = BeautifulSoup(response.content, 'html.parser')
+    else:
 
-    # Find the player image tag within the appropriate class or element
-    player_image_div = soup.find('div', {'class': 'PlayerSummary_mainInnerTeam____nFZ'})
-    if player_image_div:
-        img_tag = player_image_div.find('img', {'class': 'PlayerImage_image__wH_YX PlayerSummary_playerImage__sysif'})
-        if img_tag:
-            img_src = img_tag['src']
-            return img_src
+        url = f'https://www.nba.com/player/{player_id}'
+
+        # Make an HTTP GET request to the URL
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception for 4xx and 5xx status codes
+
+        # Parse the HTML content using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find the player image tag within the appropriate class or element
+        player_image_div = soup.find('div', {'class': 'PlayerSummary_mainInnerTeam____nFZ'})
+        if player_image_div:
+            img_tag = player_image_div.find('img',
+                                            {'class': 'PlayerImage_image__wH_YX PlayerSummary_playerImage__sysif'})
+
+            if img_tag:
+                head_shot_url = img_tag['src']
+
+                # save image to database
+                instance = PlayerHeadshot(player_id=player_id, player_name=player_name, head_shot_url=head_shot_url)
+                instance.save()
+                return head_shot_url
 
     return None
 
 
 # function for getting player graph
 def get_graph(player1_id, player1_name, player2_id, player2_name, stat_category, title):
-
     # Get players yearly stats
     player1_stats = player_regular_season(player1_id)
     player2_stats = player_regular_season(player2_id)

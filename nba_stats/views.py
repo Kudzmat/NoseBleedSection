@@ -34,7 +34,8 @@ def player_search(request):
 
 def player_details(request, player_full_name, player_id):
     # get player headshot
-    player_headshot = get_player_image(player_id)
+    player_headshot = get_player_image(player_id, player_full_name)
+
 
     # Get player career stats
     player_stats = player_career_numbers(player_id)
@@ -115,7 +116,7 @@ def player_details(request, player_full_name, player_id):
 # regular season totals
 def regular_season(request, player_full_name, player_id):
     # Get player headshot
-    player_headshot = get_player_image(player_id)
+    player_headshot = get_player_image(player_id, player_full_name)
 
     # Get players yearly numbers
     player_stats = player_regular_season(player_id)
@@ -169,7 +170,7 @@ def regular_season(request, player_full_name, player_id):
 # post season totals
 def post_season(request, player_full_name, player_id):
     # Get player headshot
-    player_headshot = get_player_image(player_id)
+    player_headshot = get_player_image(player_id, player_full_name)
 
     # Get players yearly numbers
     player_stats = player_post_season(player_id)
@@ -223,7 +224,7 @@ def post_season(request, player_full_name, player_id):
 # regular season rankings
 def regular_season_rankings(request, player_full_name, player_id):
     # Get player headshot
-    player_headshot = get_player_image(player_id)
+    player_headshot = get_player_image(player_id, player_full_name)
 
     # Get regular season rankings
     player_stats = rankings_regular_season(player_id)
@@ -240,7 +241,7 @@ def regular_season_rankings(request, player_full_name, player_id):
 # post season rankings
 def post_season_rankings(request, player_full_name, player_id):
     # Get player headshot
-    player_headshot = get_player_image(player_id)
+    player_headshot = get_player_image(player_id, player_full_name)
 
     # Get post season rankings
     player_stats = rankings_post_season(player_id)
@@ -305,17 +306,17 @@ def compare_profiles(request):
     player1_id = players_info[0]
     player2_id = players_info[1]
 
+    # Get player names
+    player1_full_name = players_info[2]
+    player2_full_name = players_info[3]
+
     # get players headshots
-    player1_headshot = get_player_image(player1_id)
-    player2_headshot = get_player_image(player2_id)
+    player1_headshot = get_player_image(player1_id, player1_full_name)
+    player2_headshot = get_player_image(player2_id, player2_full_name)
 
     # Get players yearly stats
     player1_stats = player_career_numbers(player1_id)
     player2_stats = player_career_numbers(player2_id)
-
-    # Get player names
-    player1_full_name = players_info[2]
-    player2_full_name = players_info[3]
 
     # getting per game averages
     for season_data in player1_stats:

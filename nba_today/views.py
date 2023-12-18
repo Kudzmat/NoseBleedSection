@@ -8,16 +8,18 @@ def nba_results(request):
     for game in results:
         # Get home teams logos
         team_id = game['homeTeam']['teamId']
+        team_name = game['homeTeam']['teamTricode']
         # Get team logo
-        home_logo = get_team_image(team_id)
+        home_logo = get_team_image(team_id, team_name)
 
         # save team logo to results
         game['homeTeam']['teamLogo'] = home_logo
 
         # Get away teams logos
         team_id = game['awayTeam']['teamId']
+        team_name = game['awayTeam']['teamTricode']
         # Get team logo
-        away_logo = get_team_image(team_id)
+        away_logo = get_team_image(team_id, team_name)
 
         # save team logo to results
         game['awayTeam']['teamLogo'] = away_logo
