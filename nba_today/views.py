@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .functions import get_scores, get_team_image
 from nba_stats.functions import get_player_image
+from .models import TeamLogo
 
 
 def nba_results(request):
@@ -36,32 +37,43 @@ def nba_results(request):
 
 
 def game_leaders(request, num):
-
-    #game_num = num + 1
+    # game_num = num + 1
     results = get_scores()
     leaders = results[num]['gameLeaders']
 
-    # get player headshots
+    # Get player ids and names
     home_player_id = leaders['homeLeaders']['personId']
     home_player_name = leaders['homeLeaders']['name']
 
     away_player_id = leaders['awayLeaders']['personId']
     away_player_name = leaders['awayLeaders']['name']
 
+    # get player headshots
     home_player_image = get_player_image(home_player_id, home_player_name)
     away_player_image = get_player_image(away_player_id, away_player_name)
 
+    # Get team logos
+    home_team = leaders['homeLeaders']['teamTricode']
+    away_team = leaders['awayLeaders']['teamTricode']
+
+    # Get team logos
+    home_team_logo = TeamLogo.objects.filter(team_name=home_team).first()
+    away_team_logo = TeamLogo.objects.filter(team_name=away_team).first()
+
+
     context = {
-        'results': results,
+        'leaders': leaders,
         'home_player_image': home_player_image,
         'home_player_name': home_player_name,
         'away_player_name': away_player_name,
         'away_player_image': away_player_image,
         'away_player_id': away_player_id,
-        'home_player_id': home_player_id
+        'home_player_id': home_player_id,
+        'home_team': home_team,
+        'away_team': away_team,
+        'home_team_logo': home_team_logo,
+        'away_team_logo': away_team_logo
 
     }
 
     return render(request, 'nba_today/game_leaders.html', context=context)
-
-
