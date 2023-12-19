@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load custom_tags %}
+{% load static %}
+{% block title %}
+Game Leaders {{ results.homeLeaders.teamTricode }} vs {{ results.awayLeaders.teamTricode }}
+{% endblock %}
+
+{% block content %}
+ <div class="container-fluid p-0">
+          <div class="jumbotron jumbotron-fluid">
+        <div class="container text-center">
+            <h2>{{ results.homeLeaders.teamTricode }} vs {{ results.awayLeaders.teamTricode }} Game Leaders</h2>
+        </div>
+          </div>
+     <br>
+        <div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <img src="{{ home_player_image }}" alt="{{ home_player_name }} headshot" class="img-fluid w-25">
+            <h4>{{ home_player_name }} #{{ results.homeLeaders.jerseyNum }} {{ results.homeLeaders.position }} {{ results.homeLeaders.teamTricode }}</h4>
+            <h4>PTS {{ results.homeLeaders.points }}</h4>
+            <h4>REBS {{ game.homeLeaders.rebounds }}</h4>
+            <h4>ASST {{ game.homeLeaders.assists }}</h4>
+        </div>
+        <div class="col-md-6">
+            <img src="{{ away_player_image }}" alt="{{ away_player_name }} headshot" class="img-fluid w-25">
+            <h4>{{ away_player_name }} #{{ results.awayLeaders.jerseyNum }} {{ results.awayLeaders.position }} {{ results.awayLeaders.teamTricode }}</h4>
+            <h4>PTS {{ results.awayLeaders.points }}</h4>
+            <h4>REBS {{ game.awayLeaders.rebounds }}</h4>
+            <h4>ASST {{ game.awayLeaders.assists }}</h4>
+        </div>
+        <a class="btn btn-primary btn-sm" href="#" role="button">Back To Game Results</a>
+    </div>
+            <hr>
+</div>
+ </div>
+     <br><br>
+{% endblock %}

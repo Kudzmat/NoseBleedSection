@@ -51,4 +51,3 @@ def get_team_image(team_id, team_name):
     return None
 
 
-
