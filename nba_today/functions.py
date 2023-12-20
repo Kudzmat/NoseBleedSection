@@ -16,6 +16,7 @@ def get_scores():
     # pprint.pprint(results[0]['awayTeam'])
 
 
+
 def get_team_image(team_id, team_name):
     #   Check for team image in database
     team_logo = TeamLogo.objects.filter(team_id=team_id).first()
@@ -51,3 +52,11 @@ def get_team_image(team_id, team_name):
     return None
 
 
+results = get_scores()
+
+break_down = results[2]['homeTeam']['periods']
+
+""""
+for quarter in break_down:
+    print(fPeriod: {quarter['period']} \n Period Type: {quarter['periodType']}\n Score: {quarter['score']})
+"""

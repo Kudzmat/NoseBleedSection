@@ -37,9 +37,12 @@ def nba_results(request):
 
 
 def game_leaders(request, num):
-    # game_num = num + 1
+    # Get requested game by index
     results = get_scores()
-    leaders = results[num]['gameLeaders']
+    my_game = results[num]
+
+    # Get game leaders
+    leaders = my_game['gameLeaders']
 
     # Get player ids and names
     home_player_id = leaders['homeLeaders']['personId']
@@ -52,14 +55,22 @@ def game_leaders(request, num):
     home_player_image = get_player_image(home_player_id, home_player_name)
     away_player_image = get_player_image(away_player_id, away_player_name)
 
-    # Get team logos
+    # Get team names
     home_team = leaders['homeLeaders']['teamTricode']
     away_team = leaders['awayLeaders']['teamTricode']
 
     # Get team logos
-    home_team_logo = TeamLogo.objects.filter(team_name=home_team).first()
-    away_team_logo = TeamLogo.objects.filter(team_name=away_team).first()
+    home_team_id = my_game['homeTeam']['teamId']
+    home_team_logo = get_team_image(home_team_id, home_team)
 
+    away_team_id = my_game['awayTeam']['teamId']
+    away_team_logo = get_team_image(away_team_id, away_team)
+
+    # Get game breakdown
+    home_team_scores = my_game['homeTeam']['periods']
+    home_final_score = my_game['homeTeam']['score']
+    away_team_scores = my_game['awayTeam']['periods']
+    away_final_score = my_game['awayTeam']['score']
 
     context = {
         'leaders': leaders,
@@ -72,8 +83,11 @@ def game_leaders(request, num):
         'home_team': home_team,
         'away_team': away_team,
         'home_team_logo': home_team_logo,
-        'away_team_logo': away_team_logo
-
+        'away_team_logo': away_team_logo,
+        'home_team_scores': home_team_scores,
+        'home_final_score': home_final_score,
+        'away_team_scores': away_team_scores,
+        'away_final_score': away_final_score
     }
 
     return render(request, 'nba_today/game_leaders.html', context=context)

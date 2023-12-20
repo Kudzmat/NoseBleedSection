@@ -29,8 +29,8 @@ NBA Games Today
             <h4>{{ game.awayTeam.wins }} - {{ game.awayTeam.losses }}</h4>
             <h4>SCORE: {{ game.awayTeam.score }}</h4>
         </div>
-        <a class="btn btn-primary btn-sm" href="{% url 'nba_today:game_leaders' num=game.homeTeam.gameNum %}" role="button">View Game Leaders</a>
     </div>
+            <a class="btn btn-primary btn-sm" href="{% url 'nba_today:game_leaders' num=game.homeTeam.gameNum %}" role="button">View Game Leaders</a>
             <hr>
     {% endfor %}
 
