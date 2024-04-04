@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load custom_tags %}
+{% load static %}
+{% block title %}
+NBA Games Today
+{% endblock %}
+
+{% block content %}
+ <div class="container-fluid p-0">
+          <div class="jumbotron jumbotron-fluid">
+        <div class="container text-center">
+            <h2>Today's NBA Games</h2>
+        </div>
+          </div>
+     <br>
+        <div class="container mt-5">
+    {% for game in results %}
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <img src="{{ game.homeTeam.teamLogo }}" alt="{{ game.homeTeam.teamTricode }} Logo" class="img-fluid w-25">
+            <h4>{{ game.homeTeam.teamCity }} {{ game.homeTeam.teamName }}</h4>
+            <h4>{{ game.homeTeam.wins }} - {{ game.homeTeam.losses }}</h4>
+            <h4>SCORE: {{ game.homeTeam.score }}</h4>
+        </div>
+        <div class="col-md-6">
+            <img src="{{ game.awayTeam.teamLogo }}" alt="{{ game.awayTeam.teamTricode }} Logo" class="img-fluid w-25">
+            <h4>{{ game.awayTeam.teamCity }} {{ game.awayTeam.teamName }}</h4>
+            <h4>{{ game.awayTeam.wins }} - {{ game.awayTeam.losses }}</h4>
+            <h4>SCORE: {{ game.awayTeam.score }}</h4>
+        </div>
+    </div>
+            <a class="btn btn-primary btn-sm" href="{% url 'nba_today:game_leaders' num=game.homeTeam.gameNum %}" role="button">View Game Leaders</a>
+            <hr>
+    {% endfor %}
+
+</div>
+ </div>
+     <br><br>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load custom_tags %}
+{% load static %}
+{% block title %}
+Game Leaders {{ leaders.homeLeaders.teamTricode }} vs {{ leaders.awayLeaders.teamTricode }}
+{% endblock %}
+
+{% block content %}
+ <div class="container-fluid p-0">
+          <div class="jumbotron jumbotron-fluid">
+        <div class="container text-center">
+            <img src="{{ home_team_logo }}" alt="{{ home_team_logo }} Logo" class="img-fluid w-25">
+            <h2>{{ home_team }} VS {{ away_team }}</h2>
+            <img src="{{ away_team_logo }}" alt="{{ away_team_logo }} Logo" class="img-fluid w-25">
+        </div>
+
+              <div class="row">
+        <div class="col-md-12"> <!-- Use col-md-12 to take the full width of the container -->
+            <h2 class="container text-center">Game Breakdown</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered mt-2">
+            <thead>
+            <h2>{{ home_team }} Final {{ home_final_score }}</h2>
+                <tr>
+                    <th>Period</th>
+                    <th>Period Type</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+
+           <tbody>
+           {% for home_info in home_team_scores %}
+            <tr>
+                    <td>{{ home_info.period }}</td>
+                    <td>{{  home_info.periodType }}</td>
+                    <td>{{  home_info.score }}</td>
+    </tr>
+           {% endfor %}
+            </tbody>
+        </table>
+
+                <table class="table table-bordered mt-2">
+            <thead>
+            <h2>{{ away_team }}  Final {{ away_final_score }}</h2>
+                <tr>
+                    <th>Period</th>
+                    <th>Period Type</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+
+           <tbody>
+           {% for away_info in away_team_scores %}
+            <tr>
+                    <td>{{ away_info.period }}</td>
+                    <td>{{  away_info.periodType }}</td>
+                    <td>{{  away_info.score }}</td>
+    </tr>
+           {% endfor %}
+            </tbody>
+        </table>
+            </div>
+        </div>
+    </div>
+          </div>
+     <br><br>
+        <div class="container mt-5">
+            <h2 class="container text-center">Game Leaders</h2>
+            <br>
+    <div class="row mb-4">
+        <div class="col-md-6 container text-center">
+            <img src="{{ home_player_image }}" alt="{{ home_player_name }} headshot" class="img-fluid w-50">
+            <p><b>{{ home_player_name }} | #{{ leaders.homeLeaders.jerseyNum }} | {{ leaders.homeLeaders.position }} | {{ leaders.homeLeaders.teamTricode }}</b></p>
+            <h4>PTS {{ leaders.homeLeaders.points }}</h4>
+            <h4>REBS {{ leaders.homeLeaders.rebounds }}</h4>
+            <h4>ASST {{ leaders.homeLeaders.assists }}</h4>
+        </div>
+        <div class="col-md-6 container text-center">
+            <img src="{{ away_player_image }}" alt="{{ away_player_name }} headshot" class="img-fluid w-50">
+            <p><b>{{ away_player_name }} | #{{ leaders.awayLeaders.jerseyNum }} | {{ leaders.awayLeaders.position }} | {{ leaders.awayLeaders.teamTricode }}</b></p>
+            <h4>PTS {{ leaders.awayLeaders.points }}</h4>
+            <h4>REBS {{ leaders.awayLeaders.rebounds }}</h4>
+            <h4>ASST {{ leaders.awayLeaders.assists }}</h4>
+        </div>
+    </div>
+             <a class="btn btn-primary btn-sm" href="#" role="button">Back To Game Results</a>
+            <hr>
+</div>
+ </div>
+     <br><br>
+{% endblock %}
