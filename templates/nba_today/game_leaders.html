@@ -30,9 +30,9 @@ Game Leaders {{ leaders.homeLeaders.teamTricode }} vs {{ leaders.awayLeaders.tea
             </thead>
 
            <tbody>
-           {% for home_info in home_team_scores %}
+                {% for home_info in home_team_scores %}
             <tr>
-                    <td>{{ home_info.period }}</td>
+                    <td>{{  home_info.period }}</td>
                     <td>{{  home_info.periodType }}</td>
                     <td>{{  home_info.score }}</td>
     </tr>
@@ -66,6 +66,7 @@ Game Leaders {{ leaders.homeLeaders.teamTricode }} vs {{ leaders.awayLeaders.tea
           </div>
      <br><br>
         <div class="container mt-5">
+            {% if home_player_image %}
             <h2 class="container text-center">Game Leaders</h2>
             <br>
     <div class="row mb-4">
@@ -84,8 +85,11 @@ Game Leaders {{ leaders.homeLeaders.teamTricode }} vs {{ leaders.awayLeaders.tea
             <h4>ASST {{ leaders.awayLeaders.assists }}</h4>
         </div>
     </div>
-             <a class="btn btn-primary btn-sm" href="#" role="button">Back To Game Results</a>
+             <a class="btn btn-primary btn-sm" href="{% url 'nba_today:nba_results' %}" role="button">Back To Game Results</a>
             <hr>
+            {% else %}
+            <h2>This Game Has Not Been Played Yet</h2>
+            {% endif %}
 </div>
  </div>
      <br><br>

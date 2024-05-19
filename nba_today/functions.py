@@ -13,9 +13,6 @@ def get_scores():
 
     return results
 
-    # pprint.pprint(results[0]['awayTeam'])
-
-
 
 def get_team_image(team_id, team_name):
     #   Check for team image in database
@@ -50,13 +47,3 @@ def get_team_image(team_id, team_name):
             return logo_url
 
     return None
-
-
-results = get_scores()
-
-break_down = results[2]['homeTeam']['periods']
-
-""""
-for quarter in break_down:
-    print(fPeriod: {quarter['period']} \n Period Type: {quarter['periodType']}\n Score: {quarter['score']})
-"""

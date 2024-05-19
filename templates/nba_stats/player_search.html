@@ -4,16 +4,9 @@
 Search Player
 {% endblock %}
 {% block content %}
-<div class="container-fluid p-0">
-            <div class="jumbotron jumbotron-fluid">
-        <div class="container text-center">
-            <h1>Enter a player's name</h1>
-        </div>
-    </div>
-    </div>
 <br>
-
     <div class="container">
+        <h1>Enter a Player's Name</h1>
         <div class="row">
             <div class="col-md-6">
                 <form method="post">
@@ -21,7 +14,7 @@ Search Player
                 {{ form.as_p }}<button type="submit" class="btn btn-primary btn-sm">Search Player</button>
                 </form>
             </div>
-            <div class="col-md-6">
+            <div  class="col-md-6">
                 <img src="{% static 'images/nose-players.png' %}" class="img-fluid" alt="Feature 2">
             </div>
         </div>
