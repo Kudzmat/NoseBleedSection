@@ -9,9 +9,9 @@ Search Player
         <h1>Enter a Player's Name</h1>
         <div class="row">
             <div class="col-md-6">
-                <form method="post">
+                <form method="post" class="form-inline my-2 my-lg-0">
                 {% csrf_token %}
-                {{ form.as_p }}<button type="submit" class="btn btn-primary btn-sm">Search Player</button>
+                {{ form.as_p }}<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Player</button>
                 </form>
             </div>
             <div  class="col-md-6">

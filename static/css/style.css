@@ -64,3 +64,48 @@
 .news-link:hover {
             background-color: #0056b3;
    }
+
+.custom-square {
+    background-color: #7E354D;
+    border-radius: 15px;
+    width: 100%;
+    padding-top: 100%; /* This makes the div a perfect square */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white; /* Text color */
+    overflow: hidden; /* Ensures content stays within the rounded corners */
+}
+
+.custom-square img {
+    max-width: 80%;
+    max-height: 80%;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.custom-square p {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    padding: 0 10px;
+}
+
+.container .row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.stat-item {
+    flex: 1 1 50%; /* Make each stat item take up 50% of the container's width */
+    margin-bottom: 10px; /* Add some spacing between rows */
+}

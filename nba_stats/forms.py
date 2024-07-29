@@ -30,8 +30,22 @@ COMP_OPTIONS = (
 
 # form for searching a player
 class PlayerSearchForm(forms.Form):
-    player_name = forms.CharField(label='Player Name', max_length=100)
-
+    player_name = forms.CharField(
+        label='',
+        max_length=100,
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Enter player name',
+                'class': 'form-control',
+                'aria-label': 'Player Name'
+            }
+        ),
+        error_messages={
+            'required': 'Please enter a player name.',
+            'max_length': 'Player name cannot exceed 100 characters.'
+        }
+    )
 
 # form for getting more stats
 class StatsDropdownForm(forms.Form):

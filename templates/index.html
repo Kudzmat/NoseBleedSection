@@ -7,25 +7,82 @@ Home
 {% block content %}
     <div class="jumbotron jumbotron-fluid">
         <div class="container text-center">
-            <h1>Welcome to Nosebleed Section</h1>
-            <p class="lead">The NBA From A Different Perspective</p>
+            <h1>Welcome to Nosebleeds Nerd</h1>
+            <p class="lead">Hoops Wisdom From The Top Rows</p>
         </div>
     </div>
 <br><br>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <img src="{% static 'images/banner/nose-about1.png' %}" class="img-fluid" alt="Feature 1">
-                <h2>NBA News</h2>
-                <p>Check out the latest stories happening in the association from a variety of the top news sources.</p>
+<div class="container mt-5">
+    <br><hr>
+    <h2>Players Of The Day</h2>
+<div class="container bootdey">
+<div class="row">
+<div class="col-6">
+    <div class="well well-white mini-profile-widget" style="background-color: #7E354D;">
+        <div class="image-container">
+            <img src="{{ player2_image }}" class="avatar img-responsive img-fluid" alt="avatar">
+        </div>
+        <div class="details">
+            <h4 style="color: white;">{{ player2 }}</h4>
+            <div class="stats-container">
+                <div style="color: white;" class="stat-item"><b>PPG:</b> {{ player2_stats.0.PPG }} | <b>RPG:</b> {{ player2_stats.0.RPG }}</div>
+                <div style="color: white;" class="stat-item"><b>APG:</b> {{ player2_stats.0.APG }} | <b>BPG:</b> {{ player2_stats.0.BLKPG }}</div>
+                <div style="color: white;" class="stat-item"><b>SPG:</b> {{ player2_stats.0.STLPG }}</div>
             </div>
-            <div class="col-md-6">
-                <img src="{% static 'images/banner/nose-about2.png' %}" class="img-fluid" alt="Feature 2">
-                <h2>NBA Stats</h2>
-                <p>Brush up on your facts before entering your next "Who is the GOAT" debate by searching and viewing the stats of various NBA players and legends!</p>
-            </div>
+            <hr>
         </div>
     </div>
 
+            <div class="well well-light-orange mini-profile-widget" style="background-color: #7E354D;">
+            <div class="details">
+                <h4 style="color: white;">Career Awards</h4>
+                <hr>
+                {% if player2_awards %}
+                    <ul>
+                        {% for award, count in player2_awards.items %}
+                        <li style="color: white;">{{ award }} x {{ count }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <li>No Career Awards For {{ player2 }} :(</li>
+                {% endif %}
+            </div>
+        </div>
+</div>
+
+    <div class="col-6">
+    <div class="well well-white mini-profile-widget" style="background-color: #f9a01b;">
+        <div class="image-container">
+            <img src="{{ player1_image }}" class="avatar img-responsive img-fluid" alt="avatar">
+        </div>
+        <div class="details">
+            <h4 style="color: white;">{{ player1 }}</h4>
+            <div class="stats-container">
+                <div style="color: white;" class="stat-item"><b>PPG:</b> {{ player1_stats.0.PPG }} | <b>RPG:</b> {{ player1_stats.0.RPG }}</div>
+                <div style="color: white;" class="stat-item"><b>APG:</b> {{ player1_stats.0.APG }} | <b>BPG:</b> {{ player1_stats.0.BLKPG }}</div>
+                <div style="color: white;" class="stat-item"><b>SPG:</b> {{ player1_stats.0.STLPG }}</div>
+            </div>
+            <hr>
+        </div>
+    </div>
+
+            <div class="well well-light-orange mini-profile-widget" style="background-color: #f9a01b;">
+            <div class="details">
+                <h4 style="color: white;">Career Awards</h4>
+                <hr>
+                {% if player1_awards %}
+                    <ul>
+                        {% for award, count in player1_awards.items %}
+                        <li style="color: white;">{{ award }} x {{ count }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <li>No Career Awards For {{ player1 }} :(</li>
+                {% endif %}
+            </div>
+        </div>
+</div>
+</div>
+</div>
+</div>
 {% endblock %}
