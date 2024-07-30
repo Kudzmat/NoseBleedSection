@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static%}
+{% load static %}
 {% block title %}
 Home
 {% endblock %}
@@ -7,82 +7,86 @@ Home
 {% block content %}
     <div class="jumbotron jumbotron-fluid">
         <div class="container text-center">
-            <h1>Welcome to Nosebleeds Nerd</h1>
+            <h1>Welcome to Nosebleeds Geek</h1>
             <p class="lead">Hoops Wisdom From The Top Rows</p>
         </div>
     </div>
-<br><br>
-<div class="container mt-5">
-    <br><hr>
-    <h2>Players Of The Day</h2>
-<div class="container bootdey">
-<div class="row">
-<div class="col-6">
-    <div class="well well-white mini-profile-widget" style="background-color: #7E354D;">
-        <div class="image-container">
-            <img src="{{ player2_image }}" class="avatar img-responsive img-fluid" alt="avatar">
-        </div>
-        <div class="details">
-            <h4 style="color: white;">{{ player2 }}</h4>
-            <div class="stats-container">
-                <div style="color: white;" class="stat-item"><b>PPG:</b> {{ player2_stats.0.PPG }} | <b>RPG:</b> {{ player2_stats.0.RPG }}</div>
-                <div style="color: white;" class="stat-item"><b>APG:</b> {{ player2_stats.0.APG }} | <b>BPG:</b> {{ player2_stats.0.BLKPG }}</div>
-                <div style="color: white;" class="stat-item"><b>SPG:</b> {{ player2_stats.0.STLPG }}</div>
+    <br><br>
+    <div class="container mt-5">
+        <br><hr>
+        <h2>Players Of The Day</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="well well-white mini-profile-widget" style="background-color: {{ player2_bio.team_colour }};">
+                    <div class="image-container text-center">
+                        <img src="{{ player2_image }}" class="avatar img-fluid" alt="avatar">
+                    </div>
+                    <div class="details">
+                        <h4 style="color: white;">{{ player2 }}</h4>
+                        <div style="color: white;" class="stat-item"><b>School:</b> {{ player2_bio.education }} | <b>Country:</b> {{ player2_bio.country }}</div>
+                        <div style="color: white;" class="stat-item"><b>Height:</b> {{ player2_bio.height }} | <b>Weight:</b> {{ player2_bio.weight }}</div>
+                        <div style="color: white;" class="stat-item"><b>Year:</b> {{ player2_bio.year }} | <b>Number:</b> {{ player2_bio.number }}</div>
+                        <div style="color: white;" class="stat-item"><b>Position:</b> {{ player2_bio.position }} | <b>Team:</b> {{ player2_bio.team }}</div>
+                        <div style="color: white;" class="stat-item"><b>Status:</b> {{ player2_bio.status }}</div>
+                        <div style="color: white;" class="stat-item"><b>PPG:</b> {{ player2_stats.0.PPG }} | <b>RPG:</b> {{ player2_stats.0.RPG }}</div>
+                        <div style="color: white;" class="stat-item"><b>APG:</b> {{ player2_stats.0.APG }} | <b>BPG:</b> {{ player2_stats.0.BLKPG }}</div>
+                        <div style="color: white;" class="stat-item"><b>SPG:</b> {{ player2_stats.0.STLPG }}</div>
+                    </div>
+                    <hr>
+                </div>
+                <div class="well well-light-orange mini-profile-widget" style="background-color: {{ player2_bio.team_colour }};">
+                    <div class="details">
+                        <h4 style="color: white;">Career Awards</h4>
+                        <hr>
+                        {% if player2_awards %}
+                            <ul>
+                                {% for award, count in player2_awards.items %}
+                                    <li style="color: white;">{{ award }} x {{ count }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <li style="color: white;">No Career Awards For {{ player2 }} :(</li>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-            <hr>
+
+            <div class="col-md-6">
+                <div class="well well-white mini-profile-widget" style="background-color: {{ player1_bio.team_colour }};">
+                    <div class="image-container text-center">
+                        <img src="{{ player1_image }}" class="avatar img-fluid" alt="avatar">
+                    </div>
+                    <div class="details">
+                        <h4 style="color: white;">{{ player1 }}</h4>
+                        <div class="stats-container">
+                            <div style="color: white;" class="stat-item"><b>School:</b> {{ player1_bio.education }} | <b>Country:</b> {{ player1_bio.country }}</div>
+                            <div style="color: white;" class="stat-item"><b>Height:</b> {{ player1_bio.height }} | <b>Weight:</b> {{ player1_bio.weight }}</div>
+                            <div style="color: white;" class="stat-item"><b>Year:</b> {{ player1_bio.year }} | <b>Number:</b> {{ player1_bio.number }}</div>
+                            <div style="color: white;" class="stat-item"><b>Position:</b> {{ player1_bio.position }} | <b>Team:</b> {{ player1_bio.team }}</div>
+                            <div style="color: white;" class="stat-item"><b>Status:</b> {{ player1_bio.status }}</div>
+                            <div style="color: white;" class="stat-item"><b>PPG:</b> {{ player1_stats.0.PPG }} | <b>RPG:</b> {{ player1_stats.0.RPG }}</div>
+                            <div style="color: white;" class="stat-item"><b>APG:</b> {{ player1_stats.0.APG }} | <b>BPG:</b> {{ player1_stats.0.BLKPG }}</div>
+                            <div style="color: white;" class="stat-item"><b>SPG:</b> {{ player1_stats.0.STLPG }}</div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                <div class="well well-light-orange mini-profile-widget" style="background-color: {{ player1_bio.team_colour }};">
+                    <div class="details">
+                        <h4 style="color: white;">Career Awards</h4>
+                        <hr>
+                        {% if player1_awards %}
+                            <ul>
+                                {% for award, count in player1_awards.items %}
+                                    <li style="color: white;">{{ award }} x {{ count }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <li style="color: white;">No Career Awards For {{ player1 }} :(</li>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-            <div class="well well-light-orange mini-profile-widget" style="background-color: #7E354D;">
-            <div class="details">
-                <h4 style="color: white;">Career Awards</h4>
-                <hr>
-                {% if player2_awards %}
-                    <ul>
-                        {% for award, count in player2_awards.items %}
-                        <li style="color: white;">{{ award }} x {{ count }}</li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <li>No Career Awards For {{ player2 }} :(</li>
-                {% endif %}
-            </div>
-        </div>
-</div>
-
-    <div class="col-6">
-    <div class="well well-white mini-profile-widget" style="background-color: #f9a01b;">
-        <div class="image-container">
-            <img src="{{ player1_image }}" class="avatar img-responsive img-fluid" alt="avatar">
-        </div>
-        <div class="details">
-            <h4 style="color: white;">{{ player1 }}</h4>
-            <div class="stats-container">
-                <div style="color: white;" class="stat-item"><b>PPG:</b> {{ player1_stats.0.PPG }} | <b>RPG:</b> {{ player1_stats.0.RPG }}</div>
-                <div style="color: white;" class="stat-item"><b>APG:</b> {{ player1_stats.0.APG }} | <b>BPG:</b> {{ player1_stats.0.BLKPG }}</div>
-                <div style="color: white;" class="stat-item"><b>SPG:</b> {{ player1_stats.0.STLPG }}</div>
-            </div>
-            <hr>
-        </div>
-    </div>
-
-            <div class="well well-light-orange mini-profile-widget" style="background-color: #f9a01b;">
-            <div class="details">
-                <h4 style="color: white;">Career Awards</h4>
-                <hr>
-                {% if player1_awards %}
-                    <ul>
-                        {% for award, count in player1_awards.items %}
-                        <li style="color: white;">{{ award }} x {{ count }}</li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <li>No Career Awards For {{ player1 }} :(</li>
-                {% endif %}
-            </div>
-        </div>
-</div>
-</div>
-</div>
-</div>
 {% endblock %}

@@ -7,6 +7,7 @@ import base64
 from .models import PlayerHeadshot
 from io import BytesIO
 
+
 # career stats
 def player_career_numbers(player_id):
     player_stats = playercareerstats.PlayerCareerStats(player_id=player_id)
@@ -58,6 +59,7 @@ def rankings_post_season(player_id):
 def get_player_image(player_id, player_name):
     # Check for player image
     player = PlayerHeadshot.objects.filter(player_id=player_id).first()
+
 
     if player:
         return player.head_shot_url

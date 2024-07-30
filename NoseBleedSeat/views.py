@@ -7,17 +7,19 @@ from nba_stats.functions import *
 
 def home(request):
     # get player profiles
-    player1 = "Kobe Bryant"
-    player2 = 'Michael Jordan'
+    player1 = "Anthony Davis"
+    player2 = 'Nikola Jokic'
 
     # get headshots
     player1_info = players.find_players_by_full_name(player1)
     player1_id = player1_info[0]['id']
     player1_image = get_player_image(player1_id, player1)
+    player1_bio = get_player_bio(player1)
 
     player2_info = players.find_players_by_full_name(player2)
     player2_id = player2_info[0]['id']
     player2_image = get_player_image(player2_id, player2)
+    player2_bio = get_player_bio(player2)
 
     # Get player career stats
     player1_stats = player_career_numbers(player1_id)
@@ -133,5 +135,7 @@ def home(request):
         'player1_stats': player1_stats,
         'player1': player1,
         'player2': player2,
+        'player1_bio': player1_bio,
+        'player2_bio': player2_bio
     }
     return render(request, "index.html", context=context)
