@@ -10,19 +10,35 @@ Career Stat Totals
  <div class="container mt-4">
         <!-- Player Image and Name Section -->
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4" style="background-color: {{ player_headshot.1 }}">
                 <a href="{% url 'nba_stats:player_details' player_full_name=player_full_name player_id=player_id %}">
-                    <img src="{{ player_headshot }}" alt="Player Image" class="img-fluid">
+                    <img src="{{ player_headshot.0 }}" alt="Player Image" class="img-fluid">
                 </a>
 
             </div>
             <div class="col-md-8">
                 <h1>{{ player_full_name }}</h1>
-                <h6>Points Per Game: {{ player_stats.0.PPG }}</h6>
-                <h6>Rebounds Per Game: {{ player_stats.0.RPG }}</h6>
-                <h6>Assists Per Game: {{ player_stats.0.APG }}</h6>
-                <h6>Blocks Per Game: {{ player_stats.0.BLKPG }}</h6>
-                <h6>Steals Per Game: {{ player_stats.0.STLPG }}</h6>
+                <h6><b>School:</b> {{ player_bio.education }} | <b>Country:</b> {{ player_bio.country }}</h6>
+                <h6><b>Height:</b> {{ player_bio.height }} | <b>Weight:</b> {{ player_bio.weight }}</h6>
+                <h6><b>Year:</b> {{ player_bio.year }} | <b>Number:</b> {{ player_bio.number }}</h6>
+                <h6><b>Position:</b> {{ player_bio.position }} | <b>Team:</b> {{ player_bio.team }}</h6>
+                <h6><b>Status:</b> {{ player_bio.status }}</h6>
+                <h6><b>PPG:</b> {{ player_bio.PTS }} | <b>RPG:</b> {{ player_bio.REB }} | <b>APG:</b> {{ player_bio.AST }}</h6>
+            </div>
+            <div class="col-md-4" style="background-color: {{ player_headshot.1 }}">
+                <h4 style="color: white;">Career Awards</h4>
+                <hr>
+                {% if player_awards %}
+                    <ul>
+                        {% for award, count in player_awards.items %}
+                        <li style="color: white;">{{ award }} x {{ count }}</li>
+                        {% endfor %}
+                            </ul>
+                {% else %}
+                        <li style="color: white;">No Career Awards For {{ player }} :(</li>
+                {% endif %}
+            </div>
+
             </div>
         </div>
 

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import PlayerSearchForm, StatsDropdownForm, PlayerCompareForm, StatsCompForm
 from nba_api.stats.static import players
 from .functions import *
+from NoseBleedSeat.functions import *
 
 
 def player_search(request):
@@ -36,46 +37,14 @@ def player_details(request, player_full_name, player_id):
     # get player headshot
     player_headshot = get_player_image(player_id, player_full_name)
 
-
     # Get player career stats
     player_stats = player_career_numbers(player_id)
 
-    # getting per game averages
-    for season_data in player_stats:
+    # get player bio
+    player_bio = get_player_bio(player_full_name)
 
-        # points per game
-        if season_data['GP'] > 0:
-            season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
-        else:
-            season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
-
-        # assists per game
-        if season_data['GP'] > 0:
-            season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
-        else:
-            season_data['APG'] = 0
-
-        # blocks per game
-        if season_data['GP'] > 0:
-            season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
-        else:
-            season_data['BLKPG'] = 0
-
-        # rebounds per game
-        if season_data['GP'] > 0:
-            season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
-        else:
-            season_data['RPG'] = 0
-
-        # steals per game
-        if season_data['GP'] > 0:
-            season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
-        else:
-            season_data['STLPG'] = 0
-
-        # Certain players (specifically from before 1980) don't have a 3pt %
-        if season_data['FG3_PCT'] is None:
-            season_data['FG3_PCT'] = 0
+    # get player awards
+    player_awards = get_accolades(player_full_name)
 
     # stats dropdown form
     form = StatsDropdownForm()
@@ -107,7 +76,10 @@ def player_details(request, player_full_name, player_id):
                'player_full_name': player_full_name,
                'player_stats': player_stats,
                'player_id': player_id,
-               'form': form
+               'form': form,
+               'player_bio': player_bio,
+               'player_awards': player_awards,
+
                }
 
     return render(request, 'nba_stats/career_stats.html', context=context)

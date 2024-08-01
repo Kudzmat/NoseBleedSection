@@ -1,10 +1,11 @@
 from nba_api.stats.static import players
-from nba_api.stats.endpoints import playercareerstats
+from nba_api.stats.endpoints import playercareerstats, commonplayerinfo
 import requests
 from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
 import base64
 from .models import PlayerHeadshot
+from nba_today.models import TeamLogo
 from io import BytesIO
 
 
@@ -57,12 +58,18 @@ def rankings_post_season(player_id):
 
 
 def get_player_image(player_id, player_name):
-    # Check for player image
+    # get player info
+    player_info = commonplayerinfo.CommonPlayerInfo(player_id)
+    player_bio = player_info.get_dict()
+    player_data = player_bio['resultSets'][0]['rowSet'][0]
+    team_id = int(player_data[18])
+
+    # Check for player image and team colour
     player = PlayerHeadshot.objects.filter(player_id=player_id).first()
+    team_logo = TeamLogo.objects.filter(team_id=team_id).first()
 
-
-    if player:
-        return player.head_shot_url
+    if player and team_logo:
+        return player.head_shot_url, team_logo.team_colour
 
     else:
 
@@ -87,7 +94,7 @@ def get_player_image(player_id, player_name):
                 # save image to database
                 instance = PlayerHeadshot(player_id=player_id, player_name=player_name, head_shot_url=head_shot_url)
                 instance.save()
-                return head_shot_url
+                return head_shot_url, team_logo.team_colour
 
     return None
 

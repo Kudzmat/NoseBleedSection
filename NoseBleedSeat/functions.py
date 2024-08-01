@@ -1,6 +1,35 @@
 from nba_api.stats.static import teams, players
-from nba_api.stats.endpoints import leaguestandings, playerawards, commonplayerinfo
+from nba_api.stats.endpoints import leaguestandings, playerawards, commonplayerinfo, leagueleaders
 from nba_today.models import TeamLogo
+from nba_stats.functions import get_player_image
+
+
+def get_league_leaders():
+    stats = ["PTS", "BLK", "REB", "AST", "STL"]
+    stat_leaders = {}
+
+    # points per game
+    for category in stats:
+        leaders = leagueleaders.LeagueLeaders(per_mode48='PerGame', stat_category_abbreviation=category)
+        leaders_info = leaders.get_dict()
+
+        # get stat location by index
+        leaders_list = leaders_info['resultSet']['headers']
+        stat_index = leaders_list.index(category)
+
+        # player name and headshot
+        player_name = leaders_info['resultSet']['rowSet'][0][2]
+        player_id = leaders_info['resultSet']['rowSet'][0][0]
+        player_headshot = get_player_image(player_id, player_name)
+        player_image = player_headshot[0]
+        team_colour = player_headshot[1]
+
+        # stat
+        stat = leaders_info['resultSet']['rowSet'][0][stat_index]
+
+        stat_leaders[category] = [player_name, stat, player_image, team_colour, player_id]
+
+    return stat_leaders
 
 
 def get_player_bio(player_name):
@@ -14,8 +43,23 @@ def get_player_bio(player_name):
     player_info = commonplayerinfo.CommonPlayerInfo(player_id)
     player_bio = player_info.get_dict()
 
+    # player stats
+    player_stats = player_bio['resultSets'][1]['rowSet'][0]
+
+    # points
+    player_pts = player_stats[3]
+    bio['PTS'] = player_pts
+
+    # ast
+    player_ast = player_stats[4]
+    bio['AST'] = player_ast
+
+    # reb
+    player_reb = player_stats[5]
+    bio['REB'] = player_reb
+
+    # player info
     player_data = player_bio['resultSets'][0]['rowSet'][0]
-    print(player_data)
 
     # college / high school
     bio['education'] = player_data[8]
