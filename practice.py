@@ -3,13 +3,52 @@ from nba_api.stats.endpoints import leaguestandings, playerawards, commonplayeri
 import pprint
 
 # get player id
-player_name = "Lebron James"
+player_name = "Stephen Curry"
 player_name = players.find_players_by_full_name(player_name)
 player_id = player_name[0]['id']
 
+team_ids = [
+    "1610612737",
+    "1610612738",
+    "1610612751",
+    "1610612766",
+    "1610612741",
+    "1610612739",
+    "1610612742",
+    "1610612743",
+    "1610612765",
+    "1610612744",
+    "1610612745",
+    "1610612754",
+    "1610612746",
+    "1610612747",
+    "1610612763",
+    "1610612748",
+    "1610612749",
+    "1610612750",
+    "1610612740",
+    "1610612752",
+    "1610612760",
+    "1610612753",
+    "1610612755",
+    "1610612756",
+    "1610612757",
+    "1610612758",
+    "1610612759",
+    "1610612761",
+    "1610612762",
+    "1610612764"
+]
+
+standings_info = leaguestandings.LeagueStandings()
+standings = standings_info.get_dict()
+team_standings = standings['resultSets'][0]['rowSet']
+print(team_standings[5])
 # get player info
-player_info = commonplayerinfo.CommonPlayerInfo(player_id)
+player_id2 = 1641705
+player_info = commonplayerinfo.CommonPlayerInfo(player_id2)
 player_bio = player_info.get_dict()
+#print(player_bio)
 
 
 

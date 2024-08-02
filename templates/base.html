@@ -48,10 +48,10 @@
     </div>
 </nav>
 <div class="container mt-4">
-    <br>
+    <hr>
      <form method="post" class="form-inline my-2 my-lg-0">
                 {% csrf_token %}
-                {{ form.as_p }}<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Player</button>
+                {{ form.as_p }}<button class="btn btn-outline-success my-2 my-sm-0 text-center" type="submit">Search Player</button>
      </form>
     <hr>
     {% block content %}

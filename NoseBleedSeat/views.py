@@ -7,8 +7,8 @@ from nba_stats.functions import *
 
 def home(request):
     # get player profiles
-    player1 = "Jaylen Brown"
-    player2 = 'Jalen Brunson'
+    player1 = "Giannis Antetokounmpo"
+    player2 = 'Tim Duncan'
 
     # get headshots
     player1_info = players.find_players_by_full_name(player1)

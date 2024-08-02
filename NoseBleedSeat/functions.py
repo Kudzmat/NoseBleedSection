@@ -5,12 +5,12 @@ from nba_stats.functions import get_player_image
 
 
 def get_league_leaders():
-    stats = ["PTS", "BLK", "REB", "AST", "STL"]
+    stats = ["PTS", "BLK", "REB", "AST", "STL", "FGM", "FG3M", "FTM", "EFF", "AST_TOV", "STL_TOV"]
     stat_leaders = {}
 
     # points per game
     for category in stats:
-        leaders = leagueleaders.LeagueLeaders(per_mode48='PerGame', stat_category_abbreviation=category)
+        leaders = leagueleaders.LeagueLeaders(stat_category_abbreviation=category)
         leaders_info = leaders.get_dict()
 
         # get stat location by index
@@ -93,12 +93,11 @@ def get_player_bio(player_name):
     bio['team_id'] = int(player_data[18])
     team_id = bio['team_id']
 
-    if status == "Active":
-        # get team logo and colour
-        team_logo = TeamLogo.objects.filter(team_id=team_id).first()
-        if team_logo:
-            bio['team_image'] = team_logo.logo_url
-            bio['team_colour'] = team_logo.team_colour
+    # get team logo and colour
+    team_logo = TeamLogo.objects.filter(team_id=team_id).first()
+    if team_logo:
+        bio['team_image'] = team_logo.logo_url
+        bio['team_colour'] = team_logo.team_colour
     else:
         bio['team_image'] = "None"
         bio['team_colour'] = "#7E354D"

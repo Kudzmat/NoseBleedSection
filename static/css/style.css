@@ -109,3 +109,26 @@
     flex: 1 1 50%; /* Make each stat item take up 50% of the container's width */
     margin-bottom: 10px; /* Add some spacing between rows */
 }
+
+
+.rounded-frame {
+    border-radius: 15px; /* Adjust the value as needed */
+    overflow: hidden; /* Ensure inner content doesn't overflow the rounded corners */
+}
+
+.player-details {
+    font-size: 0.9rem; /* Decrease font size */
+}
+
+.player-details h4 {
+    font-size: 1.2rem; /* Decrease font size of player names */
+}
+
+.player-details .stat-item {
+    margin-bottom: 5px; /* Adjust spacing if needed */
+}
+
+.mini-profile-widget img.avatar {
+    max-width: 80%; /* Adjust image size if needed */
+    height: auto;
+}
