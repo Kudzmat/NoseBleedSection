@@ -8,6 +8,7 @@ from NoseBleedSeat.functions import *
 def player_search(request):
     if request.method == 'POST':
         form = PlayerSearchForm(request.POST)
+        team_name = ""
         if form.is_valid():
             # Get the player name from the form's cleaned data
             player_name = form.cleaned_data['player_name']
@@ -17,10 +18,15 @@ def player_search(request):
             player_info = players.find_players_by_full_name(player_name)
 
             # Redirect to the search results page
-            if player_info:
+            if len(player_info) > 0:
                 player_id = player_info[0]['id']
                 player_full_name = player_info[0]['full_name']
                 return redirect('nba_stats:player_details', player_id=player_id, player_full_name=player_full_name)
+
+            elif len(player_info) == 0:
+                team_name = player_name
+                return redirect()
+
             else:
                 # If player not found, show an error message or handle it as needed
                 # For simplicity, we'll just redirect back to the search form with an error message

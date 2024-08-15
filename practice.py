@@ -7,6 +7,15 @@ player_name = "Stephen Curry"
 player_name = players.find_players_by_full_name(player_name)
 player_id = player_name[0]['id']
 
+# info = players.find_players_by_full_name("lakers")
+# if len(info) == 0:
+#     info = teamdetails.TeamDetails(team_id=1610612747)
+#     print(info.get_dict())
+# elif len(info) > 0:
+#     print(info)
+# else:
+#     print("Not sure what to do")
+
 
 # search for team using database and not api
 # team = "Los Angels Lakers"
@@ -46,20 +55,27 @@ def get_team_history():
 
 
 def team_hof():
-    hof_info = ['PLAYERID', 'PLAYER', 'POSITION', 'JERSEY', 'SEASONSWITHTEAM']
+    retired_guys = []
+    retired_info = ['PLAYERID', 'PLAYER', 'POSITION', 'JERSEY', 'SEASONSWITHTEAM']
     lake_show = 1610612747
     team_details = teamdetails.TeamDetails(team_id=lake_show)
     team_details = team_details.get_dict()
-    hof_headings = team_details['resultSets'][6]['headers']
+    retired_headings = team_details['resultSets'][6]['headers']
     retired = team_details['resultSets'][7]['rowSet']
     count = 0
 
     while count < len(retired):
-        for item in hof_info:
-            info = hof_headings.index(item)
-            print(f"{item} --> {retired[count][info]}")
-        print("------------")
+        player_info = []
+        for item in retired_info:
+            info = retired_headings.index(item)
+            player_info.append(retired[count][info])
+
+            #print(f"{item} --> {retired[count][info]}")
+        #print("------------")
+        retired_guys.append(player_info)
         count += 1
+
+    print(retired_guys)
 
 
 def get_team_roster():
@@ -99,7 +115,7 @@ def get_team_rankings():
         print(f"{item} ---> {team_rankings_info[info]}")
 
 
-get_team_games()
+get_team_rankings()
 
 # team history
 # team_leaders = teamhistoricalleaders.TeamHistoricalLeaders(team_id=lake_show)
