@@ -115,8 +115,7 @@ def get_team_rankings():
         print(f"{item} ---> {team_rankings_info[info]}")
 
 
-get_team_rankings()
-
+team_hof()
 # team history
 # team_leaders = teamhistoricalleaders.TeamHistoricalLeaders(team_id=lake_show)
 # team_leaders = team_leaders.get_dict()

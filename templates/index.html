@@ -14,10 +14,17 @@ Home
     <div class="container mt-5">
         <hr>
         <h2>Players Of The Day</h2>
+        <a href="{% url 'nba_stats:compare_profiles' %}">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Compare Players</button>
+        </a>
         <div class="row">
             <div class="col-md-4">
                 <div class="well well-white mini-profile-widget rounded-frame" style="background-color: {{ player2_bio.team_colour }};">
                     <div class="image-container text-center">
+                             <form method="post" class="form-inline my-2 my-lg-0">
+                                {% csrf_token %}
+                                {{ player2_form.as_p }}<button class="btn btn-outline-success my-2 my-sm-0 text-center" type="submit">Search Player</button>
+                                </form>
                         <a href="{% url 'nba_stats:player_details' player_full_name=player2 player_id=player2_id %}">
                             <img src="{{ player2_image.0 }}" class="avatar img-fluid" alt="avatar">
                         </a>
@@ -54,6 +61,10 @@ Home
             <div class="col-md-4">
                 <div class="well well-white mini-profile-widget rounded-frame" style="background-color: {{ player1_bio.team_colour }};">
                     <div class="image-container text-center">
+                        <form method="post" class="form-inline my-2 my-lg-0">
+                            {% csrf_token %}
+                            {{ player1_form.as_p }}<button class="btn btn-outline-success my-2 my-sm-0 text-center" type="submit">Search Player</button>
+                        </form>
                         <a href="{% url 'nba_stats:player_details' player_full_name=player1 player_id=player1_id %}">
                             <img src="{{ player1_image.0 }}" class="avatar img-fluid" alt="avatar">
                         </a>

@@ -47,6 +47,26 @@ class PlayerSearchForm(forms.Form):
         }
     )
 
+
+class TeamSearchForm(forms.Form):
+    team_name = forms.CharField(
+        label='',
+        max_length=100,
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Enter a team',
+                'class': 'form-control',
+                'aria-label': 'Team Name'
+            }
+        ),
+        error_messages={
+            'required': 'Please enter the name or city of a NBA team.',
+            'max_length': 'Team name cannot exceed 100 characters.'
+        }
+    )
+
+
 # form for getting more stats
 class StatsDropdownForm(forms.Form):
     option = forms.ChoiceField(choices=STAT_OPTIONS, label="")

@@ -173,9 +173,13 @@ def get_graph(player1_id, player1_name, player2_id, player2_name, stat_category,
     # The shorter season will be used to plot the x axis
     if len(player1_stats) > len(player2_stats):
         seasons = len(player2_stats)
+        longer_player = player1_name
+        tenure = len(player1_stats)
 
     else:
         seasons = len(player1_stats)
+        longer_player = player2_name
+        tenure = len(player2_stats)
 
     # Extract stat category we are comparing for both players
     player1_numbers = [player1_stats[i][stat_category] for i in range(seasons)]
@@ -191,7 +195,7 @@ def get_graph(player1_id, player1_name, player2_id, player2_name, stat_category,
 
     # Chart labels
     plt.title(f'{player1_name} and {player2_name} {title} Comparison')
-    plt.xlabel('Year')
+    plt.xlabel(f'Season (* {longer_player} Has Played {tenure} Seasons *)')
     plt.ylabel(title)
     plt.legend()
     plt.grid(True)

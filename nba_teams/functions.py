@@ -1,13 +1,14 @@
 from nba_today.functions import get_team_image
 from nba_today.models import TeamLogo
+from nba_stats.functions import get_player_image
 from nba_api.stats.endpoints import teamdetails, commonteamroster, teaminfocommon, leaguegamefinder
 
 
-def get_team(team_name):
-    team = TeamLogo.objects.filter(team_full_name=team_name).first()
+def get_team(team_id):
+    team = TeamLogo.objects.filter(team_id=team_id).first()
 
     if team:
-        return TeamLogo.team_id, TeamLogo.team_name, TeamLogo.logo_url, TeamLogo.team_city, TeamLogo.team_colour, TeamLogo.team_full_name, TeamLogo.team_city
+        return team.team_id, team.team_name, team.logo_url, team.team_city, team.team_colour, team.team_full_name, team.team_city
 
 
 def get_team_history(team_id):
@@ -60,7 +61,7 @@ def retired_players(team_id):
 
 def get_team_roster(team_id):
     final_roster = []  # will contain lists of players and their information
-    player_info = ['PLAYER', 'NUM', 'POSITION', 'HEIGHT', 'WEIGHT', 'AGE', 'EXP']  # also need player id
+    player_info = ['PLAYER_ID', 'PLAYER', 'NUM', 'POSITION', 'HEIGHT', 'WEIGHT', 'AGE', 'EXP']  # also need player id
     team_details = commonteamroster.CommonTeamRoster(team_id=team_id)
     team_roster = team_details.get_dict()
     roster_headings = team_roster['resultSets'][0]['headers']
@@ -70,6 +71,7 @@ def get_team_roster(team_id):
     while count < len(lakers_roster):
         player_details = []
         for item in player_info:
+            # PLAYERID
             # PLAYER - --> Jalen Hood-Schifino
             # NUM - --> 0
             # POSITION - --> G
@@ -80,9 +82,25 @@ def get_team_roster(team_id):
             info = roster_headings.index(item)
             player_details.append(lakers_roster[count][info])
 
+        # append player headshot and team colour
+        # get player id
+        player_id = player_details[0]
+
+        # get player name
+        player_name = player_details[1]
+
+        # call function and append
+        player_specs = get_player_image(player_id, player_name)
+        player_head_shot = player_specs[0]
+        player_details.append(player_head_shot)
+        team_colour = player_specs[1]
+        player_details.append(team_colour)
+
         # append player details to final roster
         final_roster.append(player_details)
         count += 1
+
+    return final_roster
 
 
 def get_team_rankings(team_id):
@@ -107,3 +125,4 @@ def get_team_rankings(team_id):
         team_ranks[item] = team_rankings_info[info]
 
     return team_ranks
+

@@ -8,10 +8,10 @@ Career Stat Totals
 
 {% block content %}
   <div class="container mt-4">
-        <div class="row" style="background-color: {{ player1_headshot.1 }}">
+        <div class="row">
             <h2>{{ player1_full_name }}</h2>
              <a href="{% url 'nba_stats:player_details' player_full_name=player1_full_name player_id=player1_id %}">
-            <img src="{{ player1_headshot.0 }}" alt="{{ player1_full_name }} Headshot" height="100">
+            <img src="{{ player1_headshot.0 }}" alt="{{ player1_full_name }} Headshot" style="background-color: {{ player1_headshot.1 }}" class="rounded-circle img-fluid" width="250" height="125">
              </a>
         </div>
             <h3>Career Stats</h3>
@@ -83,10 +83,10 @@ Career Stat Totals
       <br>
       <hr>
 
-        <div class="row" style="background-color: {{ player2_headshot.1 }}">
+        <div class="row">
             <h2>{{ player2_full_name }}</h2>
             <a href="{% url 'nba_stats:player_details' player_full_name=player2_full_name player_id=player2_id %}">
-            <img src="{{ player2_headshot.0 }}" alt="{{ player2_full_name }} Headshot" height="100">
+            <img src="{{ player2_headshot.0 }}" alt="{{ player2_full_name }} Headshot" style="background-color: {{ player2_headshot.1 }}" class="rounded-circle img-fluid" width="250" height="125">
             </a>
         </div>
             <h3>Career Stats</h3>
