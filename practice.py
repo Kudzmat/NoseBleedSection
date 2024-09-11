@@ -1,11 +1,34 @@
 from nba_api.stats.static import teams, players
-from nba_api.stats.endpoints import teamdetails, commonteamroster, teaminfocommon, leaguegamefinder
+from nba_api.stats.endpoints import teamdetails, commonteamroster, teaminfocommon, leaguegamefinder,commonplayerinfo
 import pprint
+from nba_stats.functions import *
 
 # get player id
-player_name = "Stephen Curry"
+player_name = "lebron james"
 player_name = players.find_players_by_full_name(player_name)
+print(player_name)
 player_id = player_name[0]['id']
+player_name = player_name[0]['full_name']
+print(player_name)
+
+wemby = 1641705
+player_stats = playercareerstats.PlayerCareerStats(player_id=wemby)
+career_dict = player_stats.get_normalized_dict()
+
+print(career_dict)
+
+
+STAT_OPTIONS2 = (
+    ('--- Stats Totals By Year ---', '--- Stats Totals By Year  ---'),
+    ('SeasonTotalsRegularSeason', 'Reg. Season'),
+    ('SeasonTotalsPostSeason', 'Post Season'),
+    ('SeasonRankingsRegularSeason', 'Reg. Season Rankings'),
+    ('SeasonRankingsPostSeason', 'Post Season Rankings'),
+
+)
+
+
+
 
 # info = players.find_players_by_full_name("lakers")
 # if len(info) == 0:
@@ -70,8 +93,8 @@ def team_hof():
             info = retired_headings.index(item)
             player_info.append(retired[count][info])
 
-            #print(f"{item} --> {retired[count][info]}")
-        #print("------------")
+            # print(f"{item} --> {retired[count][info]}")
+        # print("------------")
         retired_guys.append(player_info)
         count += 1
 
@@ -115,7 +138,7 @@ def get_team_rankings():
         print(f"{item} ---> {team_rankings_info[info]}")
 
 
-team_hof()
+#team_hof()
 # team history
 # team_leaders = teamhistoricalleaders.TeamHistoricalLeaders(team_id=lake_show)
 # team_leaders = team_leaders.get_dict()
@@ -187,6 +210,8 @@ clubs2 = {
 
 }
 
+team_logos = 'Celtics', 'https://cdn.nba.com/logos/nba/1610612738/global/L/logo.svg'
+
 clubs = {1610612737: 'Hawks', 1610612738: 'Celtics', 1610612751: 'Nets', 1610612766: 'Hornets', 1610612749: 'Bucks',
          1610612754: 'Pacers', 1610612748: 'Heat', 1610612755: 'Sixers', 1610612752: 'Knicks', 1610612765: 'Pistons',
          1610612757: 'Blazers', 1610612759: 'Spurs', 1610612760: 'Thunder', 1610612758: 'Kings', 1610612761: 'Raptors',
@@ -213,6 +238,283 @@ team_colours2 = {1610612737: '#e03a3e', 1610612738: '#007A33', 1610612751: '#000
                  1610612750: '#236192', 1610612753: '#0077c0', 1610612756: '#e56020', 1610612764: '#002b5c',
                  1610612739: '#860038', 1610612741: '#ce1141'}
 
+# Data for all NBA Eastern Conference teams
+eastern_conference_teams = [
+    {
+        'team_id': 1610612738,
+        'team_full_name': 'Boston Celtics',
+        'team_name': 'Celtics',
+        'team_abbreviated': 'BOS',
+        'team_city': 'Boston',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612738/global/L/logo.svg',
+        'team_colour': '#007A33'
+    },
+    {
+        'team_id': 1610612741,
+        'team_full_name': 'Chicago Bulls',
+        'team_name': 'Bulls',
+        'team_abbreviated': 'CHI',
+        'team_city': 'Chicago',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612741/global/L/logo.svg',
+        'team_colour': '#CE1141'
+    },
+    {
+        'team_id': 1610612739,
+        'team_full_name': 'Cleveland Cavaliers',
+        'team_name': 'Cavaliers',
+        'team_abbreviated': 'CLE',
+        'team_city': 'Cleveland',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612739/global/L/logo.svg',
+        'team_colour': '#860038'
+    },
+    {
+        'team_id': 1610612765,
+        'team_full_name': 'Detroit Pistons',
+        'team_name': 'Pistons',
+        'team_abbreviated': 'DET',
+        'team_city': 'Detroit',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612765/global/L/logo.svg',
+        'team_colour': '#C8102E'
+    },
+    {
+        'team_id': 1610612754,
+        'team_full_name': 'Indiana Pacers',
+        'team_name': 'Pacers',
+        'team_abbreviated': 'IND',
+        'team_city': 'Indiana',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612754/global/L/logo.svg',
+        'team_colour': '#002D62'
+    },
+    {
+        'team_id': 1610612748,
+        'team_full_name': 'Miami Heat',
+        'team_name': 'Heat',
+        'team_abbreviated': 'MIA',
+        'team_city': 'Miami',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612748/global/L/logo.svg',
+        'team_colour': '#98002E'
+    },
+    {
+        'team_id': 1610612749,
+        'team_full_name': 'Milwaukee Bucks',
+        'team_name': 'Bucks',
+        'team_abbreviated': 'MIL',
+        'team_city': 'Milwaukee',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612749/global/L/logo.svg',
+        'team_colour': '#00471B'
+    },
+    {
+        'team_id': 1610612752,
+        'team_full_name': 'New York Knicks',
+        'team_name': 'Knicks',
+        'team_abbreviated': 'NYK',
+        'team_city': 'New York',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612752/global/L/logo.svg',
+        'team_colour': '#F58426'
+    },
+    {
+        'team_id': 1610612753,
+        'team_full_name': 'Orlando Magic',
+        'team_name': 'Magic',
+        'team_abbreviated': 'ORL',
+        'team_city': 'Orlando',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612753/global/L/logo.svg',
+        'team_colour': '#0077C0'
+    },
+    {
+        'team_id': 1610612755,
+        'team_full_name': 'Philadelphia 76ers',
+        'team_name': 'Sixers',
+        'team_abbreviated': 'PHI',
+        'team_city': 'Philadelphia',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612755/global/L/logo.svg',
+        'team_colour': '#006BB6'
+    },
+    {
+        'team_id': 1610612751,
+        'team_full_name': 'Brooklyn Nets',
+        'team_name': 'Nets',
+        'team_abbreviated': 'BKN',
+        'team_city': 'Brooklyn',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612751/global/L/logo.svg',
+        'team_colour': '#000000'
+    },
+    {
+        'team_id': 1610612761,
+        'team_full_name': 'Toronto Raptors',
+        'team_name': 'Raptors',
+        'team_abbreviated': 'TOR',
+        'team_city': 'Toronto',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612761/global/L/logo.svg',
+        'team_colour': '#CE1141'
+    },
+    {
+        'team_id': 1610612764,
+        'team_full_name': 'Washington Wizards',
+        'team_name': 'Wizards',
+        'team_abbreviated': 'WAS',
+        'team_city': 'Washington',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612764/global/L/logo.svg',
+        'team_colour': '#002B5C'
+    },
+    {
+        'team_id': 1610612766,
+        'team_full_name': 'Charlotte Hornets',
+        'team_name': 'Hornets',
+        'team_abbreviated': 'CHA',
+        'team_city': 'Charlotte',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612766/global/L/logo.svg',
+        'team_colour': '#00788C'
+    },
+    {
+        'team_id': 1610612737,
+        'team_full_name': 'Atlanta Hawks',
+        'team_name': 'Hawks',
+        'team_abbreviated': 'ATL',
+        'team_city': 'Atlanta',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612737/global/L/logo.svg',
+        'team_colour': '#e03a3e'
+    },
+]
+
+# Data for all NBA Western Conference teams
+western_conference_teams = [
+    {
+        "team_id": 1610612742,
+        "team_full_name": "Dallas Mavericks",
+        "team_name": "Mavericks",
+        "team_abbreviated": "DAL",
+        "team_city": "Dallas",
+        "team_logo_url": "https://cdn.nba.com/logos/nba/1610612742/global/L/logo.svg",
+        "team_colour": "#00538c"
+    },
+    {
+        "team_id": 1610612743,
+        "team_full_name": "Denver Nuggets",
+        "team_name": "Nuggets",
+        "team_abbreviated": "DEN",
+        "team_city": "Denver",
+        "team_logo_url": "https://cdn.nba.com/logos/nba/1610612743/global/L/logo.svg",
+        "team_colour": "#1d428a"
+    },
+    {
+        "team_id": 1610612744,
+        "team_full_name": "Golden State Warriors",
+        "team_name": "Warriors",
+        "team_abbreviated": "GSW",
+        "team_city": "Golden State",
+        "team_logo_url": "https://cdn.nba.com/logos/nba/1610612744/global/L/logo.svg",
+        "team_colour": "#1D428A"
+    },
+    {
+        "team_id": 1610612745,
+        "team_full_name": "Houston Rockets",
+        "team_name": "Rockets",
+        "team_abbreviated": "HOU",
+        "team_city": "Houston",
+        "team_logo_url": "https://cdn.nba.com/logos/nba/1610612745/global/L/logo.svg",
+        "team_colour": "#ce1141"
+    },
+    {
+        "team_id": 1610612746,
+        "team_full_name": "LA Clippers",
+        "team_name": "Clippers",
+        "team_abbreviated": "LAC",
+        "team_city": "Los Angeles",
+        "team_logo_url": "https://cdn.nba.com/logos/nba/1610612746/global/L/logo.svg",
+        "team_colour": "#1d428a"
+    },
+    {
+        "team_id": 1610612747,
+        "team_full_name": "Los Angeles Lakers",
+        "team_name": "Lakers",
+        "team_abbreviated": "LAL",
+        "team_city": "Los Angeles",
+        "team_logo_url": "https://cdn.nba.com/logos/nba/1610612747/global/L/logo.svg",
+        "team_colour": "#f9a01b"
+    },
+    {
+        'team_id': 1610612757,
+        'team_full_name': 'Portland Trail Blazers',
+        'team_name': 'Blazers',
+        'team_abbreviated': 'POR',
+        'team_city': 'Portland',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612757/global/L/logo.svg',
+        'team_colour': '#E03A3E'
+    },
+    {
+        'team_id': 1610612758,
+        'team_full_name': 'Sacramento Kings',
+        'team_name': 'Kings',
+        'team_abbreviated': 'SAC',
+        'team_city': 'Sacramento',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612758/global/L/logo.svg',
+        'team_colour': '#5A2D81'
+    },
+    {
+        'team_id': 1610612763,
+        'team_full_name': 'Memphis Grizzlies',
+        'team_name': 'Grizzlies',
+        'team_abbreviated': 'MEM',
+        'team_city': 'Memphis',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612763/global/L/logo.svg',
+        'team_colour': '#5D76A9'
+    },
+    {
+        'team_id': 1610612750,
+        'team_full_name': 'Minnesota Timberwolves',
+        'team_name': 'Wolves',
+        'team_abbreviated': 'MIN',
+        'team_city': 'Minneapolis',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612750/global/L/logo.svg',
+        'team_colour': '#0C2340'
+    },
+    {
+        'team_id': 1610612760,
+        'team_full_name': 'Oklahoma City Thunder',
+        'team_name': 'Thunder',
+        'team_abbreviated': 'OKC',
+        'team_city': 'Oklahoma City',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612760/global/L/logo.svg',
+        'team_colour': '#007AC1'
+    },
+    {
+        'team_id': 1610612759,
+        'team_full_name': 'San Antonio Spurs',
+        'team_abbreviated': 'SAS',
+        'team_city': 'San Antonio',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612759/global/L/logo.svg',
+        'team_colour': '#C4CED4'
+    },
+    {
+        'team_id': 1610612762,
+        'team_full_name': 'Utah Jazz',
+        'team_name': 'Jazz',
+        'team_abbreviated': 'UTA',
+        'team_city': 'Salt Lake City',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612762/global/L/logo.svg',
+        'team_colour': '#002B5C'
+    },
+    {
+        'team_id': 1610612756,
+        'team_full_name': 'Phoenix Suns',
+        'team_name': 'Suns',
+        'team_abbreviated': 'PHX',
+        'team_city': 'Phoenix',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612756/global/L/logo.svg',
+        'team_colour': '#E56020'
+    },
+    {
+        'team_id': 1610612740,
+        'team_full_name': 'New Orleans Pelicans',
+        'team_name': 'Pelicans',
+        'team_abbreviated': 'NOP',
+        'team_city': 'New Orleans',
+        'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612740/global/L/logo.svg',
+        'team_colour': '#0C2340'
+    },
+]
+
 # mj = players.find_players_by_full_name("Michael Jordan")
 # print(mj)
 
@@ -229,3 +531,8 @@ team_colours2 = {1610612737: '#e03a3e', 1610612738: '#007A33', 1610612751: '#000
 # for info in teams_data:
 #     team_records = teams_data[['TeamID','TeamCity','TeamName','Record','Conference']]
 #
+
+
+eastern_conference_teams2 = [{'team_id': 1610612738, 'team_full_name': 'Boston Celtics', 'team_name': 'Celtics', 'team_abbreviated': 'BOS', 'team_city': 'Boston', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612738/global/L/logo.svg', 'team_colour': '#007A33'}, {'team_id': 1610612741, 'team_full_name': 'Chicago Bulls', 'team_name': 'Bulls', 'team_abbreviated': 'CHI', 'team_city': 'Chicago', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612741/global/L/logo.svg', 'team_colour': '#CE1141'}, {'team_id': 1610612739, 'team_full_name': 'Cleveland Cavaliers', 'team_name': 'Cavaliers', 'team_abbreviated': 'CLE', 'team_city': 'Cleveland', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612739/global/L/logo.svg', 'team_colour': '#860038'}, {'team_id': 1610612765, 'team_full_name': 'Detroit Pistons', 'team_name': 'Pistons', 'team_abbreviated': 'DET', 'team_city': 'Detroit', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612765/global/L/logo.svg', 'team_colour': '#C8102E'}, {'team_id': 1610612754, 'team_full_name': 'Indiana Pacers', 'team_name': 'Pacers', 'team_abbreviated': 'IND', 'team_city': 'Indiana', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612754/global/L/logo.svg', 'team_colour': '#002D62'}, {'team_id': 1610612748, 'team_full_name': 'Miami Heat', 'team_name': 'Heat', 'team_abbreviated': 'MIA', 'team_city': 'Miami', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612748/global/L/logo.svg', 'team_colour': '#98002E'}, {'team_id': 1610612749, 'team_full_name': 'Milwaukee Bucks', 'team_name': 'Bucks', 'team_abbreviated': 'MIL', 'team_city': 'Milwaukee', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612749/global/L/logo.svg', 'team_colour': '#00471B'}, {'team_id': 1610612752, 'team_full_name': 'New York Knicks', 'team_name': 'Knicks', 'team_abbreviated': 'NYK', 'team_city': 'New York', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612752/global/L/logo.svg', 'team_colour': '#F58426'}, {'team_id': 1610612753, 'team_full_name': 'Orlando Magic', 'team_name': 'Magic', 'team_abbreviated': 'ORL', 'team_city': 'Orlando', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612753/global/L/logo.svg', 'team_colour': '#0077C0'}, {'team_id': 1610612755, 'team_full_name': 'Philadelphia 76ers', 'team_name': 'Sixers', 'team_abbreviated': 'PHI', 'team_city': 'Philadelphia', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612755/global/L/logo.svg', 'team_colour': '#006BB6'}, {'team_id': 1610612751, 'team_full_name': 'Brooklyn Nets', 'team_name': 'Nets', 'team_abbreviated': 'BKN', 'team_city': 'Brooklyn', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612751/global/L/logo.svg', 'team_colour': '#000000'}, {'team_id': 1610612761, 'team_full_name': 'Toronto Raptors', 'team_name': 'Raptors', 'team_abbreviated': 'TOR', 'team_city': 'Toronto', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612761/global/L/logo.svg', 'team_colour': '#CE1141'}, {'team_id': 1610612764, 'team_full_name': 'Washington Wizards', 'team_name': 'Wizards', 'team_abbreviated': 'WAS', 'team_city': 'Washington', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612764/global/L/logo.svg', 'team_colour': '#002B5C'}, {'team_id': 1610612766, 'team_full_name': 'Charlotte Hornets', 'team_name': 'Hornets', 'team_abbreviated': 'CHA', 'team_city': 'Charlotte', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612766/global/L/logo.svg', 'team_colour': '#00788C'}, {'team_id': 1610612737, 'team_full_name': 'Atlanta Hawks', 'team_name': 'Hawks', 'team_abbreviated': 'ATL', 'team_city': 'Atlanta', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612737/global/L/logo.svg', 'team_colour': '#e03a3e'}]
+
+western_conference_teams2 = [{'team_id': 1610612742, 'team_full_name': 'Dallas Mavericks', 'team_name': 'Mavericks', 'team_abbreviated': 'DAL', 'team_city': 'Dallas', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612742/global/L/logo.svg', 'team_colour': '#00538c'}, {'team_id': 1610612743, 'team_full_name': 'Denver Nuggets', 'team_name': 'Nuggets', 'team_abbreviated': 'DEN', 'team_city': 'Denver', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612743/global/L/logo.svg', 'team_colour': '#1d428a'}, {'team_id': 1610612744, 'team_full_name': 'Golden State Warriors', 'team_name': 'Warriors', 'team_abbreviated': 'GSW', 'team_city': 'Golden State', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612744/global/L/logo.svg', 'team_colour': '#1D428A'}, {'team_id': 1610612745, 'team_full_name': 'Houston Rockets', 'team_name': 'Rockets', 'team_abbreviated': 'HOU', 'team_city': 'Houston', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612745/global/L/logo.svg', 'team_colour': '#ce1141'}, {'team_id': 1610612746, 'team_full_name': 'LA Clippers', 'team_name': 'Clippers', 'team_abbreviated': 'LAC', 'team_city': 'Los Angeles', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612746/global/L/logo.svg', 'team_colour': '#1d428a'}, {'team_id': 1610612747, 'team_full_name': 'Los Angeles Lakers', 'team_name': 'Lakers', 'team_abbreviated': 'LAL', 'team_city': 'Los Angeles', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612747/global/L/logo.svg', 'team_colour': '#f9a01b'}, {'team_id': 1610612757, 'team_full_name': 'Portland Trail Blazers', 'team_name': 'Blazers', 'team_abbreviated': 'POR', 'team_city': 'Portland', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612757/global/L/logo.svg', 'team_colour': '#E03A3E'}, {'team_id': 1610612758, 'team_full_name': 'Sacramento Kings', 'team_name': 'Kings', 'team_abbreviated': 'SAC', 'team_city': 'Sacramento', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612758/global/L/logo.svg', 'team_colour': '#5A2D81'}, {'team_id': 1610612763, 'team_full_name': 'Memphis Grizzlies', 'team_name': 'Grizzlies', 'team_abbreviated': 'MEM', 'team_city': 'Memphis', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612763/global/L/logo.svg', 'team_colour': '#5D76A9'}, {'team_id': 1610612750, 'team_full_name': 'Minnesota Timberwolves', 'team_name': 'Wolves', 'team_abbreviated': 'MIN', 'team_city': 'Minneapolis', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612750/global/L/logo.svg', 'team_colour': '#0C2340'}, {'team_id': 1610612760, 'team_full_name': 'Oklahoma City Thunder', 'team_name': 'Thunder', 'team_abbreviated': 'OKC', 'team_city': 'Oklahoma City', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612760/global/L/logo.svg', 'team_colour': '#007AC1'}, {'team_id': 1610612759, 'team_full_name': 'San Antonio Spurs', 'team_name': 'Spurs', 'team_abbreviated': 'SAS', 'team_city': 'San Antonio', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612759/global/L/logo.svg', 'team_colour': '#C4CED4'}, {'team_id': 1610612762, 'team_full_name': 'Utah Jazz', 'team_name': 'Jazz', 'team_abbreviated': 'UTA', 'team_city': 'Salt Lake City', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612762/global/L/logo.svg', 'team_colour': '#002B5C'}, {'team_id': 1610612756, 'team_full_name': 'Phoenix Suns', 'team_name': 'Suns', 'team_abbreviated': 'PHX', 'team_city': 'Phoenix', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612756/global/L/logo.svg', 'team_colour': '#E56020'}, {'team_id': 1610612740, 'team_full_name': 'New Orleans Pelicans', 'team_name': 'Pelicans', 'team_abbreviated': 'NOP', 'team_city': 'New Orleans', 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612740/global/L/logo.svg', 'team_colour': '#0C2340'}]

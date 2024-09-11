@@ -8,10 +8,10 @@ import time
 def team_page(request, team_id):
     # team logo and other information
     team_info = get_team(team_id)
+    team_name = team_info[5]
 
     # championships and current relevant info
     team_history = get_team_history(team_id)
-    time.sleep(6)
     current_info = team_history[0]
     head_coach = current_info['HEADCOACH']
     arena = current_info['ARENA']
@@ -19,8 +19,7 @@ def team_page(request, team_id):
     championships = team_history[1]
 
     # retired players
-    retired = retired_players(team_id)
-    time.sleep(6)
+    retired = retired_players(team_id, team_name)
 
     # team ranks
     team_ranks = get_team_rankings(team_id)

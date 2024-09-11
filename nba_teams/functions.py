@@ -1,14 +1,18 @@
+from nba_stats.models import PlayerHeadShot
 from nba_today.functions import get_team_image
-from nba_today.models import TeamLogo
 from nba_stats.functions import get_player_image
 from nba_api.stats.endpoints import teamdetails, commonteamroster, teaminfocommon, leaguegamefinder
+from nba_teams.models import *
 
 
 def get_team(team_id):
-    team = TeamLogo.objects.filter(team_id=team_id).first()
+    team = EasternConferenceTeams.objects.filter(team_id=team_id).first()
 
     if team:
-        return team.team_id, team.team_name, team.logo_url, team.team_city, team.team_colour, team.team_full_name, team.team_city
+        return team.team_id, team.team_name, team.team_logo_url, team.team_city, team.team_colour, team.team_full_name, team.team_city
+    else:
+        team = WesternConferenceTeams.objects.filter(team_id=team_id).first()
+        return team.team_id, team.team_name, team.team_logo_url, team.team_city, team.team_colour, team.team_full_name, team.team_city
 
 
 def get_team_history(team_id):
@@ -37,7 +41,13 @@ def get_team_history(team_id):
     return current_history, team_championships
 
 
-def retired_players(team_id):
+def retired_players(team_id, team_name):
+    retired_team = RetiredPlayers.objects.filter(team_id=team_id).first()
+    if retired_team:
+        retired_guys = retired_team.players
+        print(retired_guys)
+        return retired_guys
+
     retired_info = ['PLAYERID', 'PLAYER', 'POSITION', 'JERSEY', 'SEASONSWITHTEAM']
     retired_guys = []  # will contain lists of players and their information
 
@@ -55,6 +65,13 @@ def retired_players(team_id):
 
         retired_guys.append(player_info)
         count += 1
+
+    retired_instance = RetiredPlayers.objects.create(
+        team_id=team_id,
+        team_name=team_name,
+        players=retired_guys
+    )
+    retired_instance.save()
 
     return retired_guys
 
@@ -89,11 +106,26 @@ def get_team_roster(team_id):
         # get player name
         player_name = player_details[1]
 
-        # call function and append
-        player_specs = get_player_image(player_id, player_name)
-        player_head_shot = player_specs[0]
+        # get player headshots
+        player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
+
+        if not player_headshot:
+            player_headshot = get_player_image(player_id)
+            # create and save new instance
+            player_headshot_instance = PlayerHeadShot.objects.create(
+                player_id=player_id,
+                player_name=player_name,
+                player_image_url=player_headshot[0],
+                team_id=player_headshot[1],
+                background_colour=None  # This will be dynamically set after saving based on team_id
+            )
+            player_headshot_instance.save()
+
+        # get headshot and append
+        player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
+        player_head_shot = player_headshot.player_image_url
+        team_colour = player_headshot.background_colour
         player_details.append(player_head_shot)
-        team_colour = player_specs[1]
         player_details.append(team_colour)
 
         # append player details to final roster
@@ -105,8 +137,27 @@ def get_team_roster(team_id):
 
 def get_team_rankings(team_id):
     team_ranks = {}
+
     team_record = ['TEAM_CONFERENCE', 'TEAM_DIVISION', 'W', 'L']
+    team_record_map = {
+        'TEAM_CONFERENCE': 'Conference',
+        'TEAM_DIVISION': 'Division',
+        'W': 'Wins',
+        'L': 'Losses'
+    }
+
     team_rankings = ['PTS_RANK', 'PTS_PG', 'REB_RANK', 'REB_PG', 'AST_RANK', 'AST_PG', 'OPP_PTS_RANK', 'OPP_PTS_PG']
+    rankings_map = {
+        'PTS_RANK': 'Points Ranking',
+        'PTS_PG': 'Team Points Per Game',
+        'REB_RANK': 'Rebounds Ranking',
+        'REB_PG': 'Team Rebounds Per Game',
+        'AST_RANK': 'Assists Ranking',
+        'AST_PG': 'Assists Per Game',
+        'OPP_PTS_RANK': 'Opponents Points Ranking',
+        'OPP_PTS_PG': 'Opponents Points Per Game',
+    }
+
     rankings = teaminfocommon.TeamInfoCommon(team_id=team_id)
     rankings = rankings.get_dict()
     record_headings = rankings['resultSets'][0]['headers']
@@ -115,6 +166,7 @@ def get_team_rankings(team_id):
     # team conferences & record
     for item in team_record:
         info = record_headings.index(item)
+        item = team_record_map[item]
         team_ranks[item] = record[info]
 
     # team league rankings
@@ -122,6 +174,7 @@ def get_team_rankings(team_id):
     team_rank_headings = rankings['resultSets'][1]['headers']
     for item in team_rankings:
         info = team_rank_headings.index(item)
+        item = rankings_map[item]
         team_ranks[item] = team_rankings_info[info]
 
     return team_ranks

@@ -2,11 +2,20 @@ from django import forms
 from django.core import validators
 
 STAT_OPTIONS = (
-    ('--- Stats By Year ---', '--- Stats By Year  ---'),
+    ('--- View Stats By Year ---', '--- View Stats By Year  ---'),
     ('Reg. Season', 'Reg. Season'),
     ('Post Season', 'Post Season'),
     ('Reg. Season Rankings', 'Reg. Season Rankings'),
     ('Post Season Rankings', 'Post Season Rankings'),
+
+)
+
+STAT_OPTIONS2 = (
+    ('--- Stats Totals By Year ---', '--- Stats Totals By Year  ---'),
+    ('SeasonTotalsRegularSeason', 'Reg. Season'),
+    ('SeasonTotalsPostSeason', 'Post Season'),
+    ('SeasonRankingsRegularSeason', 'Reg. Season Rankings'),
+    ('SeasonRankingsPostSeason', 'Post Season Rankings'),
 
 )
 
@@ -22,9 +31,20 @@ COMP_OPTIONS = (
     ('FG_PCT', 'Field Goal %'),
     ('FG3_PCT', '3 Point %'),
     ('FT_PCT', 'Free Thrown%'),
-    ('GP', 'Games Played'),
-    ('GS', 'Games Started'),
-    ('MIN', 'Minutes')
+    ('EFF', 'Individual Player Efficiency')
+)
+
+GRAPH_OPTIONS = (
+    ('--- View Stat Graphs ---', '--- View Stat Graphs ---'),
+    ('PPG', 'Points'),
+    ('RPG', 'Rebounds'),
+    ('APG', 'Assists'),
+    ('BLKPG', 'Blocks'),
+    ('STLPG', 'Steals'),
+    ('FG_PCT', 'Field Goal %'),
+    ('FG3_PCT', '3 Point %'),
+    ('FT_PCT', 'Free Throw %'),
+    ('EFF', 'Individual Player Efficiency')
 )
 
 
@@ -69,7 +89,7 @@ class TeamSearchForm(forms.Form):
 
 # form for getting more stats
 class StatsDropdownForm(forms.Form):
-    option = forms.ChoiceField(choices=STAT_OPTIONS, label="")
+    option = forms.ChoiceField(choices=STAT_OPTIONS, label="Career Totals")
 
 
 # form for stats comparison
@@ -94,3 +114,16 @@ class PlayerCompareForm(forms.Form):
     player2 = forms.CharField(
         validators=[validators.MaxLengthValidator(50), validators.MinLengthValidator(1)],
         widget=forms.TextInput(attrs={'placeholder': 'Enter Player 2', 'style': 'width:300px'}))
+
+
+class PlayerGraphForm(forms.Form):
+    career_category = forms.ChoiceField(label='Career Category', choices=STAT_OPTIONS)
+    stat_option = forms.ChoiceField(choices=GRAPH_OPTIONS, label="Stat Category")
+
+    # this method will allow me to get the selected option's readable value to use for the graph's title
+    def get_graph_title(self, selected_option):
+        for dict_value, reader_value in GRAPH_OPTIONS:
+            if dict_value == selected_option:
+                title = reader_value
+
+        return title

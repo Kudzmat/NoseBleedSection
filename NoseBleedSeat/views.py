@@ -1,93 +1,102 @@
 from django.shortcuts import render, redirect
 from nba_stats.forms import PlayerSearchForm, TeamSearchForm
 from nba_api.stats.static import players
+from nba_stats.models import *
 from .functions import *
 from nba_stats.functions import *
 from nba_teams.functions import get_team
 from .forms import PlayerOneForm, PlayerTwoForm
-from nba_today.models import TeamLogo
+from nba_teams.models import *
 
 
 def home(request):
+    # Delete session data
+    request.session.pop('player_page_info', None)
+    request.session.pop('player_info', None)
+
+
+
     player_compare_info = []
-    player1 = request.session.get('player1', None)
-    player2 = request.session.get('player2', None)
+    player1 = request.session.get('player1', "Kobe Bryant")
+    player2 = request.session.get('player2', 'Reggie Miller')
 
-    # Default player values
-    if player1 is None:
-        player1 = "Dwyane Wade"
-    if player2 is None:
-        player2 = 'James Harden'
+    try:
+        # Fetch player data
+        player1_headshot, player1_bio, player1_id = fetch_player_data(player1)
+        player2_headshot, player2_bio, player2_id = fetch_player_data(player2)
 
-    league_teams = TeamLogo.objects.all()
-    team_id = None
+        if not player1_headshot or not player2_headshot:
+            raise ValueError("Player not found")
 
-    # Get headshots and bios for player comparison
-    player1_info = players.find_players_by_full_name(player1)
-    player1_id = player1_info[0]['id']
-    player1_image = get_player_image(player1_id, player1)
-    player1_bio = get_player_bio(player1)
+    except ValueError as e:
+        # Instead of redirecting, render your custom error page
+        context = {
+            'message': 'Player not found. Please check the spelling and try again.'
+        }
+        request.session.pop('player2', None)
+        request.session.pop('player1', None)
+        return render(request, 'error.html', context)
 
-    player2_info = players.find_players_by_full_name(player2)
-    player2_id = player2_info[0]['id']
-    player2_image = get_player_image(player2_id, player2)
-    player2_bio = get_player_bio(player2)
+    # Prepare player images and awards
+    player1_image = [player1_headshot.player_image_url, player1_headshot.background_colour]
+    player2_image = [player2_headshot.player_image_url, player2_headshot.background_colour]
+    player1_awards = get_player_awards(player1, player1_headshot.player_id)
+    player2_awards = get_player_awards(player2, player2_headshot.player_id)
 
-    # Store comparison data in session
+    eastern_teams = EasternConferenceTeams.objects.all()
+    western_teams = WesternConferenceTeams.objects.all()
+
+    # Add player 1 and player 2 data to session for comparison
     player_compare_info.extend([player1_id, player2_id, player1, player2])
     request.session['player_compare_info'] = player_compare_info
 
-    # Get league leaders
-    league_leaders = get_league_leaders()
-
-    # Get player awards
-    player1_awards = get_accolades(player1)
-    player2_awards = get_accolades(player2)
-
-    # Initialize forms
     player_form = PlayerSearchForm()
     player1_form = PlayerOneForm()
     player2_form = PlayerTwoForm()
 
     if request.method == 'POST':
-        player_form = PlayerSearchForm(request.POST)
-        player1_form = PlayerOneForm(request.POST)
-        player2_form = PlayerTwoForm(request.POST)
+        try:
+            # Handle the main search form
+            player_form = PlayerSearchForm(request.POST)
+            if player_form.is_valid():
+                search_term = player_form.cleaned_data['player_name'].title()
 
-        if player_form.is_valid():
-            # Get search term
-            search_term = player_form.cleaned_data['player_name']
-            search_term = search_term.title()  # NBA API is case sensitive
+                # Search for the team by name
+                team_id = search_team_by_name(search_term, eastern_teams, western_teams)
+                if team_id:
+                    return redirect('nba_teams:team_page', team_id=team_id)
 
-            # Check if search term matches a team
-            for team in league_teams:
-                if search_term in [team.team_name, team.team_full_name, team.team_city]:
-                    team_id = int(team.team_id)
-                    break
+                # Search for the player data
+                player_headshot, player_bio, player_id = fetch_player_data(search_term)
+                if not player_headshot:
+                    raise ValueError("Player not found")
 
-            if team_id:
-                # Redirect to team page if a team was found
-                return redirect('nba_teams:team_page', team_id=team_id)
-            else:
-                # Check if search term matches a player
-                player_info = players.find_players_by_full_name(search_term)
-                if player_info:
-                    player_id = player_info[0]['id']
-                    player_full_name = player_info[0]['full_name']
-                    return redirect('nba_stats:player_details', player_id=player_id, player_full_name=player_full_name)
+                player_full_name = player_headshot.player_name
+                player_headshot = [player_headshot.player_image_url, player_headshot.background_colour]
+                request.session['player_info'] = [player_headshot, player_bio]
 
-        if player1_form.is_valid():
-            player1 = player1_form.cleaned_data['player1_name'].title()
-            request.session['player1'] = player1
-            return redirect('home')
+                return redirect('nba_stats:player_details', player_id=player_id, player_full_name=player_full_name)
 
-        if player2_form.is_valid():
-            player2 = player2_form.cleaned_data['player2_name'].title()
-            request.session['player2'] = player2
-            return redirect('home')
+            # Handle player1 and player2 search forms
+            player1_form = PlayerOneForm(request.POST)
+            player2_form = PlayerTwoForm(request.POST)
+            if player1_form.is_valid():
+                request.session['player1'] = player1_form.cleaned_data['player1_name'].title()
+                return redirect('home')
+            if player2_form.is_valid():
+                request.session['player2'] = player2_form.cleaned_data['player2_name'].title()
+                return redirect('home')
+
+        except ValueError as e:
+            context = {
+                'message': "Player not found. Please check the spelling and try again."
+            }
+            return render(request, 'error.html', context)
 
     context = {
         'player_form': player_form,
+        'player1_id': player1_id,
+        'player2_id': player2_id,
         'player1_form': player1_form,
         'player2_form': player2_form,
         'player1_awards': player1_awards,
@@ -95,12 +104,11 @@ def home(request):
         'player1_image': player1_image,
         'player2_image': player2_image,
         'player1': player1,
-        'player1_id': player1_id,
-        'player2_id': player2_id,
         'player2': player2,
         'player1_bio': player1_bio,
         'player2_bio': player2_bio,
-        'league_leaders': league_leaders
+        'league_leaders': get_league_leaders(),
     }
+
     return render(request, "index.html", context=context)
 

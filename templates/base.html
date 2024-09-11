@@ -15,7 +15,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container">
         <a class="navbar-brand" href="{% url 'home' %}">
-            <img src="{% static 'images/sg-logo.png' %}" alt="Logo" height="250">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" height="250">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,7 +38,6 @@
                         NBA STATS
                     </a>
                     <div class="dropdown-menu" aria-labelledby="statsDropdown">
-                        <a class="dropdown-item" href="{% url 'nba_stats:player_search' %}">SEARCH PLAYER</a>
                         <a class="dropdown-item" href="{% url 'nba_stats:compare_players' %}">COMPARE PLAYERS</a>
                     </div>
                 </li>
@@ -62,7 +61,7 @@
 
 <footer class="footer mt-auto py-3 bg-light bg-white">
     <div class="container text-center">
-        <img src="{% static 'images/sg-logo.png' %}" alt="Footer Logo" height="100">
+        <img src="{% static 'images/logo.png' %}" alt="Footer Logo" height="100">
         <p>Developed By Kudzayi Bamhare 2023. &copy; 2023 Nosebleed Section. All rights reserved.</p>
     </div>
 </footer>

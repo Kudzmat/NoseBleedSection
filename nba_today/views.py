@@ -3,7 +3,6 @@ from django.shortcuts import render
 from nba_stats.forms import PlayerSearchForm
 from .functions import get_scores, get_team_image
 from nba_stats.functions import get_player_image
-from .models import TeamLogo
 
 
 def nba_results(request):
