@@ -73,6 +73,8 @@ def home(request):
 
                 player_full_name = player_headshot.player_name
                 player_headshot = [player_headshot.player_image_url, player_headshot.background_colour]
+                del player_bio['_state']  # to avoid TypeError
+
                 request.session['player_info'] = [player_headshot, player_bio]
 
                 return redirect('nba_stats:player_details', player_id=player_id, player_full_name=player_full_name)
@@ -112,3 +114,11 @@ def home(request):
 
     return render(request, "index.html", context=context)
 
+
+def about(request):
+    player_form = PlayerSearchForm()
+    context = {
+        'player_form': player_form,
+
+    }
+    return render(request, "about.html", context=context)

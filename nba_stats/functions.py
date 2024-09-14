@@ -141,69 +141,77 @@ def get_graph(player1_id, player1_name, player2_id, player2_name, stat_category,
     player1_stats = player_regular_season(player1_id)
     player2_stats = player_regular_season(player2_id)
 
-    # getting per game averages
     for season_data in player1_stats:
 
         # points per game
-        if season_data['GP'] > 0:
+        if season_data['GP'] > 0 and season_data['PTS'] is not None:
             season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
         else:
             season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
 
         # assists per game
-        if season_data['GP'] > 0:
+        if season_data['GP'] > 0 and season_data['AST'] is not None:
             season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
         else:
             season_data['APG'] = 0
 
         # blocks per game
-        if season_data['GP'] > 0:
+        if season_data['GP'] > 0 and season_data['BLK'] is not None:
             season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
         else:
             season_data['BLKPG'] = 0
 
         # rebounds per game
-        if season_data['GP'] > 0:
+        if season_data['GP'] > 0 and season_data['REB'] is not None:
             season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
         else:
             season_data['RPG'] = 0
 
         # steals per game
-        if season_data['GP'] > 0:
+        if season_data['GP'] > 0 and season_data['STL'] is not None:
             season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
         else:
             season_data['STLPG'] = 0
+
+        # Certain players (specifically from before 1980) don't have a 3pt %
+        if season_data['FG3_PCT'] is None:
+            season_data['FG3_PCT'] = 0
 
     for season_data in player2_stats:
+
         # points per game
-        if season_data['GP'] > 0:
+        if season_data['GP'] > 0 and season_data['PTS'] is not None:
             season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
         else:
             season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
 
         # assists per game
-        if season_data['GP'] > 0:
+        if season_data['GP'] > 0 and season_data['AST'] is not None:
             season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
         else:
             season_data['APG'] = 0
 
         # blocks per game
-        if season_data['GP'] > 0:
+        if season_data['GP'] > 0 and season_data['BLK'] is not None:
             season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
         else:
             season_data['BLKPG'] = 0
 
         # rebounds per game
-        if season_data['GP'] > 0:
+        if season_data['GP'] > 0 and season_data['REB'] is not None:
             season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
         else:
             season_data['RPG'] = 0
 
         # steals per game
-        if season_data['GP'] > 0:
+        if season_data['GP'] > 0 and season_data['STL'] is not None:
             season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
         else:
             season_data['STLPG'] = 0
+
+        # Certain players (specifically from before 1980) don't have a 3pt %
+        if season_data['FG3_PCT'] is None:
+            season_data['FG3_PCT'] = 0
 
     #  We need to find which player has had the the shorter season between the two
     # The shorter season will be used to plot the x axis
@@ -231,7 +239,7 @@ def get_graph(player1_id, player1_name, player2_id, player2_name, stat_category,
 
     # Chart labels
     plt.title(f'{player1_name} and {player2_name} {title} Comparison')
-    plt.xlabel(f'Season (* {longer_player} Has Played {tenure} Seasons *)')
+    plt.xlabel('Seasons')
     plt.ylabel(title)
     plt.legend()
     plt.grid(True)
@@ -269,44 +277,47 @@ def get_player_graph(player_id, player_name, career_stats, stat_category, career
     # Get players yearly stats
     if career_category == 'Reg. Season':
         player_stats = career_stats['SeasonTotalsRegularSeason']
-        title = f"{player_name} Regular Season {title} Rankings"
+        title = f"{player_name} Career Regular Season {title} Stats"
 
-        # getting per game averages
         for season_data in player_stats:
 
             # points per game
-            if season_data['GP'] > 0:
+            if season_data['GP'] > 0 and season_data['PTS'] is not None:
                 season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
             else:
                 season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
 
             # assists per game
-            if season_data['GP'] > 0:
+            if season_data['GP'] > 0 and season_data['AST'] is not None:
                 season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
             else:
                 season_data['APG'] = 0
 
             # blocks per game
-            if season_data['GP'] > 0:
+            if season_data['GP'] > 0 and season_data['BLK'] is not None:
                 season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
             else:
                 season_data['BLKPG'] = 0
 
             # rebounds per game
-            if season_data['GP'] > 0:
+            if season_data['GP'] > 0 and season_data['REB'] is not None:
                 season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
             else:
                 season_data['RPG'] = 0
 
             # steals per game
-            if season_data['GP'] > 0:
+            if season_data['GP'] > 0 and season_data['STL'] is not None:
                 season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
             else:
                 season_data['STLPG'] = 0
 
+            # Certain players (specifically from before 1980) don't have a 3pt %
+            if season_data['FG3_PCT'] is None:
+                season_data['FG3_PCT'] = 0
+
     elif career_category == 'Post Season':
         player_stats = career_stats['SeasonTotalsPostSeason']
-        title = f"{player_name} Post Season {title} Rankings"
+        title = f"{player_name} Career Post Season {title} Stats"
 
         # getting per game averages
         for season_data in player_stats:
@@ -345,15 +356,16 @@ def get_player_graph(player_id, player_name, career_stats, stat_category, career
     elif career_category == 'Reg. Season Rankings':
         player_stats = career_stats['SeasonRankingsRegularSeason']
         stat_category = rankings_map[stat_category]
-        title = f"{player_name} Regular Season {title} Rankings"
+        title = f"{player_name} Career Regular Season {title} Rankings"
 
 
     elif career_category == 'Post Season Rankings':
         player_stats = career_stats['SeasonRankingsPostSeason']
         stat_category = rankings_map[stat_category]
-        title = f"{player_name} Post Season {title} Rankings"
+        title = f"{player_name} Career Post Season {title} Rankings"
 
-    seasons = len(player_stats)  # x axis
+    # x axis
+    seasons = len(player_stats)
 
     # Extract stat category data
     player_numbers = [player_stats[i][stat_category] for i in range(seasons)]
@@ -365,7 +377,7 @@ def get_player_graph(player_id, player_name, career_stats, stat_category, career
 
     # Chart labels
     plt.title(f'{title}')
-    plt.xlabel('Season')
+    plt.xlabel(f'{career_category} Years')
     plt.ylabel(title)
     plt.legend()
     plt.grid(True)

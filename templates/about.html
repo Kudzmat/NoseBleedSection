@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+About ShotGeek
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row align-items-center">
+        <!-- Text Section -->
+        <div class="col-md-6">
+            <h1>About ShotGeek</h1>
+            <hr>
+            <br>
+            <p>
+                Welcome to ShotGeek, a companion app designed for basketball lovers who enjoy analyzing shot data over a shot of espresso! We strive to merge our passion for the game with data-driven insights, allowing fans to easily explore NBA statistics, player comparisons, and team performances.
+            </p>
+            <p>
+                Whether you're a casual fan or a statistics enthusiast, ShotGeek is tailored to offer a convenient and comprehensive breakdown of your favorite players and teams. Delve into detailed player stats, career insights, trends, and team data from across the NBA all in one place.
+            </p>
+            <h3>For Basketball Lovers, By Basketball Lovers:</h3>
+            <p>ShotGeek was established and is maintained by dedicated developers and NBA enthusiasts. If you'd like to support us, partner with us, or send us a message, please email us at <b><i>info@shotgeek.com</i></b></p>
+        </div>
+
+        <!-- Image Section -->
+        <div class="col-md-6">
+            <img src="{% static 'images/about.png' %}" alt="About ShotGeek" class="img-fluid">
+        </div>
+    </div>
+</div>
+{% endblock %}

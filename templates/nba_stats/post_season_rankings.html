@@ -10,7 +10,7 @@ Post Season Rankings
  <div class="container mt-4">
         <!-- Player Image and Name Section -->
         <div class="row">
-            <div class="col-md-4" style="background-color:#f5f5e8;">
+            <div class="col-md-4" style="background-color:#fffdd0;">
                 <h4 style="color: #563517;">{{ player_full_name }} #{{ player_bio.number }}</h4>
                  <hr>
                 <a href="{% url 'nba_stats:player_details' player_full_name=player_full_name player_id=player_id %}">
@@ -18,25 +18,24 @@ Post Season Rankings
                 </a>
             </div>
             <div class="col-md-4 align-items-center">
-                <h1>{{ player_full_name }}</h1>
-                <h6 style="color: #563517;"><b>School:</b> {{ player_bio.education }} | <b>Country:</b> {{ player_bio.country }}</h6>
-                <h6 style="color: #563517;"><b>Height:</b> {{ player_bio.height }} | <b>Weight:</b> {{ player_bio.weight }}</h6>
-                <h6 style="color: #563517;"><b>Year:</b> {{ player_bio.year }} | <b>Number:</b> {{ player_bio.number }}</h6>
-                <h6 style="color: #563517;"><b>Position:</b> {{ player_bio.position }} | <b>Team:</b> {{ player_bio.team }}</h6>
-                <h6 style="color: #563517;"><b>Status:</b> {{ player_bio.status }}</h6>
-                <h6 style="color: #563517;"><b>PPG:</b> {{ player_bio.PTS }} | <b>RPG:</b> {{ player_bio.REB }} | <b>APG:</b> {{ player_bio.AST }}</h6>
+                <h1 style="color: #b4513e;">{{ player_full_name }}</h1>
+                <h6><b>School:</b> {{ player_bio.education }} | <b>Country:</b> {{ player_bio.country }}</h6>
+                <h6><b>Height:</b> {{ player_bio.height }} | <b>Weight:</b> {{ player_bio.weight }}</h6>
+                <h6><b>Year:</b> {{ player_bio.year }} | <b>Number:</b> {{ player_bio.number }}</h6>
+                <h6><b>Position:</b> {{ player_bio.position }} | <b>Status:</b> {{ player_bio.status }}</h6>
+                <h6><b>PPG:</b> {{ player_bio.PTS }} | <b>RPG:</b> {{ player_bio.REB }} | <b>APG:</b> {{ player_bio.AST }}</h6>
             </div>
-            <div class="col-md-4" style="background-color:#f5f5e8;">
-                <h4 style="color: #563517;">Career Awards</h4>
+            <div class="col-md-4" style="background-color:#fffdd0;">
+                <h4>Career Awards</h4>
                 <hr>
                 {% if player_awards %}
                     <ul>
                         {% for award, count in player_awards.items %}
-                        <li style="color: #563517;">{{ award }} x {{ count }}</li>
+                        <li>{{ award }} x {{ count }}</li>
                         {% endfor %}
                             </ul>
                 {% else %}
-                        <li style="color: #563517;">No Career Awards For {{ player }} :(</li>
+                        <li>No Career Awards For {{ player }} :(</li>
                 {% endif %}
             </div>
 

@@ -7,94 +7,92 @@ Home
 {% block content %}
     <div class="jumbotron jumbotron-fluid">
         <div class="container text-center">
-            <h1 class="lead">- Hoops and Brews: A Perfect Blend -</h1>
+            <h1 class="lead">- You miss 100% of the shots... you never analyze. -</h1>
         </div>
     </div>
     <br><br>
     <div class="container mt-5">
         <hr>
-        <h2><b>Espresso Comparison</b></h2>
+        <h2><b>Match Up Comparison</b></h2>
         <a href="{% url 'nba_stats:compare_profiles' %}">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Compare Players</button>
         </a>
         <div class="row">
             <div class="col-md-4">
-                <div class="well well-white mini-profile-widget rounded-frame" style="background-color:#f5f5e8;">
+                <div class="well well-white mini-profile-widget rounded-frame" style="background-color:#fffdd0;">
                     <div class="image-container text-center">
                              <form method="post" class="form-inline my-2 my-lg-0">
                                 {% csrf_token %}
-                                {{ player2_form.as_p }}<button class="btn btn-outline-success my-2 my-sm-0 text-center" type="submit">Search Player</button>
+                                {{ player2_form.as_p }}<button class="btn btn-outline-success my-2 my-sm-0 text-center" id="loadButton"  type="submit">Search Player</button>
                                 </form>
                         <a href="{% url 'nba_stats:player_details' player_full_name=player2 player_id=player2_id %}">
                             <img src="{{ player2_image.0 }}" class="avatar img-fluid" alt="avatar">
                         </a>
                     </div>
                     <div class="details">
-                        <h4 style="color: #563517;">{{ player2 }}</h4>
-                        <div style="color: #563517;" class="stat-item"><b>School:</b> {{ player2_bio.school }} | <b>Country:</b> {{ player2_bio.country }}</div>
-                        <div style="color: #563517;" class="stat-item"><b>Height:</b> {{ player2_bio.height }} | <b>Weight:</b> {{ player2_bio.weight }}</div>
-                        <div style="color: #563517;" class="stat-item"><b>Year:</b> {{ player2_bio.year }} | <b>Number:</b> {{ player2_bio.number }}</div>
-                        <div style="color: #563517;" class="stat-item"><b>Position:</b> {{ player2_bio.position }} | <b>Team:</b> {{ player2_bio.team }}</div>
-                        <div style="color: #563517;" class="stat-item"><b>Status:</b> {{ player2_bio.status }}</div>
-                        <div style="color: #563517;" class="stat-item"><b>PPG:</b> {{ player2_bio.PTS }} | <b>RPG:</b> {{ player2_bio.REB }}</div>
-                        <div style="color: #563517;" class="stat-item"><b>APG:</b> {{ player2_bio.AST }}</div>
+                        <h4 style="color: #b4513e;">{{ player2 }}</h4>
+                        <div class="stat-item"><b>School:</b> {{ player2_bio.school }} | <b>Country:</b> {{ player2_bio.country }}</div>
+                        <div class="stat-item"><b>Height:</b> {{ player2_bio.height }} | <b>Weight:</b> {{ player2_bio.weight }}</div>
+                        <div class="stat-item"><b>Year:</b> {{ player2_bio.year }} | <b>Number:</b> {{ player2_bio.number }}</div>
+                        <div class="stat-item"><b>Position:</b> {{ player2_bio.position }} | <b>Status:</b> {{ player2_bio.status }}</div>
+                        <div class="stat-item"><b>PPG:</b> {{ player2_bio.PTS }} | <b>RPG:</b> {{ player2_bio.REB }}</div>
+                        <div class="stat-item"><b>APG:</b> {{ player2_bio.AST }}</div>
                     </div>
                     <hr>
                 </div>
-                <div class="well well-light-orange mini-profile-widget rounded-frame" style="background-color:#f5f5e8;">
+                <div class="well well-light-orange mini-profile-widget rounded-frame" style="background-color:#fffdd0 ;">
                     <div class="details">
-                        <h4 style="color: #563517;">Career Awards</h4>
+                        <h4>Career Awards</h4>
                         <hr>
                         {% if player2_awards %}
                             <ul>
                                 {% for award, count in player2_awards.items %}
-                                    <li style="color: #563517;">{{ award }} x {{ count }}</li>
+                                    <li>{{ award }} x {{ count }}</li>
                                 {% endfor %}
                             </ul>
                         {% else %}
-                            <li style="color: #563517;">No Career Awards For {{ player2 }} :(</li>
+                            <li>No Career Awards For {{ player2 }} :(</li>
                         {% endif %}
                     </div>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="well well-white mini-profile-widget rounded-frame" style="background-color:#f5f5e8;">
+                <div class="well well-white mini-profile-widget rounded-frame" style="background-color:#fffdd0 ;">
                     <div class="image-container text-center">
                         <form method="post" class="form-inline my-2 my-lg-0">
                             {% csrf_token %}
-                            {{ player1_form.as_p }}<button class="btn btn-outline-success my-2 my-sm-0 text-center" type="submit">Search Player</button>
+                            {{ player1_form.as_p }}<button class="btn btn-outline-success my-2 my-sm-0 text-center" id="loadButton"  type="submit">Search Player</button>
                         </form>
                         <a href="{% url 'nba_stats:player_details' player_full_name=player1 player_id=player1_id %}">
                             <img src="{{ player1_image.0 }}" class="avatar img-fluid" alt="avatar">
                         </a>
                     </div>
                     <div class="details">
-                        <h4 style="color: #563517;">{{ player1 }}</h4>
+                        <h4 style="color: #b4513e;">{{ player1 }}</h4>
                         <div class="stats-container">
-                            <div style="color: #563517;" class="stat-item"><b>School:</b> {{ player1_bio.school }} | <b>Country:</b> {{ player1_bio.country }}</div>
-                            <div style="color: #563517;" class="stat-item"><b>Height:</b> {{ player1_bio.height }} | <b>Weight:</b> {{ player1_bio.weight }}</div>
-                            <div style="color: #563517;" class="stat-item"><b>Year:</b> {{ player1_bio.year }} | <b>Number:</b> {{ player1_bio.number }}</div>
-                            <div style="color: #563517;" class="stat-item"><b>Position:</b> {{ player1_bio.position }} | <b>Team:</b> {{ player1_bio.team }}</div>
-                            <div style="color: #563517;" class="stat-item"><b>Status:</b> {{ player1_bio.status }}</div>
-                            <div style="color: #563517;" class="stat-item"><b>PPG:</b> {{ player1_bio.PTS }} | <b>RPG:</b> {{ player1_bio.REB }}</div>
-                            <div style="color: #563517;" class="stat-item"><b>APG:</b> {{ player1_bio.AST }}</div>
+                            <div class="stat-item"><b>School:</b> {{ player1_bio.school }} | <b>Country:</b> {{ player1_bio.country }}</div>
+                            <div class="stat-item"><b>Height:</b> {{ player1_bio.height }} | <b>Weight:</b> {{ player1_bio.weight }}</div>
+                            <div class="stat-item"><b>Year:</b> {{ player1_bio.year }} | <b>Number:</b> {{ player1_bio.number }}</div>
+                            <div class="stat-item"><b>Position:</b> {{ player1_bio.position }} | <b>Status:</b> {{ player2_bio.status }}</div>
+                            <div class="stat-item"><b>PPG:</b> {{ player1_bio.PTS }} | <b>RPG:</b> {{ player1_bio.REB }}</div>
+                            <div class="stat-item"><b>APG:</b> {{ player1_bio.AST }}</div>
                         </div>
                         <hr>
                     </div>
                 </div>
-                <div class="well well-light-orange mini-profile-widget rounded-frame" style="background-color: #f5f5e8;">
+                <div class="well well-light-orange mini-profile-widget rounded-frame" style="background-color: #fffdd0 ;">
                     <div class="details">
-                        <h4 style="color: #563517;">Career Awards</h4>
+                        <h4>Career Awards</h4>
                         <hr>
                         {% if player1_awards %}
                             <ul>
                                 {% for award, count in player1_awards.items %}
-                                    <li style="color: #563517;">{{ award }} x {{ count }}</li>
+                                    <li>{{ award }} x {{ count }}</li>
                                 {% endfor %}
                             </ul>
                         {% else %}
-                            <li style="color: #563517;">No Career Awards For {{ player1 }} :(</li>
+                            <li>No Career Awards For {{ player1 }} :(</li>
                         {% endif %}
                     </div>
                 </div>
@@ -118,11 +116,11 @@ Home
                                         <img src="{{ data.2 }}" style="background-color: {{ data.3 }}" class="rounded-circle img-fluid" alt="Player Image" width="100" height="150">
                                     </a>
                                     <div class="align-items-center">
-                                        <span class="ml-3" style="color: #563517;"><b> {{ data.0 }}</b></span>
+                                        <span class="ml-3" style="color: #b4513e;"><b> {{ data.0 }}</b></span>
                                     </div>
                                 </div>
                             </td>
-                            <td style="color: #563517;">{{ category }}</td>
+                            <td>{{ category }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

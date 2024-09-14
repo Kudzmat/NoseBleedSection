@@ -3,14 +3,14 @@
 {% load custom_tags %}
 {% load static %}
 {% block title %}
-Career Stat Totals
+{{ team_info.5  }} Page
 {% endblock %}
 
 {% block content %}
  <div class="container mt-4">
         <!-- Team Image and Name Section -->
         <div class="row">
-            <div class="col-md-4" style="background-color:#f5f5e8;">
+            <div class="col-md-4" style="background-color:#fffdd0;">
                 <a href="#">
                     <img src="{{ team_info.2 }}" alt="Team Image" class="img-fluid">
                 </a>
@@ -18,11 +18,11 @@ Career Stat Totals
             </div>
             <div class="col-md-4 d-flex">
                 <div class=" align-items-center">
-                    <h2 style="color: #563517;">{{ team_info.6 }} {{ team_info.5 }}</h2>
+                    <h2>{{ team_info.5 }}</h2>
                     <br>
-                    <h3 style="color: #563517;"><b>ABBREV:</b> {{ team_info.1 }}</h3>
-                    <h3 style="color: #563517;"><b>COACH:</b> {{ head_coach }}</h3>
-                    <h3 style="color: #563517;"><b>ARENA:</b> {{ arena }}</h3>
+                    <h3><b>ABBREV:</b> {{ team_info.1 }}</h3>
+                    <h3><b>COACH:</b> {{ head_coach }}</h3>
+                    <h3><b>ARENA:</b> {{ arena }}</h3>
                 </div>
             </div>
             <div class="col-md-4" style="background-color:  {{ team_info.4 }}">
@@ -83,12 +83,12 @@ Career Stat Totals
                     <thead>
                     {% for info, data in team_ranks.items %}
                         <tr>
-                            <th scope="col" style="color: #563517;"> {{ info }}</th>
+                            <th scope="col"> {{ info }}</th>
                         </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td style="color: #563517;">{{ data }}</td>
+                        <td>{{ data }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -101,10 +101,10 @@ Career Stat Totals
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col" style="color: #563517;">Player</th>
-                            <th scope="col" style="color: #563517;">Position</th>
-                            <th scope="col" style="color: #563517;">Number</th>
-                            <th scope="col" style="color: #563517;">{{ team_info.5 }} Years</th>
+                            <th scope="col">Player</th>
+                            <th scope="col">Position</th>
+                            <th scope="col">Number</th>
+                            <th scope="col">{{ team_info.5 }} Years</th>
                         </tr>
                     </thead>
                     <tbody>

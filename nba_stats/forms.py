@@ -31,7 +31,6 @@ COMP_OPTIONS = (
     ('FG_PCT', 'Field Goal %'),
     ('FG3_PCT', '3 Point %'),
     ('FT_PCT', 'Free Thrown%'),
-    ('EFF', 'Individual Player Efficiency')
 )
 
 GRAPH_OPTIONS = (
@@ -44,7 +43,6 @@ GRAPH_OPTIONS = (
     ('FG_PCT', 'Field Goal %'),
     ('FG3_PCT', '3 Point %'),
     ('FT_PCT', 'Free Throw %'),
-    ('EFF', 'Individual Player Efficiency')
 )
 
 
@@ -56,7 +54,7 @@ class PlayerSearchForm(forms.Form):
         required=True,
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Enter player name',
+                'placeholder': 'Search player or team',
                 'class': 'form-control',
                 'aria-label': 'Player Name'
             }

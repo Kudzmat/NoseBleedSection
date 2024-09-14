@@ -11,11 +11,18 @@ player_id = player_name[0]['id']
 player_name = player_name[0]['full_name']
 print(player_name)
 
-wemby = 1641705
-player_stats = playercareerstats.PlayerCareerStats(player_id=wemby)
+bron = 2544
+player_stats = playercareerstats.PlayerCareerStats(player_id=bron)
 career_dict = player_stats.get_normalized_dict()
+reg = career_dict['SeasonTotalsRegularSeason']
 
-print(career_dict)
+print(reg)
+
+
+seasons = len(reg)
+
+years = [reg[i]['SEASON_ID'] for i in range(seasons)]
+print(years)
 
 
 STAT_OPTIONS2 = (

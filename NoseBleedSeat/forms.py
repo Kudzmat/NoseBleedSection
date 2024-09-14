@@ -9,7 +9,7 @@ class PlayerOneForm(forms.Form):
         required=True,
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Enter player name',
+                'placeholder': 'Search player 1',
                 'class': 'form-control',
                 'aria-label': 'Player Name'
             }
@@ -27,7 +27,7 @@ class PlayerTwoForm(forms.Form):
         required=True,
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Enter player name',
+                'placeholder': 'Search player 2',
                 'class': 'form-control',
                 'aria-label': 'Player Name'
             }
