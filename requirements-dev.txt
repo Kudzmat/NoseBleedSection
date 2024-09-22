@@ -1,0 +1,11 @@
+matplotlib==3.7.3
+contourpy==1.1.1
+cycler==0.12.1
+kiwisolver==1.4.5
+beautifulsoup4==4.12.2
+soupsieve==2.4.1
+python-dotenv==1.0.1
+importlib-resources==6.1.0
+typing_extensions==4.7.1
+zipp==3.17.0
+
