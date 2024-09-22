@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Whoops - Invalid Input!
+{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+        <h1>Oops! Something went wrong.</h1>
+        <p>It seems like there was a typo in your search. Make sure everything is spelled correctly and search again.</p>
+            <div>
+                <img src="{% static 'images/error-page.png' %}" alt="Error Image">
+            </div>
+        <a href="{% url 'home' %}" class="btn btn-primary">Go Back to Home</a>
+    </div>
+{% endblock %}

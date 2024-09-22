@@ -7,15 +7,55 @@
     </title>
     {% load static %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
+        <style>
+        body {
+            font-family: "Courier New", Courier, monospace;
+        }
+
+                /* Style for all buttons */
+        button, .btn {
+            background-color: #f1543a;
+            color: white;
+        }
+
+        /* Optional: Hover effect for buttons */
+        button:hover, .btn:hover {
+            background-color: #d1432f;
+            color: white;
+        }
+
+               /* Full-page loader overlay */
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            display: none; /* Hidden by default */
+        }
+
+        /* Spinner centered inside the overlay */
+        .loader-overlay .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+
+    </style>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container">
         <a class="navbar-brand" href="{% url 'home' %}">
-            <img src="{% static 'images/banner/nbs-logo.png' %}" alt="Logo" height="80">
+            <img src="{% static 'images/31.png' %}" alt="Logo" height="250">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,48 +63,63 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">HOME</a>
+                    <a style="color: #b4513e;" class="nav-link" href="{% url 'home' %}"><b>HOME</b></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'nba_news:ringer_news' %}">NBA NEWS</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'nba_today:nba_results' %}">NBA TODAY</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="statsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        NBA STATS
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="statsDropdown">
-                        <a class="dropdown-item" href="{% url 'nba_stats:player_search' %}">SEARCH PLAYER</a>
-                        <a class="dropdown-item" href="{% url 'nba_stats:compare_players' %}">COMPARE PLAYERS</a>
-                    </div>
+                    <a style="color: #b4513e;" class="nav-link" href="{% url 'about' %}"><b>ABOUT</b></a>
                 </li>
             </ul>
+
+            <!-- Search Bar Form -->
+            <form method="post" class="form-inline my-2 my-lg-0" action="{% url 'home' %}">
+                {% csrf_token %}
+                {{ player_form.as_p }}
+                <button class="btn btn-outline-success my-2 my-sm-0 text-center" id="loadButton" type="submit">Search</button>
+            </form>
         </div>
     </div>
 </nav>
+
+<!-- Loader overlay -->
+<div class="loader-overlay" id="loader">
+    <div class="spinner-border text-danger" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
 <div class="container mt-4">
-    <br>
     <hr>
     {% block content %}
     {% endblock %}
 </div>
-<br><br><br><br><br>
+
 <footer class="footer mt-auto py-3 bg-light bg-white">
     <div class="container text-center">
-
-        <img src="{% static 'images/banner/nbs-logo.png' %}" alt="Footer Logo" height="30">
-        <p>Developed By Kudzayi Bamhare 2023. &copy; 2023 Nosebleed Section. All rights reserved.</p>
+        <img src="{% static 'images/31.png' %}" alt="Footer Logo" height="100">
+        <p>&copy; 2024 ShotGeek. All rights reserved.</p>
     </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Show the loader when button is clicked
+    document.getElementById('loadButton').addEventListener('click', function() {
+        document.getElementById('loader').style.display = 'flex';
+
+        // Simulate a delay (e.g., for data loading), remove this in production
+        setTimeout(function() {
+            document.getElementById('loader').style.display = 'none';
+        }, 45000); // 3-second delay
+    });
+</script>
 
 </body>
 </html>
+
 
 
 

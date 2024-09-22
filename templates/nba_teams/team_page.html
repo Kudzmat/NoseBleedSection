@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load custom_tags %}
+{% load static %}
+{% block title %}
+{{ team_info.5  }} Page
+{% endblock %}
+
+{% block content %}
+ <div class="container mt-4">
+        <!-- Team Image and Name Section -->
+        <div class="row">
+            <div class="col-md-4" style="background-color:#fffdd0;">
+                <a href="#">
+                    <img src="{{ team_info.2 }}" alt="Team Image" class="img-fluid">
+                </a>
+
+            </div>
+            <div class="col-md-4 d-flex">
+                <div class=" align-items-center">
+                    <h2>{{ team_info.5 }}</h2>
+                    <br>
+                    <h3><b>ABBREV:</b> {{ team_info.1 }}</h3>
+                    <h3><b>COACH:</b> {{ head_coach }}</h3>
+                    <h3><b>ARENA:</b> {{ arena }}</h3>
+                </div>
+            </div>
+            <div class="col-md-4" style="background-color:  {{ team_info.4 }}">
+                <h4 style="color: white;">NBA CHAMPIONSHIPS</h4>
+                <hr>
+                {% if championships %}
+                    <ul>
+                        {% for year, team in championships.items %}
+                        <li style="color: white;">{{ year }} vs {{ team.0 }}</li>
+                        {% endfor %}
+                            </ul>
+                {% else %}
+                        <li style="color: white;">The {{ team_info.5 }} haven't won any NBA CHAMPIONSHIPS :(</li>
+                {% endif %}
+            </div>
+            </div>
+     <hr>
+
+
+     <div class="row">
+        <div class="col-md-8">
+            <h2> {{ team_info.5 }} Roster</h2>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Player</th>
+                            <th scope="col">Number</th>
+                            <th scope="col">Position</th>
+                            <th scope="col">Height</th>
+                            <th scope="col">Weight</th>
+                            <th scope="col">Age</th>
+                            <th scope="col">Exp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for player in roster %}
+                    <tr>
+                        <a id="{{ player.1 }}" href="{% url 'nba_stats:player_details' player_full_name=player.1 player_id=player.0 %}">
+                            <img src="{{ player.8 }}" style="background-color: {{ team_info.4 }}" class="rounded-circle img-fluid" alt="Player Image" width="100" height="150">
+                            <a href="# {{ player.1 }}"><td>{{ player.1 }}</td></a>  <!-- Player name -->
+                        </a>
+                        </a><td>{{ player.2 }}</td>  <!-- Player number -->
+                        <td>{{ player.3 }}</td>  <!-- Position -->
+                        <td>{{ player.4 }}</td>  <!-- Height -->
+                        <td>{{ player.5 }}</td>  <!-- Weight -->
+                        <td>{{ player.6 }}</td>  <!-- Age -->
+                        <td>{{ player.7 }}</td>  <!-- Experience -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            <hr>
+        </div>
+
+                 <div class="col-md-8">
+            <h2>{{ team_info.5 }} Season Rankings</h2>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    {% for info, data in team_ranks.items %}
+                        <tr>
+                            <th scope="col"> {{ info }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ data }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+                     <hr>
+        </div>
+
+                 <div class="col-md-8">
+            <h2>Retired {{ team_info.5 }} Players</h2>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Player</th>
+                            <th scope="col">Position</th>
+                            <th scope="col">Number</th>
+                            <th scope="col">{{ team_info.5 }} Years</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for player in retired %}
+                    <tr>
+                        {% if player.0 %}
+                            <td><a href="{% url 'nba_stats:player_details' player_full_name=player.1 player_id=player.0 %}">{{ player.1 }}</a></td>  <!-- Player name -->
+                        {% else %}
+                            <td><a href="#">{{ player.1 }}</a></td>
+                        {% endif %}
+                        <td>{{ player.2 }}</td>  <!-- Player number -->
+                        <td>{{ player.3 }}</td>  <!-- Position -->
+                        <td>{{ player.4 }}</td>  <!-- Height -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+        </div>
+
+     </div>
+        </div>
+
+
+{% endblock %}

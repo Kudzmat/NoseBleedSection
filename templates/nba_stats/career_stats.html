@@ -3,26 +3,42 @@
 {% load custom_tags %}
 {% load static %}
 {% block title %}
-Career Stat Totals
+{{ player_full_name }} Stat Totals
 {% endblock %}
 
 {% block content %}
  <div class="container mt-4">
         <!-- Player Image and Name Section -->
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4" style="background-color:#fffdd0;">
+                <h4>{{ player_full_name }} #{{ player_bio.number }}</h4>
+                 <hr>
                 <a href="{% url 'nba_stats:player_details' player_full_name=player_full_name player_id=player_id %}">
-                    <img src="{{ player_headshot }}" alt="Player Image" class="img-fluid">
+                    <img src="{{ player_headshot.0 }}" alt="Player Image" class="img-fluid">
                 </a>
-
             </div>
-            <div class="col-md-8">
-                <h1>{{ player_full_name }}</h1>
-                <h6>Points Per Game: {{ player_stats.0.PPG }}</h6>
-                <h6>Rebounds Per Game: {{ player_stats.0.RPG }}</h6>
-                <h6>Assists Per Game: {{ player_stats.0.APG }}</h6>
-                <h6>Blocks Per Game: {{ player_stats.0.BLKPG }}</h6>
-                <h6>Steals Per Game: {{ player_stats.0.STLPG }}</h6>
+            <div class="col-md-4 align-items-center">
+                <h1 style="color: #b4513e;">{{ player_full_name }}</h1>
+                <h6><b>School:</b> {{ player_bio.education }} | <b>Country:</b> {{ player_bio.country }}</h6>
+                <h6><b>Height:</b> {{ player_bio.height }} | <b>Weight:</b> {{ player_bio.weight }}</h6>
+                <h6><b>Year:</b> {{ player_bio.year }} | <b>Number:</b> {{ player_bio.number }}</h6>
+                <h6><b>Position:</b> {{ player_bio.position }} | <b>Status:</b> {{ player_bio.status }}</h6>
+                <h6><b>PPG:</b> {{ player_bio.PTS }} | <b>RPG:</b> {{ player_bio.REB }} | <b>APG:</b> {{ player_bio.AST }}</h6>
+            </div>
+            <div class="col-md-4" style="background-color:#fffdd0;">
+                <h4>Career Awards</h4>
+                <hr>
+                {% if player_awards %}
+                    <ul>
+                        {% for award, count in player_awards.items %}
+                        <li>{{ award }} x {{ count }}</li>
+                        {% endfor %}
+                            </ul>
+                {% else %}
+                        <li>No Career Awards For {{ player_full_name }} :(</li>
+                {% endif %}
+            </div>
+
             </div>
         </div>
 
@@ -87,11 +103,23 @@ Career Stat Totals
         </div>
     </div>
      <br><br>
+<hr>
      <div class="container">
+         <h3>Career Totals: Table</h3>
          <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button class="btn btn-primary btn-lg" type="submit">More Stats!</button>
+        <button class="btn btn-primary btn-lg" id="loadButton"  type="submit">View Table</button>
     </form>
      </div>
+<hr>
+     <div class="container">
+         <h3>Career Trends: Graphs</h3>
+         <form method="post">
+        {% csrf_token %}
+        {{ graph_form.as_p }}
+        <button class="btn btn-primary btn-lg" id="loadButton"  type="submit">View Graph</button>
+    </form>
+     </div>
+<hr>
 {% endblock %}

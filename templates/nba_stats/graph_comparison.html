@@ -3,7 +3,7 @@
 {% load custom_tags %}
 {% load static %}
 {% block title %}
-Comparison Visual
+{{ player1_full_name }} & {{ player2_full_name }} Visual
 {% endblock %}
 
 {% block content %}
@@ -12,23 +12,25 @@ Comparison Visual
     <div style="display: flex; justify-content: space-between;">
         <div>
             <br>
-            <img src="{{ player1_headshot }}" alt="{{ player1_full_name }} Headshot" height="100">
+            <a href="{% url 'nba_stats:player_details' player_full_name=player1_full_name player_id=player1_id %}">
+                <img src="{{ player1_headshot.0 }}" alt="{{ player1_full_name }} Headshot" style="background-color:#fffdd0;"  class="rounded-circle img-fluid" width="250" height="125">
+            </a>
             <br>
-            <h2>{{ player1_full_name }}</h2>
+            <h2 class="align-items-center" style="color: #b4513e;"> {{ player1_full_name }}</h2>
         </div>
 
         <div>
             <br>
-            <img src="{{ player2_headshot }}" alt="{{ player2_full_name }} Headshot" height="100">
+            <a href="{% url 'nba_stats:player_details' player_full_name=player2_full_name player_id=player2_id %}">
+                <img src="{{ player2_headshot.0 }}" alt="{{ player2_full_name }} Headshot" style="background-color:#fffdd0;"  class="rounded-circle img-fluid" width="250" height="125">
+            </a>
             <br>
-            <h2>{{ player2_full_name }}</h2>
+            <h2 class="align-items-center" style="color: #b4513e;"> {{ player2_full_name }}</h2>
         </div>
     </div>
 <br><br>
 <div class="text-center">
     <img src="data:image/png;base64,{{ graph }}" alt="graph" style="max-width: 100%; height: auto;">
 </div>
-
-
 {% endblock %}
 

@@ -20,7 +20,9 @@ from NoseBleedSeat import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.home, name='home'),
-    path("stats", include('nba_stats.urls')),
-    path("nba-news", include('nba_news.urls')),
-    path("nba-today", include('nba_today.urls')),
+    path("about/", views.about, name='about'),
+    path("stats/", include('nba_stats.urls')),
+    path("nba-news/", include('nba_news.urls')),
+    path("nba-today/", include('nba_today.urls')),
+    path("nba-teams/", include('nba_teams.urls')),
 ]

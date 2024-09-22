@@ -3,15 +3,15 @@
 {% load custom_tags %}
 {% load static %}
 {% block title %}
-Career Stat Totals
+{{ player1_full_name }} & {{ player2_full_name }}
 {% endblock %}
 
 {% block content %}
   <div class="container mt-4">
         <div class="row">
-            <h2>{{ player1_full_name }}</h2>
+            <h2 style="color: #b4513e;">{{ player1_full_name }}</h2>
              <a href="{% url 'nba_stats:player_details' player_full_name=player1_full_name player_id=player1_id %}">
-            <img src="{{ player1_headshot }}" alt="{{ player1_full_name }} Headshot" height="100">
+            <img src="{{ player1_headshot.0 }}" alt="{{ player1_full_name }} Headshot" style="background-color:#fffdd0;" class="rounded-circle img-fluid" width="250" height="125">
              </a>
         </div>
             <h3>Career Stats</h3>
@@ -84,9 +84,9 @@ Career Stat Totals
       <hr>
 
         <div class="row">
-            <h2>{{ player2_full_name }}</h2>
+            <h2 style="color: #b4513e;">{{ player2_full_name }}</h2>
             <a href="{% url 'nba_stats:player_details' player_full_name=player2_full_name player_id=player2_id %}">
-            <img src="{{ player2_headshot }}" alt="{{ player2_full_name }} Headshot" height="100">
+            <img src="{{ player2_headshot.0 }}" alt="{{ player2_full_name }} Headshot" style="background-color:#fffdd0;"  class="rounded-circle img-fluid" width="250" height="125">
             </a>
         </div>
             <h3>Career Stats</h3>
@@ -160,7 +160,7 @@ Career Stat Totals
          <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button class="btn btn-primary btn-lg" type="submit">Compare Players</button>
+        <button class="btn btn-primary btn-lg" type="submit">View Graph</button>
     </form>
      </div>
 

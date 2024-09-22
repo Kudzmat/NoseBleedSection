@@ -1,7 +1,8 @@
 from django.shortcuts import render
+
+from nba_stats.forms import PlayerSearchForm
 from .functions import get_scores, get_team_image
 from nba_stats.functions import get_player_image
-from .models import TeamLogo
 
 
 def nba_results(request):
@@ -29,7 +30,11 @@ def nba_results(request):
         game['awayTeam']['teamLogo'] = away_logo
         game['awayTeam']['gameNum'] = num
 
+    # search form
+    player_form = PlayerSearchForm()
+
     context = {
+        'player_form': player_form,
         'results': results
     }
 
@@ -72,7 +77,11 @@ def game_leaders(request, num):
     away_team_scores = my_game['awayTeam']['periods']
     away_final_score = my_game['awayTeam']['score']
 
+    # search form
+    player_form = PlayerSearchForm()
+
     context = {
+        'player_form': player_form,
         'leaders': leaders,
         'home_player_image': home_player_image,
         'home_player_name': home_player_name,
