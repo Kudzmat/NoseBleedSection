@@ -45,7 +45,6 @@ def retired_players(team_id, team_name):
     retired_team = RetiredPlayers.objects.filter(team_id=team_id).first()
     if retired_team:
         retired_guys = retired_team.players
-        print(retired_guys)
         return retired_guys
 
     retired_info = ['PLAYERID', 'PLAYER', 'POSITION', 'JERSEY', 'SEASONSWITHTEAM']
@@ -110,16 +109,29 @@ def get_team_roster(team_id):
         player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
 
         if not player_headshot:
+            # check for player id
             player_headshot = get_player_image(player_id)
-            # create and save new instance
-            player_headshot_instance = PlayerHeadShot.objects.create(
-                player_id=player_id,
-                player_name=player_name,
-                player_image_url=player_headshot[0],
-                team_id=player_headshot[1],
-                background_colour=None  # This will be dynamically set after saving based on team_id
-            )
-            player_headshot_instance.save()
+
+            # if function returns none
+            if not player_headshot:
+                player_head_shot = "https://media.licdn.com/dms/image/v2/C4E0BAQEke_OTftxqtQ/company-logo_200_200/company-logo_200_200/0/1660575300584/national_basketball_association_logo?e=1733356800&v=beta&t=LJiOxzNM9mfdgbHT2akuXDP2oYH3YUMDpypmkObMSyc"
+                team_colour = "#000000"
+                player_details.append(player_head_shot)
+                player_details.append(team_colour)
+                final_roster.append(player_details)
+                count += 1
+                continue  # return to the top of the for loop
+
+            else:
+                # create and save new instance
+                player_headshot_instance = PlayerHeadShot.objects.create(
+                    player_id=player_id,
+                    player_name=player_name,
+                    player_image_url=player_headshot[0],
+                    team_id=player_headshot[1],
+                    background_colour=None  # This will be dynamically set after saving based on team_id
+                )
+                player_headshot_instance.save()
 
         # get headshot and append
         player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()

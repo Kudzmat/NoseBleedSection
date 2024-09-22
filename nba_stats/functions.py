@@ -277,7 +277,8 @@ def get_player_graph(player_id, player_name, career_stats, stat_category, career
     # Get players yearly stats
     if career_category == 'Reg. Season':
         player_stats = career_stats['SeasonTotalsRegularSeason']
-        title = f"{player_name} Career Regular Season {title} Stats"
+        graph_title = f"{player_name} Career Regular Season {title} Stats"
+        title = f"{title} Per Game"
 
         for season_data in player_stats:
 
@@ -317,7 +318,8 @@ def get_player_graph(player_id, player_name, career_stats, stat_category, career
 
     elif career_category == 'Post Season':
         player_stats = career_stats['SeasonTotalsPostSeason']
-        title = f"{player_name} Career Post Season {title} Stats"
+        graph_title = f"{player_name} Career Post Season {title} Stats"
+        title = f"{title} Per Game"
 
         # getting per game averages
         for season_data in player_stats:
@@ -356,13 +358,15 @@ def get_player_graph(player_id, player_name, career_stats, stat_category, career
     elif career_category == 'Reg. Season Rankings':
         player_stats = career_stats['SeasonRankingsRegularSeason']
         stat_category = rankings_map[stat_category]
-        title = f"{player_name} Career Regular Season {title} Rankings"
+        graph_title = f"{player_name} Career Regular Season {title} Rankings"
+        title = f"{title} Ranking"
 
 
     elif career_category == 'Post Season Rankings':
         player_stats = career_stats['SeasonRankingsPostSeason']
         stat_category = rankings_map[stat_category]
-        title = f"{player_name} Career Post Season {title} Rankings"
+        graph_title = f"{player_name} Career Post Season {title} Rankings"
+        title = f"{title} Ranking"
 
     # x axis
     seasons = len(player_stats)
@@ -376,7 +380,7 @@ def get_player_graph(player_id, player_name, career_stats, stat_category, career
     plt.plot(range(1, seasons + 1), player_numbers, label=player_name, marker='o')
 
     # Chart labels
-    plt.title(f'{title}')
+    plt.title(f'{graph_title}')
     plt.xlabel(f'{career_category} Years')
     plt.ylabel(title)
     plt.legend()

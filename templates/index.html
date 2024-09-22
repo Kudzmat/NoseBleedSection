@@ -7,15 +7,15 @@ Home
 {% block content %}
     <div class="jumbotron jumbotron-fluid">
         <div class="container text-center">
-            <h1 class="lead">- You miss 100% of the shots... you never analyze. -</h1>
+            <h1 class="lead">- {{ word_of_the_day }} -</h1>
         </div>
     </div>
     <br><br>
     <div class="container mt-5">
         <hr>
         <h2><b>Match Up Comparison</b></h2>
-        <a href="{% url 'nba_stats:compare_profiles' %}">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Compare Players</button>
+        <a href="{% url 'nba_stats:compare_profiles' player1_full_name=player1 player1_id=player1_id player2_full_name=player2 player2_id=player2_id %}">
+            <button class="btn btn-outline-success my-2 my-sm-0" id="loadButton"  type="submit">Compare Players</button>
         </a>
         <div class="row">
             <div class="col-md-4">
@@ -99,7 +99,7 @@ Home
             </div>
 
             <div class="col-md-4">
-                <h2>NBA Stat Leaders</h2>
+                <h2>NBA Stat Leader's Totals</h2>
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
@@ -116,11 +116,11 @@ Home
                                         <img src="{{ data.2 }}" style="background-color: {{ data.3 }}" class="rounded-circle img-fluid" alt="Player Image" width="100" height="150">
                                     </a>
                                     <div class="align-items-center">
-                                        <span class="ml-3" style="color: #b4513e;"><b> {{ data.0 }}</b></span>
+                                        <span class="ml-3" style="color: #b4513e;"><b> {{ data.0 }} </b></span>
                                     </div>
                                 </div>
                             </td>
-                            <td>{{ category }}</td>
+                            <td>{{ category }} - {{ data.1 }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

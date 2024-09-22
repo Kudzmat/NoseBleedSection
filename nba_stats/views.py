@@ -350,7 +350,7 @@ def post_season_rankings(request, player_full_name, player_id):
 
     return render(request, 'nba_stats/post_season_rankings.html', context=context)
 
-
+# not used
 def compare_players(request):
     if request.method == 'POST':
         form = PlayerCompareForm(request.POST)
@@ -398,103 +398,103 @@ def compare_players(request):
 
 
 # view for comparison home page
-def compare_profiles(request):
+def compare_profiles(request, player1_full_name, player1_id, player2_full_name, player2_id):
     # get players info from session
-    players_info = request.session.get("player_info", None)
-    player_compare_info = request.session.get('player_compare_info', None)
+    #players_info = request.session.get("player_info", None)
+    player_compare_info = request.session.get('player_compare_info', None)  # info on 2 players from home page
+    #
+    # if players_info is not None:
+    #
+    #     # get player IDs
+    #     player1_id = players_info[0]
+    #     player2_id = players_info[1]
+    #
+    #     # Get player names
+    #     player1_full_name = players_info[2]
+    #     player2_full_name = players_info[3]
+    #
+    #     # get players headshots
+    #     player1_headshot = get_player_image(player1_id, player1_full_name)
+    #     player2_headshot = get_player_image(player2_id, player2_full_name)
+    #
+    #     # Get players yearly stats
+    #     player1_stats = player_career_numbers(player1_id)
+    #     player2_stats = player_career_numbers(player2_id)
+    #
+    #     for season_data in player1_stats:
+    #
+    #         # points per game
+    #         if season_data['GP'] > 0 and season_data['PTS'] is not None:
+    #             season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
+    #         else:
+    #             season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
+    #
+    #         # assists per game
+    #         if season_data['GP'] > 0 and season_data['AST'] is not None:
+    #             season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
+    #         else:
+    #             season_data['APG'] = 0
+    #
+    #         # blocks per game
+    #         if season_data['GP'] > 0 and season_data['BLK'] is not None:
+    #             season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
+    #         else:
+    #             season_data['BLKPG'] = 0
+    #
+    #         # rebounds per game
+    #         if season_data['GP'] > 0 and season_data['REB'] is not None:
+    #             season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
+    #         else:
+    #             season_data['RPG'] = 0
+    #
+    #         # steals per game
+    #         if season_data['GP'] > 0 and season_data['STL'] is not None:
+    #             season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
+    #         else:
+    #             season_data['STLPG'] = 0
+    #
+    #         # Certain players (specifically from before 1980) don't have a 3pt %
+    #         if season_data['FG3_PCT'] is None:
+    #             season_data['FG3_PCT'] = 0
+    #
+    #     for season_data in player2_stats:
+    #
+    #         # points per game
+    #         if season_data['GP'] > 0 and season_data['PTS'] is not None:
+    #             season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
+    #         else:
+    #             season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
+    #
+    #         # assists per game
+    #         if season_data['GP'] > 0 and season_data['AST'] is not None:
+    #             season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
+    #         else:
+    #             season_data['APG'] = 0
+    #
+    #         # blocks per game
+    #         if season_data['GP'] > 0 and season_data['BLK'] is not None:
+    #             season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
+    #         else:
+    #             season_data['BLKPG'] = 0
+    #
+    #         # rebounds per game
+    #         if season_data['GP'] > 0 and season_data['REB'] is not None:
+    #             season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
+    #         else:
+    #             season_data['RPG'] = 0
+    #
+    #         # steals per game
+    #         if season_data['GP'] > 0 and season_data['STL'] is not None:
+    #             season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
+    #         else:
+    #             season_data['STLPG'] = 0
+    #
+    #         # Certain players (specifically from before 1980) don't have a 3pt %
+    #         if season_data['FG3_PCT'] is None:
+    #             season_data['FG3_PCT'] = 0
 
-    if players_info is not None:
 
-        # get player IDs
-        player1_id = players_info[0]
-        player2_id = players_info[1]
-
-        # Get player names
-        player1_full_name = players_info[2]
-        player2_full_name = players_info[3]
-
-        # get players headshots
-        player1_headshot = get_player_image(player1_id, player1_full_name)
-        player2_headshot = get_player_image(player2_id, player2_full_name)
-
-        # Get players yearly stats
-        player1_stats = player_career_numbers(player1_id)
-        player2_stats = player_career_numbers(player2_id)
-
-        for season_data in player1_stats:
-
-            # points per game
-            if season_data['GP'] > 0 and season_data['PTS'] is not None:
-                season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
-            else:
-                season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
-
-            # assists per game
-            if season_data['GP'] > 0 and season_data['AST'] is not None:
-                season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
-            else:
-                season_data['APG'] = 0
-
-            # blocks per game
-            if season_data['GP'] > 0 and season_data['BLK'] is not None:
-                season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
-            else:
-                season_data['BLKPG'] = 0
-
-            # rebounds per game
-            if season_data['GP'] > 0 and season_data['REB'] is not None:
-                season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
-            else:
-                season_data['RPG'] = 0
-
-            # steals per game
-            if season_data['GP'] > 0 and season_data['STL'] is not None:
-                season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
-            else:
-                season_data['STLPG'] = 0
-
-            # Certain players (specifically from before 1980) don't have a 3pt %
-            if season_data['FG3_PCT'] is None:
-                season_data['FG3_PCT'] = 0
-
-        for season_data in player2_stats:
-
-            # points per game
-            if season_data['GP'] > 0 and season_data['PTS'] is not None:
-                season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
-            else:
-                season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
-
-            # assists per game
-            if season_data['GP'] > 0 and season_data['AST'] is not None:
-                season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
-            else:
-                season_data['APG'] = 0
-
-            # blocks per game
-            if season_data['GP'] > 0 and season_data['BLK'] is not None:
-                season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
-            else:
-                season_data['BLKPG'] = 0
-
-            # rebounds per game
-            if season_data['GP'] > 0 and season_data['REB'] is not None:
-                season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
-            else:
-                season_data['RPG'] = 0
-
-            # steals per game
-            if season_data['GP'] > 0 and season_data['STL'] is not None:
-                season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
-            else:
-                season_data['STLPG'] = 0
-
-            # Certain players (specifically from before 1980) don't have a 3pt %
-            if season_data['FG3_PCT'] is None:
-                season_data['FG3_PCT'] = 0
-
-    else:
-
+    if player_compare_info:
         # get player IDs
         player1_id = player_compare_info[0]
         player2_id = player_compare_info[1]
@@ -591,7 +591,6 @@ def compare_profiles(request):
 
     if request.method == 'POST':
         form = StatsCompForm(request.POST)
-        request.session.clear()  # clear sessions after submitting forms
 
         # get selected option
         if form.is_valid():
@@ -604,7 +603,7 @@ def compare_profiles(request):
             comparison_info = [player1_id, player2_id, player1_headshot, player2_headshot, player1_full_name,
                                player2_full_name, graph]
             request.session['comparison_info'] = comparison_info
-            return redirect('nba_stats:show_graph')
+            return redirect('nba_stats:show_graph', player1_full_name=player1_full_name, player1_id=player1_id, player2_full_name=player2_full_name, player2_id=player2_id)
 
         else:
             return redirect('nba_stats:compare_players')
@@ -628,7 +627,7 @@ def compare_profiles(request):
 
 
 # This view will show the comparison graph for the two players
-def show_graph(request):
+def show_graph(request, player1_full_name, player1_id, player2_full_name, player2_id):
     # Get players
     comparison_info = request.session.get('comparison_info')
 
