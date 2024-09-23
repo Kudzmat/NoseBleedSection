@@ -180,8 +180,8 @@ def home(request):
 
 
     player_compare_info = []
-    player1 = request.session.get('player1', "lebron james")
-    player2 = request.session.get('player2', 'michael jordan')
+    player1 = request.session.get('player1', "Lebron james")
+    player2 = request.session.get('player2', 'Michael jordan')
 
     try:
         # Fetch player data
