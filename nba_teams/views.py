@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from nba_stats.forms import PlayerSearchForm
 from .functions import *
 import time
+from django.utils import timezone
 
 
 def team_page(request, team_id):

@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
 from .forms import PlayerSearchForm, StatsDropdownForm, PlayerCompareForm, StatsCompForm, PlayerGraphForm
-from nba_api.stats.static import players
-from .functions import *
 from NoseBleedSeat.functions import *
 
 
@@ -104,10 +102,12 @@ def player_details(request, player_full_name, player_id):
             career_category = graph_form.cleaned_data['career_category']
             stat_option = graph_form.cleaned_data['stat_option']
             title = graph_form.get_graph_title(stat_option)
-            graph = get_player_graph(player_id=player_id, player_name=player_full_name, career_stats=career_stats, stat_category=stat_option, career_category=career_category,
+            graph = get_player_graph(player_id=player_id, player_name=player_full_name, career_stats=career_stats,
+                                     stat_category=stat_option, career_category=career_category,
                                      title=title)
             player_page_info.append(graph)
-            return redirect('nba_stats:player_graph', player_id=player_id, player_full_name=player_full_name, category=stat_option)
+            return redirect('nba_stats:player_graph', player_id=player_id, player_full_name=player_full_name,
+                            category=stat_option)
 
     context = {'player_form': player_form,
                'player_headshot': player_headshot,
@@ -350,6 +350,7 @@ def post_season_rankings(request, player_full_name, player_id):
 
     return render(request, 'nba_stats/post_season_rankings.html', context=context)
 
+
 # not used
 def compare_players(request):
     if request.method == 'POST':
@@ -400,7 +401,7 @@ def compare_players(request):
 # view for comparison home page
 def compare_profiles(request, player1_full_name, player1_id, player2_full_name, player2_id):
     # get players info from session
-    #players_info = request.session.get("player_info", None)
+    # players_info = request.session.get("player_info", None)
     player_compare_info = request.session.get('player_compare_info', None)  # info on 2 players from home page
     #
     # if players_info is not None:
@@ -492,7 +493,6 @@ def compare_profiles(request, player1_full_name, player1_id, player2_full_name, 
     #         # Certain players (specifically from before 1980) don't have a 3pt %
     #         if season_data['FG3_PCT'] is None:
     #             season_data['FG3_PCT'] = 0
-
 
     if player_compare_info:
         # get player IDs
@@ -603,7 +603,8 @@ def compare_profiles(request, player1_full_name, player1_id, player2_full_name, 
             comparison_info = [player1_id, player2_id, player1_headshot, player2_headshot, player1_full_name,
                                player2_full_name, graph]
             request.session['comparison_info'] = comparison_info
-            return redirect('nba_stats:show_graph', player1_full_name=player1_full_name, player1_id=player1_id, player2_full_name=player2_full_name, player2_id=player2_id)
+            return redirect('nba_stats:show_graph', player1_full_name=player1_full_name, player1_id=player1_id,
+                            player2_full_name=player2_full_name, player2_id=player2_id)
 
         else:
             return redirect('nba_stats:compare_players')
@@ -686,3 +687,64 @@ def player_graph(request, player_full_name, player_id, category):
                }
 
     return render(request, "nba_stats/player_graph.html", context=context)
+
+
+def update_player_awards(request, player_id, player_name):
+    # Check if league leaders already exist for today
+    today = timezone.now().date()
+    player_awards_data = CareerAwards.objects.filter(player_id=player_id).first()
+
+    if player_awards_data.date == today:
+        player_awards = player_awards_data.accomplishments
+    else:
+        # update the player awards and date
+        player_awards = get_accolades(player_id)
+        player_awards_data.accomplishments = player_awards
+        player_awards_data.date = today
+        player_awards_data.save()
+
+    context = {
+        "player_awards": player_awards,
+        "player_id": player_id,
+        "player_name": player_name
+    }
+
+    return render(request, 'partials/player_awards.html', context=context)
+
+
+def update_player_bio(request, player_id, player_name):
+    # Check if player bio has been updated today
+    today = timezone.now().date()
+    player_bio_data = PlayerBio.objects.filter(player_id=player_id).first()
+
+    if player_bio_data.date == today:
+        player_bio = player_bio_data.__dict__
+        del player_bio['_state']
+    else:
+        # get updated data and save
+        player_bio = get_player_bio(player_id)
+
+        player_bio_data.school = player_bio.get('education', '')
+        player_bio_data.country = player_bio.player_bio.get('country', '')
+        player_bio_data.height = player_bio.player_bio.get('height', '')
+        player_bio_data.weight = player_bio.get('weight', '')
+        player_bio_data.year = player_bio.get('year', '')
+        player_bio_data.number = player_bio.get('number', '')
+        player_bio_data.position = player_bio.get('position', '')
+        player_bio_data.team_id = player_bio.get('team_id', '')
+        player_bio_data.team_name = player_bio.get('team_name', '')
+        player_bio_data.status = player_bio.get('status', '')
+        player_bio_data.PTS = player_bio.get('PTS', 0)
+        player_bio_data.REB = player_bio.get('REB', 0)
+        player_bio_data.AST = player_bio.get('AST', 0)
+        player_bio_data.date = today
+
+        # save updated data
+        player_bio_data.save()
+
+    context = {
+        'player_name': player_name,
+        'player_bio': player_bio
+    }
+
+    return render(request, 'partials/player_bio.html', context=context)

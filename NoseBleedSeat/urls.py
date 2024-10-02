@@ -21,6 +21,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.home, name='home'),
     path("about/", views.about, name='about'),
+    path('update-league-leaders/', views.update_league_leaders, name='update_league_leaders'),
     path("stats/", include('nba_stats.urls')),
     path("nba-news/", include('nba_news.urls')),
     path("nba-today/", include('nba_today.urls')),

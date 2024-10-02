@@ -74,7 +74,7 @@ Home
                             <div class="stat-item"><b>School:</b> {{ player1_bio.school }} | <b>Country:</b> {{ player1_bio.country }}</div>
                             <div class="stat-item"><b>Height:</b> {{ player1_bio.height }} | <b>Weight:</b> {{ player1_bio.weight }}</div>
                             <div class="stat-item"><b>Year:</b> {{ player1_bio.year }} | <b>Number:</b> {{ player1_bio.number }}</div>
-                            <div class="stat-item"><b>Position:</b> {{ player1_bio.position }} | <b>Status:</b> {{ player2_bio.status }}</div>
+                            <div class="stat-item"><b>Position:</b> {{ player1_bio.position }} | <b>Status:</b> {{ player1_bio.status }}</div>
                             <div class="stat-item"><b>PPG:</b> {{ player1_bio.PTS }} | <b>RPG:</b> {{ player1_bio.REB }}</div>
                             <div class="stat-item"><b>APG:</b> {{ player1_bio.AST }}</div>
                         </div>
@@ -100,7 +100,14 @@ Home
 
             <div class="col-md-4">
                 <h2>NBA Stat Leader's Totals</h2>
-                <table class="table table-striped table-bordered">
+                <button class="btn btn-outline-success"
+                    hx-get="{% url 'update_league_leaders' %}"
+                    hx-target="#league-leaders-table"
+                    hx-swap="outerHTML"
+                    hx-trigger="click">
+                    Update Table
+                </button>
+                <table class="table table-striped table-bordered" id="league-leaders-table">
                     <thead>
                         <tr>
                             <th scope="col">Player</th>
@@ -115,10 +122,10 @@ Home
                                     <a href="{% url 'nba_stats:player_details' player_full_name=data.0 player_id=data.4 %}">
                                         <img src="{{ data.2 }}" style="background-color: {{ data.3 }}" class="rounded-circle img-fluid" alt="Player Image" width="100" height="150">
                                     </a>
+                                </div>
                                     <div class="align-items-center">
                                         <span class="ml-3" style="color: #b4513e;"><b> {{ data.0 }} </b></span>
                                     </div>
-                                </div>
                             </td>
                             <td>{{ category }} - {{ data.1 }}</td>
                         </tr>

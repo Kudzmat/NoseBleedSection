@@ -5,28 +5,35 @@ from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
+import requests
+import os
+
+# Proxy configuration
+SMARTPROXY_URL = os.getenv('SMARTPROXY_URL')
+SMARTPROXY_USERNAME = os.getenv('SMARTPROXY_USERNAME')
+SMARTPROXY_PASSWORD = os.getenv('SMARTPROXY_PASSWORD')
 
 
 # career stats
 def player_career_numbers(player_id):
-    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id)
-    career_dict = player_stats.get_normalized_dict()  # Getting dictionary response
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
+    # Pass the proxy URL directly to the PlayerCareerStats function
+    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id, proxy=proxy_url)
+
+    # Get the player's career stats as a dictionary
+    career_dict = player_stats.get_normalized_dict()
 
     return career_dict
 
 
-def player_career_numbers2(player_id):
-    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id)
-    dict_response = player_stats.get_normalized_dict()  # Getting dictionary response
-
-    player_career_regular_season_totals = dict_response['CareerTotalsRegularSeason']
-
-    return player_career_regular_season_totals
-
-
 # regular season totals
 def player_regular_season(player_id):
-    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id)
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
+    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id, proxy=proxy_url)
     dict_response = player_stats.get_normalized_dict()  # Getting dictionary response
 
     regular_season_totals = dict_response['SeasonTotalsRegularSeason']
@@ -36,7 +43,10 @@ def player_regular_season(player_id):
 
 # playoff totals
 def player_post_season(player_id):
-    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id)
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
+    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id, proxy=proxy_url)
     dict_response = player_stats.get_normalized_dict()  # Getting dictionary response
 
     post_season_totals = dict_response['SeasonTotalsPostSeason']
@@ -45,7 +55,10 @@ def player_post_season(player_id):
 
 
 def rankings_regular_season(player_id):
-    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id)
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
+    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id, proxy=proxy_url)
     dict_response = player_stats.get_normalized_dict()  # Getting dictionary response
 
     regular_season_rankings = dict_response['SeasonRankingsRegularSeason']
@@ -54,7 +67,10 @@ def rankings_regular_season(player_id):
 
 
 def rankings_post_season(player_id):
-    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id)
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
+    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id, proxy=proxy_url)
     dict_response = player_stats.get_normalized_dict()  # Getting dictionary response
 
     post_season_rankings = dict_response['SeasonRankingsPostSeason']
@@ -64,8 +80,11 @@ def rankings_post_season(player_id):
 
 # retrieving player headshot and team id
 def get_player_image(player_id):
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
     # get player's team id
-    player_info = commonplayerinfo.CommonPlayerInfo(player_id)
+    player_info = commonplayerinfo.CommonPlayerInfo(player_id, proxy=proxy_url)
     player_bio = player_info.get_dict()
     player_data = player_bio['resultSets'][0]['rowSet'][0]
     team_id = int(player_data[18])
@@ -261,7 +280,6 @@ def get_graph(player1_id, player1_name, player2_id, player2_name, stat_category,
 
 
 def get_player_graph(player_id, player_name, career_stats, stat_category, career_category, title):
-
     rankings_map = {
         'PPG': 'RANK_PTS',
         'RPG': 'RANK_REB',
