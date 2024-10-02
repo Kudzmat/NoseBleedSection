@@ -11,13 +11,20 @@
         <!-- Player Image and Name Section -->
         <div class="row">
             <div class="col-md-4" style="background-color:#fffdd0;">
+                <button class="btn btn-outline-success"
+                    hx-get="{% url 'nba_stats:update_player_bio' player_id=player_id player_name=player_full_name %}"
+                    hx-target="#player-bio"
+                    hx-swap="outerHTML"
+                    hx-trigger="click">
+                    Update Bio
+                </button>
                 <h4>{{ player_full_name }} #{{ player_bio.number }}</h4>
                  <hr>
                 <a href="{% url 'nba_stats:player_details' player_full_name=player_full_name player_id=player_id %}">
                     <img src="{{ player_headshot.0 }}" alt="Player Image" class="img-fluid">
                 </a>
             </div>
-            <div class="col-md-4 align-items-center">
+            <div class="col-md-4 align-items-center" id="player-bio">
                 <h1 style="color: #b4513e;">{{ player_full_name }}</h1>
                 <h6><b>School:</b> {{ player_bio.education }} | <b>Country:</b> {{ player_bio.country }}</h6>
                 <h6><b>Height:</b> {{ player_bio.height }} | <b>Weight:</b> {{ player_bio.weight }}</h6>
@@ -25,7 +32,15 @@
                 <h6><b>Position:</b> {{ player_bio.position }} | <b>Status:</b> {{ player_bio.status }}</h6>
                 <h6><b>PPG:</b> {{ player_bio.PTS }} | <b>RPG:</b> {{ player_bio.REB }} | <b>APG:</b> {{ player_bio.AST }}</h6>
             </div>
-            <div class="col-md-4" style="background-color:#fffdd0;">
+
+            <div class="col-md-4" style="background-color:#fffdd0;" id="player-awards">
+                <button class="btn btn-outline-success"
+                    hx-get="{% url 'nba_stats:update_player_awards' player_id=player_id player_name=player_full_name %}"
+                    hx-target="#player-awards"
+                    hx-swap="outerHTML"
+                    hx-trigger="click">
+                    Update Awards
+            </button>
                 <h4>Career Awards</h4>
                 <hr>
                 {% if player_awards %}

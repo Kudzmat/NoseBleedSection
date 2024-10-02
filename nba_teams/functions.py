@@ -3,6 +3,13 @@ from nba_today.functions import get_team_image
 from nba_stats.functions import get_player_image
 from nba_api.stats.endpoints import teamdetails, commonteamroster, teaminfocommon, leaguegamefinder
 from nba_teams.models import *
+import requests
+import os
+
+# Proxy configuration
+SMARTPROXY_URL = os.getenv('SMARTPROXY_URL')
+SMARTPROXY_USERNAME = os.getenv('SMARTPROXY_USERNAME')
+SMARTPROXY_PASSWORD = os.getenv('SMARTPROXY_PASSWORD')
 
 
 def get_team(team_id):
@@ -16,13 +23,16 @@ def get_team(team_id):
 
 
 def get_team_history(team_id):
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
     # this is the info we need
     team_specifics = ['HEADCOACH', 'ARENA']
     current_history = {}
     team_championships = {}
 
     # get dictionary of information
-    team_details = teamdetails.TeamDetails(team_id=team_id)
+    team_details = teamdetails.TeamDetails(team_id=team_id, proxy=proxy_url)
     team_details = team_details.get_dict()
 
     # team championships
@@ -42,6 +52,9 @@ def get_team_history(team_id):
 
 
 def retired_players(team_id, team_name):
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
     retired_team = RetiredPlayers.objects.filter(team_id=team_id).first()
     if retired_team:
         retired_guys = retired_team.players
@@ -50,7 +63,7 @@ def retired_players(team_id, team_name):
     retired_info = ['PLAYERID', 'PLAYER', 'POSITION', 'JERSEY', 'SEASONSWITHTEAM']
     retired_guys = []  # will contain lists of players and their information
 
-    team_details = teamdetails.TeamDetails(team_id=team_id)
+    team_details = teamdetails.TeamDetails(team_id=team_id, proxy=proxy_url)
     team_details = team_details.get_dict()
     retired_headings = team_details['resultSets'][6]['headers']
     retired = team_details['resultSets'][7]['rowSet']
@@ -76,9 +89,12 @@ def retired_players(team_id, team_name):
 
 
 def get_team_roster(team_id):
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
     final_roster = []  # will contain lists of players and their information
     player_info = ['PLAYER_ID', 'PLAYER', 'NUM', 'POSITION', 'HEIGHT', 'WEIGHT', 'AGE', 'EXP']  # also need player id
-    team_details = commonteamroster.CommonTeamRoster(team_id=team_id)
+    team_details = commonteamroster.CommonTeamRoster(team_id=team_id, proxy=proxy_url)
     team_roster = team_details.get_dict()
     roster_headings = team_roster['resultSets'][0]['headers']
     lakers_roster = team_roster['resultSets'][0]['rowSet']
@@ -148,6 +164,9 @@ def get_team_roster(team_id):
 
 
 def get_team_rankings(team_id):
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
     team_ranks = {}
 
     team_record = ['TEAM_CONFERENCE', 'TEAM_DIVISION', 'W', 'L']
@@ -170,7 +189,7 @@ def get_team_rankings(team_id):
         'OPP_PTS_PG': 'Opponents Points Per Game',
     }
 
-    rankings = teaminfocommon.TeamInfoCommon(team_id=team_id)
+    rankings = teaminfocommon.TeamInfoCommon(team_id=team_id, proxy=proxy_url)
     rankings = rankings.get_dict()
     record_headings = rankings['resultSets'][0]['headers']
     record = rankings['resultSets'][0]['rowSet'][0]
@@ -190,4 +209,3 @@ def get_team_rankings(team_id):
         team_ranks[item] = team_rankings_info[info]
 
     return team_ranks
-

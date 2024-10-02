@@ -1,8 +1,14 @@
 from nba_api.stats.static import teams, players
 from nba_api.stats.endpoints import leaguestandings, playerawards, commonplayerinfo, leagueleaders
-
+import os
+import requests
 from nba_stats.models import *
 from nba_stats.functions import *
+
+# Proxy configuration
+SMARTPROXY_URL = os.getenv('SMARTPROXY_URL')
+SMARTPROXY_USERNAME = os.getenv('SMARTPROXY_USERNAME')
+SMARTPROXY_PASSWORD = os.getenv('SMARTPROXY_PASSWORD')
 
 
 def fetch_player_data(player_name):
@@ -68,6 +74,7 @@ def fetch_player_data(player_name):
             player_bio_data.save()
 
     player_bio = player_bio_data.__dict__
+    player_bio['date'] = player_bio['date'].isoformat()  # to convert date object into string
 
     return player_headshot, player_bio, player_id
 
@@ -102,50 +109,10 @@ def get_player_awards(player_name, player_id):
     return player_awards
 
 
-def get_league_leaders2():
-    stats = ["PTS", "BLK", "REB", "AST", "STL", "FGM", "FG3M", "FTM", "EFF", "AST_TOV", "STL_TOV"]
-    stat_leaders = {}
-
-    # points per game
-    for category in stats:
-        leaders = leagueleaders.LeagueLeaders(stat_category_abbreviation=category)
-        leaders_info = leaders.get_dict()
-
-        # get stat location by index
-        leaders_list = leaders_info['resultSet']['headers']
-        stat_index = leaders_list.index(category)
-
-        # player name and headshot
-        player_name = leaders_info['resultSet']['rowSet'][0][2]
-        player_id = leaders_info['resultSet']['rowSet'][0][0]
-
-        # get player headshots
-        player_headshot = PlayerHeadShot.objects.filter(player_name=player_name).first()
-
-        if not player_headshot:
-            player_headshot = get_player_image(player_id)
-            # create and save new instance
-            player_headshot_instance = PlayerHeadShot.objects.create(
-                player_id=player_id,
-                player_name=player_name,
-                image_url=player_headshot[0],
-                team_id=player_headshot[1],
-                background_colour=None  # This will be dynamically set after saving based on team_id
-            )
-            player_headshot_instance.save()
-
-            player_image = player_headshot[0]
-            team_colour = player_headshot[1]
-
-        # stat
-        stat = leaders_info['resultSet']['rowSet'][0][stat_index]
-
-        stat_leaders[category] = [player_name, stat, player_image, team_colour, player_id]
-
-    return stat_leaders
-
-
 def get_league_leaders():
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
     stats = ["PTS", "BLK", "REB", "AST", "STL", "FGM", "FG3M", "FTM", "EFF", "AST_TOV", "STL_TOV"]
 
     # To map each key with a readable evalue
@@ -173,9 +140,9 @@ def get_league_leaders():
         stat_leaders = leaders_data
 
     else:
-        # points per game
+
         for category in stats:
-            leaders = leagueleaders.LeagueLeaders(stat_category_abbreviation=category)
+            leaders = leagueleaders.LeagueLeaders(stat_category_abbreviation=category, proxy=proxy_url)
             leaders_info = leaders.get_dict()
 
             # get stat location by index
@@ -225,80 +192,14 @@ def get_league_leaders():
     return stat_leaders
 
 
-def get_player_bio2(player_id):
-    bio = {}
-
-    # get player info
-    player_info = commonplayerinfo.CommonPlayerInfo(player_id)
-    player_bio = player_info.get_dict()
-
-    # player stats
-    player_stats = player_bio['resultSets'][1]['rowSet'][0]
-
-    # points
-    player_pts = player_stats[3]
-    bio['PTS'] = player_pts
-
-    # ast
-    player_ast = player_stats[4]
-    bio['AST'] = player_ast
-
-    # reb
-    player_reb = player_stats[5]
-    bio['REB'] = player_reb
-
-    # player info
-    player_data = player_bio['resultSets'][0]['rowSet'][0]
-
-    # college / high school
-    bio['education'] = player_data[8]
-
-    # country
-    bio['country'] = player_data[9]
-
-    # height
-    bio['height'] = player_data[11]
-
-    # weght
-    bio['weight'] = player_data[12]
-
-    # years
-    bio['year'] = player_data[13]
-
-    # jersey number
-    bio['number'] = player_data[14]
-
-    # position
-    bio['position'] = player_data[15]
-
-    # play status
-    bio['status'] = player_data[16]
-    status = bio['status']
-
-    # team
-    bio['team'] = player_data[19]
-
-    # team id
-    bio['team_id'] = int(player_data[18])
-    team_id = bio['team_id']
-
-    # get team logo and colour
-    team_logo = TeamLogo.objects.filter(team_id=team_id).first()
-    if team_logo:
-        bio['team_image'] = team_logo.logo_url
-        bio['team_colour'] = team_logo.team_colour
-    else:
-        bio['team_image'] = "None"
-        bio['team_colour'] = "#7E354D"
-
-    return bio
-
-
 def get_player_bio(player_id):
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
     bio = {}
 
     # get player info
-    player_info = commonplayerinfo.CommonPlayerInfo(player_id)
+    player_info = commonplayerinfo.CommonPlayerInfo(player_id, proxy=proxy_url)
     player_bio = player_info.get_dict()
 
     # player stats
@@ -354,42 +255,14 @@ def get_player_bio(player_id):
 
 
 def get_accolades(player_id):
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
     accolades = []
     accolades_history = {}
 
     # get list of accolades
-    player_accolades = playerawards.PlayerAwards(player_id)
-
-    # add award descriptions to accolades empty list
-    player_awards = player_accolades.get_data_frames()[0]
-    for info in player_awards['DESCRIPTION']:
-        accolades.append(info)
-
-    # sort list so that awards are organized alphabetically
-    accolades.sort()
-
-    # count how many times an award appears and map it to award
-    count = 1
-    for num, award in enumerate(accolades):
-        if num + 1 < len(accolades) and award == accolades[num + 1]:
-            count += 1
-        else:
-            accolades_history[award] = count
-            count = 1
-
-    return accolades_history
-
-
-def get_accolades2(player_name):
-    accolades = []
-    accolades_history = {}
-
-    # get player info to access player id
-    player_info = players.find_players_by_full_name(player_name)
-    player_id = player_info[0]['id']
-
-    # get list of accolades
-    player_accolades = playerawards.PlayerAwards(player_id)
+    player_accolades = playerawards.PlayerAwards(player_id, proxy=proxy_url)
 
     # add award descriptions to accolades empty list
     player_awards = player_accolades.get_data_frames()[0]

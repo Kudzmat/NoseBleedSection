@@ -8,6 +8,14 @@ from nba_teams.functions import get_team
 from .forms import PlayerOneForm, PlayerTwoForm
 from nba_teams.models import *
 import random
+import requests
+import os
+from django.utils import timezone
+
+# Proxy configuration
+SMARTPROXY_URL = os.getenv('SMARTPROXY_URL')
+SMARTPROXY_USERNAME = os.getenv('SMARTPROXY_USERNAME')
+SMARTPROXY_PASSWORD = os.getenv('SMARTPROXY_PASSWORD')
 
 WORDS = [
     "I don’t always talk stats, but when I do, I drop dimes.",
@@ -286,3 +294,89 @@ def about(request):
 
     }
     return render(request, "about.html", context=context)
+
+# function for updating league leadeers sectioin
+def update_league_leaders(request):
+    proxy = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+
+    proxy_dict = requests.get(SMARTPROXY_URL, proxies={
+        'http': proxy,
+        'https': proxy
+    })
+
+    stats = ["PTS", "BLK", "REB", "AST", "STL", "FGM", "FG3M", "FTM", "EFF", "AST_TOV", "STL_TOV"]
+    stats_map = {
+        'PTS': 'Points',
+        'BLK': 'Blocks',
+        'REB': 'Rebounds',
+        'AST': 'Assists',
+        'STL': 'Steals',
+        'FGM': 'Field Goal Makes',
+        'FG3M': '3 Point Field Goal Makes',
+        'FTM': 'Free Throw Makes',
+        'EFF': 'Individual Player Efficiency',
+        'AST_TOV': 'Assists To Turnover Ratio',
+        'STL_TOV': 'Steals To Turnover Ratio'
+    }
+
+    # Initialize dictionary to hold the stat leaders
+    stat_leaders = {}
+
+    # Get the league leaders data from the external API
+    for category in stats:
+        leaders = leagueleaders.LeagueLeaders(stat_category_abbreviation=category, proxy=proxy_dict)
+        leaders_info = leaders.get_dict()
+
+        # Extract the relevant data from the response
+        leaders_list = leaders_info['resultSet']['headers']
+        stat_index = leaders_list.index(category)  # checking the index for each stat category
+
+        # Player name and headshot
+        player_name = leaders_info['resultSet']['rowSet'][0][2]
+        player_id = leaders_info['resultSet']['rowSet'][0][0]
+
+        # Get or create player headshot
+        player_headshot = PlayerHeadShot.objects.filter(player_name=player_name).first()
+
+        if not player_headshot:
+            player_headshot = get_player_image(player_id)
+            player_headshot_instance = PlayerHeadShot.objects.create(
+                player_id=player_id,
+                player_name=player_name,
+                player_image_url=player_headshot[0] if player_headshot else "https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small_2x/default-avatar-photo-placeholder-profile-picture-vector.jpg",
+                team_id=player_headshot[1] if player_headshot else 0,
+                background_colour=None  # Will be dynamically set later
+            )
+            player_headshot_instance.save()
+
+            player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
+
+        player_image = player_headshot.player_image_url
+        team_colour = player_headshot.background_colour
+
+        # Stat value
+        stat_value = leaders_info['resultSet']['rowSet'][0][stat_index]
+
+        category_name = stats_map[category]
+        stat_leaders[category_name] = [player_name, stat_value, player_image, team_colour, player_id]
+
+    # Check if league leaders already exist for today
+    today = timezone.now().date()
+    league_leaders_data = LeagueLeaders.objects.filter(date=today).first()
+
+    if league_leaders_data:
+        # Update existing entry
+        league_leaders_data.leaders = stat_leaders
+        league_leaders_data.save()
+    else:
+        # Create new entry for today
+        LeagueLeaders.objects.create(
+            date=today,
+            leaders=stat_leaders
+        )
+
+    context = {
+        'stat_leaders': stat_leaders
+    }
+
+    return render(request, 'partials/league_leaders_table.html', context=context)

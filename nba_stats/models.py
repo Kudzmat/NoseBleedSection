@@ -60,6 +60,7 @@ class PlayerBio(models.Model):
     PTS = models.FloatField(blank=True, null=True, default=0)  # Points per game
     REB = models.FloatField(blank=True, null=True, default=0)  # Rebounds per game
     AST = models.FloatField(blank=True, null=True, default=0)  # Assists per game
+    date = models.DateField(default=timezone.now, blank=True)  # Automatically set to today's date
 
     def save(self, *args, **kwargs):
         # Set team name based on team_id
@@ -70,16 +71,17 @@ class PlayerBio(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.player_name} ({self.team_name})"
+        return f"{self.player_name} Bio. Last Update ({self.date})"
 
 
 class CareerAwards(models.Model):
     player_id = models.IntegerField(primary_key=True)
     player_name = models.CharField(max_length=100, default="N/A")
     accomplishments = models.JSONField(default=dict, blank=True)
+    date = models.DateField(default=timezone.now, blank=True)  # Automatically set to today's date
 
     def __str__(self):
-        return f"{self.player_name} Awards"
+        return f"{self.player_name} Awards. Last Update {self.date}"
 
 
 class LeagueLeaders(models.Model):
@@ -87,7 +89,7 @@ class LeagueLeaders(models.Model):
     leaders = models.JSONField(default=dict)  # Dictionary to store stat leaders
 
     def __str__(self):
-        return f"League Leaders on {self.date}"
+        return f"League Leaders. Last Update {self.date}"
 
 
 

@@ -1,0 +1,15 @@
+<div class="col-md-4" style="background-color:#fffdd0;" id="player-awards">
+                    <div class="details">
+                        <h4>Career Awards</h4>
+                        <hr>
+                        {% if player_awards %}
+                            <ul>
+                                {% for award, count in player_awards.items %}
+                                    <li>{{ award }} x {{ count }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <li>No Career Awards For {{ player_name  }} :(</li>
+                        {% endif %}
+                    </div>
+                </div>
