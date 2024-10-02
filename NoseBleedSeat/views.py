@@ -297,12 +297,7 @@ def about(request):
 
 # function for updating league leadeers sectioin
 def update_league_leaders(request):
-    proxy = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
-
-    proxy_dict = requests.get(SMARTPROXY_URL, proxies={
-        'http': proxy,
-        'https': proxy
-    })
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
 
     stats = ["PTS", "BLK", "REB", "AST", "STL", "FGM", "FG3M", "FTM", "EFF", "AST_TOV", "STL_TOV"]
     stats_map = {
@@ -319,61 +314,94 @@ def update_league_leaders(request):
         'STL_TOV': 'Steals To Turnover Ratio'
     }
 
+    # Placeholder data if the API returns no data
+    placeholder_data = {
+        "Blocks": ["Victor Wembanyama", 254, "https://cdn.nba.com/headshots/nba/latest/1040x760/1641705.png", "#c4ced4",
+                   1641705],
+        "Points": ["Luka Doncic", 2370, "https://cdn.nba.com/headshots/nba/latest/1040x760/1629029.png", "#00538c",
+                   1629029],
+        "Steals": ["De'Aaron Fox", 150, "https://cdn.nba.com/headshots/nba/latest/1040x760/1628368.png", "#5a2d81",
+                   1628368],
+        "Assists": ["Tyrese Haliburton", 752, "https://cdn.nba.com/headshots/nba/latest/1040x760/1630169.png",
+                    "#002d62", 1630169],
+        "Rebounds": ["Domantas Sabonis", 1120, "https://cdn.nba.com/headshots/nba/latest/1040x760/1627734.png",
+                     "#5a2d81", 1627734],
+        "Field Goal Makes": ["Giannis Antetokounmpo", 837,
+                             "https://cdn.nba.com/headshots/nba/latest/1040x760/203507.png", "#00471b", 203507],
+        "Free Throw Makes": ["Shai Gilgeous-Alexander", 567,
+                             "https://cdn.nba.com/headshots/nba/latest/1040x760/1628983.png", "#007ac1", 1628983],
+        "3 Point Field Goal Makes": ["Stephen Curry", 357,
+                                     "https://cdn.nba.com/headshots/nba/latest/1040x760/201939.png", "#ffc72c", 201939],
+        "Steals To Turnover Ratio": ["Matisse Thybulle", 2.83,
+                                     "https://cdn.nba.com/headshots/nba/latest/1040x760/1629680.png", "#e03a3e",
+                                     1629680],
+        "Assists To Turnover Ratio": ["Tyus Jones", 7.35,
+                                      "https://cdn.nba.com/headshots/nba/latest/1040x760/1626145.png", "#e56020",
+                                      1626145],
+        "Individual Player Efficiency": ["Nikola Jokic", 3039,
+                                         "https://cdn.nba.com/headshots/nba/latest/1040x760/203999.png", "#1d428a",
+                                         203999]
+    }
+
     # Initialize dictionary to hold the stat leaders
     stat_leaders = {}
 
-    # Get the league leaders data from the external API
-    for category in stats:
-        leaders = leagueleaders.LeagueLeaders(stat_category_abbreviation=category, proxy=proxy_dict)
-        leaders_info = leaders.get_dict()
-
-        # Extract the relevant data from the response
-        leaders_list = leaders_info['resultSet']['headers']
-        stat_index = leaders_list.index(category)  # checking the index for each stat category
-
-        # Player name and headshot
-        player_name = leaders_info['resultSet']['rowSet'][0][2]
-        player_id = leaders_info['resultSet']['rowSet'][0][0]
-
-        # Get or create player headshot
-        player_headshot = PlayerHeadShot.objects.filter(player_name=player_name).first()
-
-        if not player_headshot:
-            player_headshot = get_player_image(player_id)
-            player_headshot_instance = PlayerHeadShot.objects.create(
-                player_id=player_id,
-                player_name=player_name,
-                player_image_url=player_headshot[0] if player_headshot else "https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small_2x/default-avatar-photo-placeholder-profile-picture-vector.jpg",
-                team_id=player_headshot[1] if player_headshot else 0,
-                background_colour=None  # Will be dynamically set later
-            )
-            player_headshot_instance.save()
-
-            player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
-
-        player_image = player_headshot.player_image_url
-        team_colour = player_headshot.background_colour
-
-        # Stat value
-        stat_value = leaders_info['resultSet']['rowSet'][0][stat_index]
-
-        category_name = stats_map[category]
-        stat_leaders[category_name] = [player_name, stat_value, player_image, team_colour, player_id]
-
-    # Check if league leaders already exist for today
     today = timezone.now().date()
-    league_leaders_data = LeagueLeaders.objects.filter(date=today).first()
+    league_leaders_data = LeagueLeaders.objects.first()
 
-    if league_leaders_data:
-        # Update existing entry
-        league_leaders_data.leaders = stat_leaders
-        league_leaders_data.save()
+    if league_leaders_data.date == today:
+        stat_leaders = league_leaders_data.leaders
+
     else:
-        # Create new entry for today
-        LeagueLeaders.objects.create(
-            date=today,
-            leaders=stat_leaders
-        )
+
+
+        # Get the league leaders data from the external API
+        for category in stats:
+            leaders = leagueleaders.LeagueLeaders(stat_category_abbreviation=category, proxy=proxy_url)
+            leaders_info = leaders.get_dict()
+
+            # Extract the relevant data from the response
+            leaders_list = leaders_info['resultSet']['headers']
+            stat_index = leaders_list.index(category)  # checking the index for each stat category
+
+            # check if there is any player data (data might be reset before a new season)
+            if len(leaders_info['resultSet']['rowSet']) == 0:
+                stat_leaders = placeholder_data
+
+            else:
+                # get new data
+                # Player name and headshot
+                # contains all the player info, will be empty if there's no data
+                player_name = leaders_info['resultSet']['rowSet'][0][2]
+
+                player_id = leaders_info['resultSet']['rowSet'][0][0]
+
+                # Get or create player headshot
+                player_headshot = PlayerHeadShot.objects.filter(player_name=player_name).first()
+
+                if not player_headshot:
+                    player_headshot = get_player_image(player_id)
+                    player_headshot_instance = PlayerHeadShot.objects.create(
+                        player_id=player_id,
+                        player_name=player_name,
+                        player_image_url=player_headshot[0] if player_headshot else "https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small_2x/default-avatar-photo-placeholder-profile-picture-vector.jpg",
+                        team_id=player_headshot[1] if player_headshot else 0,
+                        background_colour=None  # Will be dynamically set later
+                    )
+                    player_headshot_instance.save()
+
+                    player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
+
+                player_image = player_headshot.player_image_url
+                team_colour = player_headshot.background_colour
+
+                # Stat value
+                stat_value = leaders_info['resultSet']['rowSet'][0][stat_index]
+
+                category_name = stats_map[category]
+                stat_leaders[category_name] = [player_name, stat_value, player_image, team_colour, player_id]
+
+                league_leaders_data.leaders = stat_leaders
 
     context = {
         'stat_leaders': stat_leaders

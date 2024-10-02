@@ -168,62 +168,53 @@ def get_league_leaders():
         leaders_data = league_leaders_data.leaders
         stat_leaders = leaders_data
     else:
-        try:
-            for category in stats:
-                leaders = leagueleaders.LeagueLeaders(stat_category_abbreviation=category, proxy=proxy_url)
-                leaders_info = leaders.get_dict()
+        # Get the league leaders data from the external API
+        for category in stats:
+            leaders = leagueleaders.LeagueLeaders(stat_category_abbreviation=category, proxy=proxy_url)
+            leaders_info = leaders.get_dict()
 
-                # Check if rowSet contains data
-                if leaders_info['resultSet']['rowSet']:
-                    # get stat location by index
-                    leaders_list = leaders_info['resultSet']['headers']
-                    stat_index = leaders_list.index(category)
+            # Extract the relevant data from the response
+            leaders_list = leaders_info['resultSet']['headers']
+            stat_index = leaders_list.index(category)  # checking the index for each stat category
 
-                    # player name and headshot
-                    player_name = leaders_info['resultSet']['rowSet'][0][2]
-                    player_id = leaders_info['resultSet']['rowSet'][0][0]
+            # check if there is any player data (data might be reset before a new season)
+            if len(leaders_info['resultSet']['rowSet']) == 0:
+                stat_leaders = placeholder_data
 
-                    # get player headshots
-                    player_headshot = PlayerHeadShot.objects.filter(player_name=player_name).first()
+            else:
+                # get new data
+                # Player name and headshot
+                # contains all the player info, will be empty if there's no data
+                player_name = leaders_info['resultSet']['rowSet'][0][2]
 
-                    if not player_headshot:
-                        player_headshot = get_player_image(player_id)
-                        # create and save new instance
-                        player_headshot_instance = PlayerHeadShot.objects.create(
-                            player_id=player_id,
-                            player_name=player_name,
-                            player_image_url=player_headshot[0],
-                            team_id=player_headshot[1],
-                            background_colour=None  # This will be dynamically set after saving based on team_id
-                        )
-                        player_headshot_instance.save()
+                player_id = leaders_info['resultSet']['rowSet'][0][0]
 
-                        # get player headshots
-                        player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
-                        player_image = player_headshot.player_image_url
-                        team_colour = player_headshot.background_colour
-                    else:
-                        player_image = player_headshot.player_image_url
-                        team_colour = player_headshot.background_colour
+                # Get or create player headshot
+                player_headshot = PlayerHeadShot.objects.filter(player_name=player_name).first()
 
-                    # stat
-                    stat = leaders_info['resultSet']['rowSet'][0][stat_index]
+                if not player_headshot:
+                    player_headshot = get_player_image(player_id)
+                    player_headshot_instance = PlayerHeadShot.objects.create(
+                        player_id=player_id,
+                        player_name=player_name,
+                        player_image_url=player_headshot[0] if player_headshot else "https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small_2x/default-avatar-photo-placeholder-profile-picture-vector.jpg",
+                        team_id=player_headshot[1] if player_headshot else 0,
+                        background_colour=None  # Will be dynamically set later
+                    )
+                    player_headshot_instance.save()
 
-                    category_name = stats_map[category]
+                player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
 
-                    stat_leaders[category_name] = [player_name, stat, player_image, team_colour, player_id]
+                player_image = player_headshot.player_image_url
+                team_colour = player_headshot.background_colour
 
-                else:
-                    return placeholder_data
+                # Stat value
+                stat_value = leaders_info['resultSet']['rowSet'][0][stat_index]
 
-            # Save the data if available
-            league_leaders_data = LeagueLeaders.objects.create(
-                leaders=stat_leaders
-            )
-            league_leaders_data.save()
-        except Exception as e:
-            print(f"Error fetching league leaders: {e}")
-            return placeholder_data
+                category_name = stats_map[category]
+                stat_leaders[category_name] = [player_name, stat_value, player_image, team_colour, player_id]
+
+                league_leaders_data.leaders = stat_leaders
 
     return stat_leaders
 
