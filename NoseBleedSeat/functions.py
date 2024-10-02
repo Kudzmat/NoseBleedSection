@@ -115,7 +115,7 @@ def get_league_leaders():
 
     stats = ["PTS", "BLK", "REB", "AST", "STL", "FGM", "FG3M", "FTM", "EFF", "AST_TOV", "STL_TOV"]
 
-    # To map each key with a readable evalue
+    # To map each key with a readable value
     stats_map = {
         'PTS': 'Points',
         'BLK': 'Blocks',
@@ -128,8 +128,37 @@ def get_league_leaders():
         'EFF': 'Individual Player Efficiency',
         'AST_TOV': 'Assists To Turnover Ratio',
         'STL_TOV': 'Steals To Turnover Ratio'
-
     }
+
+    # Placeholder data if the API returns no data
+    placeholder_data = {
+        "Blocks": ["Victor Wembanyama", 254, "https://cdn.nba.com/headshots/nba/latest/1040x760/1641705.png", "#c4ced4",
+                   1641705],
+        "Points": ["Luka Doncic", 2370, "https://cdn.nba.com/headshots/nba/latest/1040x760/1629029.png", "#00538c",
+                   1629029],
+        "Steals": ["De'Aaron Fox", 150, "https://cdn.nba.com/headshots/nba/latest/1040x760/1628368.png", "#5a2d81",
+                   1628368],
+        "Assists": ["Tyrese Haliburton", 752, "https://cdn.nba.com/headshots/nba/latest/1040x760/1630169.png",
+                    "#002d62", 1630169],
+        "Rebounds": ["Domantas Sabonis", 1120, "https://cdn.nba.com/headshots/nba/latest/1040x760/1627734.png",
+                     "#5a2d81", 1627734],
+        "Field Goal Makes": ["Giannis Antetokounmpo", 837,
+                             "https://cdn.nba.com/headshots/nba/latest/1040x760/203507.png", "#00471b", 203507],
+        "Free Throw Makes": ["Shai Gilgeous-Alexander", 567,
+                             "https://cdn.nba.com/headshots/nba/latest/1040x760/1628983.png", "#007ac1", 1628983],
+        "3 Point Field Goal Makes": ["Stephen Curry", 357,
+                                     "https://cdn.nba.com/headshots/nba/latest/1040x760/201939.png", "#ffc72c", 201939],
+        "Steals To Turnover Ratio": ["Matisse Thybulle", 2.83,
+                                     "https://cdn.nba.com/headshots/nba/latest/1040x760/1629680.png", "#e03a3e",
+                                     1629680],
+        "Assists To Turnover Ratio": ["Tyus Jones", 7.35,
+                                      "https://cdn.nba.com/headshots/nba/latest/1040x760/1626145.png", "#e56020",
+                                      1626145],
+        "Individual Player Efficiency": ["Nikola Jokic", 3039,
+                                         "https://cdn.nba.com/headshots/nba/latest/1040x760/203999.png", "#1d428a",
+                                         203999]
+    }
+
     stat_leaders = {}
 
     # get league leaders from database
@@ -138,56 +167,63 @@ def get_league_leaders():
     if league_leaders_data:
         leaders_data = league_leaders_data.leaders
         stat_leaders = leaders_data
-
     else:
+        try:
+            for category in stats:
+                leaders = leagueleaders.LeagueLeaders(stat_category_abbreviation=category, proxy=proxy_url)
+                leaders_info = leaders.get_dict()
 
-        for category in stats:
-            leaders = leagueleaders.LeagueLeaders(stat_category_abbreviation=category, proxy=proxy_url)
-            leaders_info = leaders.get_dict()
+                # Check if rowSet contains data
+                if leaders_info['resultSet']['rowSet']:
+                    # get stat location by index
+                    leaders_list = leaders_info['resultSet']['headers']
+                    stat_index = leaders_list.index(category)
 
-            # get stat location by index
-            leaders_list = leaders_info['resultSet']['headers']
-            stat_index = leaders_list.index(category)
+                    # player name and headshot
+                    player_name = leaders_info['resultSet']['rowSet'][0][2]
+                    player_id = leaders_info['resultSet']['rowSet'][0][0]
 
-            # player name and headshot
-            player_name = leaders_info['resultSet']['rowSet'][0][2]
-            player_id = leaders_info['resultSet']['rowSet'][0][0]
+                    # get player headshots
+                    player_headshot = PlayerHeadShot.objects.filter(player_name=player_name).first()
 
-            # get player headshots
-            player_headshot = PlayerHeadShot.objects.filter(player_name=player_name).first()
+                    if not player_headshot:
+                        player_headshot = get_player_image(player_id)
+                        # create and save new instance
+                        player_headshot_instance = PlayerHeadShot.objects.create(
+                            player_id=player_id,
+                            player_name=player_name,
+                            player_image_url=player_headshot[0],
+                            team_id=player_headshot[1],
+                            background_colour=None  # This will be dynamically set after saving based on team_id
+                        )
+                        player_headshot_instance.save()
 
-            if not player_headshot:
-                player_headshot = get_player_image(player_id)
-                # create and save new instance
-                player_headshot_instance = PlayerHeadShot.objects.create(
-                    player_id=player_id,
-                    player_name=player_name,
-                    player_image_url=player_headshot[0],
-                    team_id=player_headshot[1],
-                    background_colour=None  # This will be dynamically set after saving based on team_id
-                )
-                player_headshot_instance.save()
+                        # get player headshots
+                        player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
+                        player_image = player_headshot.player_image_url
+                        team_colour = player_headshot.background_colour
+                    else:
+                        player_image = player_headshot.player_image_url
+                        team_colour = player_headshot.background_colour
 
-                # get player headshots
-                player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
-                player_image = player_headshot.player_image_url
-                team_colour = player_headshot.background_colour
+                    # stat
+                    stat = leaders_info['resultSet']['rowSet'][0][stat_index]
 
-            else:
-                player_image = player_headshot.player_image_url
-                team_colour = player_headshot.background_colour
+                    category_name = stats_map[category]
 
-            # stat
-            stat = leaders_info['resultSet']['rowSet'][0][stat_index]
+                    stat_leaders[category_name] = [player_name, stat, player_image, team_colour, player_id]
 
-            category = stats_map[category]
+                else:
+                    return placeholder_data
 
-            stat_leaders[category] = [player_name, stat, player_image, team_colour, player_id]
-
-        league_leaders_data = LeagueLeaders.objects.create(
-            leaders=stat_leaders
-        )
-        league_leaders_data.save()
+            # Save the data if available
+            league_leaders_data = LeagueLeaders.objects.create(
+                leaders=stat_leaders
+            )
+            league_leaders_data.save()
+        except Exception as e:
+            print(f"Error fetching league leaders: {e}")
+            return placeholder_data
 
     return stat_leaders
 

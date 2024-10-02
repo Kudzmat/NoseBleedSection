@@ -13,7 +13,7 @@ Home
     <br><br>
     <div class="container mt-5">
         <hr>
-        <h2><b>Match Up Comparison</b></h2>
+        <h2><b>Head-To-Head Stats</b></h2>
         <a href="{% url 'nba_stats:compare_profiles' player1_full_name=player1 player1_id=player1_id player2_full_name=player2 player2_id=player2_id %}">
             <button class="btn btn-outline-success my-2 my-sm-0" id="loadButton"  type="submit">Compare Players</button>
         </a>
@@ -99,14 +99,15 @@ Home
             </div>
 
             <div class="col-md-4">
-                <h2>NBA Stat Leader's Totals</h2>
+                <h2><b>NBA Stat Leaders</b></h2>
+                <!--
                 <button class="btn btn-outline-success"
                     hx-get="{% url 'update_league_leaders' %}"
                     hx-target="#league-leaders-table"
                     hx-swap="outerHTML"
                     hx-trigger="click">
                     Update Table
-                </button>
+                </button> -->
                 <table class="table table-striped table-bordered" id="league-leaders-table">
                     <thead>
                         <tr>
