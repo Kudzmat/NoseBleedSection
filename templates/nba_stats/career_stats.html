@@ -119,18 +119,18 @@
     </div>
      <br><br>
 <hr>
-     <div class="container">
-         <h3>Career Totals: Table</h3>
-         <form method="post">
+<div class="container">
+    <h3>Career Totals: Table</h3>
+    <form method="post" class="form-inline">
         {% csrf_token %}
         {{ form.as_p }}
-        <button class="btn btn-primary btn-lg" id="loadButton"  type="submit">View Table</button>
+        <button class="btn btn-primary btn-lg" id="loadButton" type="submit">View Table</button>
     </form>
-     </div>
+</div>
 <hr>
      <div class="container">
          <h3>Career Trends: Graphs</h3>
-         <form method="post">
+         <form method="post" class="form-inline">
         {% csrf_token %}
         {{ graph_form.as_p }}
         <button class="btn btn-primary btn-lg" id="loadButton"  type="submit">View Graph</button>

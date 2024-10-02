@@ -36,6 +36,12 @@ DEBUG = True
 
 # Application definition
 
+ALLOWED_HOSTS = ['limitless-basin-36434-9b35839c4566.herokuapp.com', 'shotgeek.com']
+
+CSRF_TRUSTED_ORIGINS = ['https://limitless-basin-36434-9b35839c4566.herokuapp.com', ' https://shotgeek.com']
+
+
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
