@@ -3,121 +3,130 @@
 {% load custom_tags %}
 {% load static %}
 {% block title %}
-Regular Season Totals
+{{ player_full_name }}Regular Season Totals
 {% endblock %}
 
 {% block content %}
- <div class="container mt-4">
-        <!-- Player Image and Name Section -->
-        <div class="row">
-            <div class="col-md-4" style="background-color:#fffdd0;">
-                <h4 style="color: #563517;">{{ player_full_name }} #{{ player_bio.number }}</h4>
-                 <hr>
-                <a href="{% url 'nba_stats:player_details' player_full_name=player_full_name player_id=player_id %}">
-                    <img src="{{ player_headshot.0 }}" alt="Player Image" class="img-fluid">
-                </a>
-            </div>
-            <div class="col-md-4 align-items-center">
-                <h1 style="color: #b4513e;">{{ player_full_name }}</h1>
-                <h6><b>School:</b> {{ player_bio.education }} | <b>Country:</b> {{ player_bio.country }}</h6>
-                <h6><b>Height:</b> {{ player_bio.height }} | <b>Weight:</b> {{ player_bio.weight }}</h6>
-                <h6><b>Year:</b> {{ player_bio.year }} | <b>Number:</b> {{ player_bio.number }}</h6>
-                <h6><b>Position:</b> {{ player_bio.position }} | <b>Status:</b> {{ player_bio.status }}</h6>
-                <h6><b>PPG:</b> {{ player_bio.PTS }} | <b>RPG:</b> {{ player_bio.REB }} | <b>APG:</b> {{ player_bio.AST }}</h6>
-            </div>
-            <div class="col-md-4" style="background-color:#fffdd0;">
-                <h4>Career Awards</h4>
-                <hr>
-                {% if player_awards %}
-                    <ul>
-                        {% for award, count in player_awards.items %}
-                        <li>{{ award }} x {{ count }}</li>
-                        {% endfor %}
-                            </ul>
-                {% else %}
-                        <li>No Career Awards For {{ player_full_name }} :(</li>
-                {% endif %}
-            </div>
+<div class="container mt-4">
+    <!-- Player Card -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <!-- Player Image -->
+                <div class="col-md-4 text-center">
+                    <a href="{% url 'nba_stats:player_details' player_full_name=player_full_name player_id=player_id %}">
+                        <img src="{{ player_headshot.0 }}" style="background-color: {{ player_headshot.1 }}" alt="Player Image" class="rounded-circle img-fluid mt-3  w-75">
+                    </a>
+                </div>
 
+                <!-- Player Bio -->
+                <div class="col-md-4 d-flex flex-column justify-content-center">
+                    <h1 class="card-title" style="color: #b4513e;">{{ player_full_name }}</h1>
+                    <h6><b>School:</b> {{ player_bio.education }} | <b>Country:</b> {{ player_bio.country }}</h6>
+                    <h6><b>Height:</b> {{ player_bio.height }} | <b>Weight:</b> {{ player_bio.weight }}</h6>
+                    <h6><b>Year:</b> {{ player_bio.year }} | <b>Number:</b> {{ player_bio.number }}</h6>
+                    <h6><b>Position:</b> {{ player_bio.position }} | <b>Status:</b> {{ player_bio.status }}</h6>
+                    <h6><b>PPG:</b> {{ player_bio.PTS }} | <b>RPG:</b> {{ player_bio.REB }} | <b>APG:</b> {{ player_bio.AST }}</h6>
+                </div>
+
+                <!-- Career Awards -->
+                <div class="col-md-4 d-flex flex-column justify-content-center">
+                    <h4>Career Awards</h4>
+                    <hr>
+                    {% if player_awards %}
+                        <ul>
+                            {% for award, count in player_awards.items %}
+                                <li>{{ award }} x {{ count }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <li>No Career Awards For {{ player_full_name }} :(</li>
+                    {% endif %}
+                </div>
             </div>
         </div>
+        <div class="card-footer d-flex justify-content-between">
+            <div class="text-muted">{{ player_full_name }}</div>
+            <div class="text-muted">#{{ player_bio.number }}</div>
+        </div>
+    </div>
 
-        <!-- Player Details Table -->
-        <div class="row">
-        <div class="col-md-12"> <!-- Use col-md-12 to take the full width of the container -->
+    <!-- Player Details Table -->
+    <div class="row">
+        <div class="col-md-12">
             <h2 class="mt-4">Regular Season Statistics</h2>
             <div class="table-responsive">
                 <table class="table table-bordered mt-2">
-            <thead>
-                <tr>
-                    <th>Season</th>
-                    <th>Team</th>
-                    <th>Age</th>
-                    <th>Points</th>
-                    <th>Points Per Game</th>
-                    <th>Rebounds</th>
-                    <th>Rebounds Per Game</th>
-                    <th>Assists</th>
-                    <th>Assists Per Game</th>
-                    <th>Blocks</th>
-                    <th>Blocks Per Game</th>
-                    <th>Steals</th>
-                    <th>Steals Per Game</th>
-                    <th>Defensive Rebs</th>
-                    <th>Offensive Rebs</th>
-                    <th>3pt Attempts</th>
-                    <th>3pt Makes</th>
-                    <th>3pt %</th>
-                    <th>FG Attempts</th>
-                    <th>FG Makes</th>
-                    <th>FG %</th>
-                    <th>FT Attempts</th>
-                    <th>FT Makes</th>
-                    <th>FT %</th>
-                    <th>Turnovers</th>
-                    <th>Games Played</th>
-                    <th>Games Started</th>
-                    <th>Minutes</th>
-                </tr>
-            </thead>
-           <tbody>
-            {% for season_data in player_stats %}
-            <tr>
-                    <td>{{ season_data.SEASON_ID }}</td>
-                    <td>{{ season_data.TEAM_ABBREVIATION }}</td>
-                    <td>{{ season_data.PLAYER_AGE }}</td>
-                    <td>{{ season_data.PTS|intcomma }}</td>
-                    <td>{{ season_data.PPG }}</td>
-                    <td>{{ season_data.REB|intcomma }}</td>
-                    <td>{{ season_data.RPG }}</td>
-                    <td>{{ season_data.AST|intcomma }}</td>
-                    <td>{{ season_data.APG }}</td>
-                    <td>{{ season_data.BLK|intcomma }}</td>
-                    <td>{{ season_data.BLKPG }}</td>
-                    <td>{{ season_data.STL|intcomma }}</td>
-                    <td>{{ season_data.STLPG }}</td>
-                    <td>{{ season_data.DREB|intcomma }}</td>
-                    <td>{{ season_data.OREB|intcomma }}</td>
-                    <td>{{ season_data.FG3A|intcomma }}</td>
-                    <td>{{ season_data.FG3M|intcomma }}</td>
-                    <td>{{ season_data.FG3_PCT|percentage }}</td>
-                    <td>{{ season_data.FGA|intcomma }}</td>
-                    <td>{{ season_data.FGM|intcomma }}</td>
-                    <td>{{ season_data.FG_PCT|percentage }}</td>
-                    <td>{{ season_data.FTA|intcomma }}</td>
-                    <td>{{ season_data.FTM|intcomma }}</td>
-                    <td>{{ season_data.FT_PCT|percentage }}</td>
-                    <td>{{ season_data.TOV|intcomma }}</td>
-                    <td>{{ season_data.GP|intcomma }}</td>
-                    <td>{{ season_data.GS|intcomma }}</td>
-                    <td>{{ season_data.MIN|intcomma }}</td>
-    </tr>
-{% endfor %}
-            </tbody>
-        </table>
+                    <thead>
+                        <tr>
+                            <th>Season</th>
+                            <th>Team</th>
+                            <th>Age</th>
+                            <th>Points</th>
+                            <th>Points Per Game</th>
+                            <th>Rebounds</th>
+                            <th>Rebounds Per Game</th>
+                            <th>Assists</th>
+                            <th>Assists Per Game</th>
+                            <th>Blocks</th>
+                            <th>Blocks Per Game</th>
+                            <th>Steals</th>
+                            <th>Steals Per Game</th>
+                            <th>Defensive Rebs</th>
+                            <th>Offensive Rebs</th>
+                            <th>3pt Attempts</th>
+                            <th>3pt Makes</th>
+                            <th>3pt %</th>
+                            <th>FG Attempts</th>
+                            <th>FG Makes</th>
+                            <th>FG %</th>
+                            <th>FT Attempts</th>
+                            <th>FT Makes</th>
+                            <th>FT %</th>
+                            <th>Turnovers</th>
+                            <th>Games Played</th>
+                            <th>Games Started</th>
+                            <th>Minutes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for season_data in player_stats %}
+                            <tr>
+                                <td>{{ season_data.SEASON_ID }}</td>
+                                <td>{{ season_data.TEAM_ABBREVIATION }}</td>
+                                <td>{{ season_data.PLAYER_AGE }}</td>
+                                <td>{{ season_data.PTS|intcomma }}</td>
+                                <td>{{ season_data.PPG }}</td>
+                                <td>{{ season_data.REB|intcomma }}</td>
+                                <td>{{ season_data.RPG }}</td>
+                                <td>{{ season_data.AST|intcomma }}</td>
+                                <td>{{ season_data.APG }}</td>
+                                <td>{{ season_data.BLK|intcomma }}</td>
+                                <td>{{ season_data.BLKPG }}</td>
+                                <td>{{ season_data.STL|intcomma }}</td>
+                                <td>{{ season_data.STLPG }}</td>
+                                <td>{{ season_data.DREB|intcomma }}</td>
+                                <td>{{ season_data.OREB|intcomma }}</td>
+                                <td>{{ season_data.FG3A|intcomma }}</td>
+                                <td>{{ season_data.FG3M|intcomma }}</td>
+                                <td>{{ season_data.FG3_PCT|percentage }}</td>
+                                <td>{{ season_data.FGA|intcomma }}</td>
+                                <td>{{ season_data.FGM|intcomma }}</td>
+                                <td>{{ season_data.FG_PCT|percentage }}</td>
+                                <td>{{ season_data.FTA|intcomma }}</td>
+                                <td>{{ season_data.FTM|intcomma }}</td>
+                                <td>{{ season_data.FT_PCT|percentage }}</td>
+                                <td>{{ season_data.TOV|intcomma }}</td>
+                                <td>{{ season_data.GP|intcomma }}</td>
+                                <td>{{ season_data.GS|intcomma }}</td>
+                                <td>{{ season_data.MIN|intcomma }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
- </div>
-     <br><br>
-     {% endblock %}
+    <a href="{% url 'nba_stats:player_details' player_full_name=player_full_name player_id=player_id %}" class="btn btn-primary">Back To {{ player_full_name }} Page</a>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+<div class="card-footer">
+    <h5>Career Awards</h5>
+    {% if player1_awards %}
+    <ul>
+        {% for award, count in player1_awards.items %}
+        <li>{{ award }} x {{ count }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No Career Awards For {{ player1_name }} :(</p>
+    {% endif %}
+</div>

@@ -8,40 +8,52 @@
 
 {% block content %}
  <div class="container mt-4">
-        <!-- Player Image and Name Section -->
-        <div class="row">
-            <div class="col-md-4" style="background-color:#fffdd0;">
-                <h4>{{ player_full_name }} #{{ player_bio.number }}</h4>
-                 <hr>
-                <a href="{% url 'nba_stats:player_details' player_full_name=player_full_name player_id=player_id %}">
-                    <img src="{{ player_headshot.0 }}" alt="Player Image" class="img-fluid">
-                </a>
-            </div>
-            <div class="col-md-4 align-items-center">
-                <h1 style="color: #b4513e;">{{ player_full_name }}</h1>
-                <h6><b>School:</b> {{ player_bio.education }} | <b>Country:</b> {{ player_bio.country }}</h6>
-                <h6><b>Height:</b> {{ player_bio.height }} | <b>Weight:</b> {{ player_bio.weight }}</h6>
-                <h6><b>Year:</b> {{ player_bio.year }} | <b>Number:</b> {{ player_bio.number }}</h6>
-                <h6><b>Position:</b> {{ player_bio.position }} | <b>Status:</b> {{ player_bio.status }}</h6>
-                <h6><b>PPG:</b> {{ player_bio.PTS }} | <b>RPG:</b> {{ player_bio.REB }} | <b>APG:</b> {{ player_bio.AST }}</h6>
-            </div>
-            <div class="col-md-4" style="background-color:#fffdd0;">
-                <h4 style="color: #563517;">Career Awards</h4>
-                <hr>
-                {% if player_awards %}
-                    <ul>
-                        {% for award, count in player_awards.items %}
-                        <li>{{ award }} x {{ count }}</li>
-                        {% endfor %}
-                            </ul>
-                {% else %}
-                        <li>No Career Awards For {{ player }} :(</li>
-                {% endif %}
-            </div>
+   <!-- Player Card -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <!-- Player Image -->
+                <div class="col-md-4 text-center">
+                    <a href="{% url 'nba_stats:player_details' player_full_name=player_full_name player_id=player_id %}">
+                        <img src="{{ player_headshot.0 }}" style="background-color: {{ player_headshot.1 }}" alt="Player Image" class="rounded-circle img-fluid mt-3  w-75">
+                    </a>
+                </div>
 
+                <!-- Player Bio -->
+                <div class="col-md-4 d-flex flex-column justify-content-center">
+                    <h1 class="card-title" style="color: #b4513e;">{{ player_full_name }}</h1>
+                    <h6><b>School:</b> {{ player_bio.education }} | <b>Country:</b> {{ player_bio.country }}</h6>
+                    <h6><b>Height:</b> {{ player_bio.height }} | <b>Weight:</b> {{ player_bio.weight }}</h6>
+                    <h6><b>Year:</b> {{ player_bio.year }} | <b>Number:</b> {{ player_bio.number }}</h6>
+                    <h6><b>Position:</b> {{ player_bio.position }} | <b>Status:</b> {{ player_bio.status }}</h6>
+                    <h6><b>PPG:</b> {{ player_bio.PTS }} | <b>RPG:</b> {{ player_bio.REB }} | <b>APG:</b> {{ player_bio.AST }}</h6>
+                </div>
+
+                <!-- Career Awards -->
+                <div class="col-md-4 d-flex flex-column justify-content-center">
+                    <h4>Career Awards</h4>
+                    <hr>
+                    {% if player_awards %}
+                        <ul>
+                            {% for award, count in player_awards.items %}
+                                <li>{{ award }} x {{ count }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <li>No Career Awards For {{ player_full_name }} :(</li>
+                    {% endif %}
+                </div>
             </div>
         </div>
-<div class="text-center">
+        <div class="card-footer d-flex justify-content-between">
+            <div class="text-muted">{{ player_full_name }}</div>
+            <div class="text-muted">#{{ player_bio.number }}</div>
+        </div>
+    </div>
+     <div class="text-center">
     <img src="data:image/png;base64,{{ graph }}" alt="graph" style="max-width: 100%; height: auto;">
 </div>
+       <a href="{% url 'nba_stats:player_details' player_full_name=player_full_name player_id=player_id %}" class="btn btn-primary">Back To {{ player_full_name }} Page</a>
+        </div>
+
 {% endblock %}
