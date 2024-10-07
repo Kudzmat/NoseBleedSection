@@ -211,8 +211,6 @@ def home(request):
     # Prepare player images and awards
     player1_image = [player1_headshot.player_image_url, player1_headshot.background_colour]
     player2_image = [player2_headshot.player_image_url, player2_headshot.background_colour]
-    player1_awards = get_player_awards(player1, player1_headshot.player_id)
-    player2_awards = get_player_awards(player2, player2_headshot.player_id)
 
     eastern_teams = EasternConferenceTeams.objects.all()
     western_teams = WesternConferenceTeams.objects.all()
@@ -272,8 +270,6 @@ def home(request):
         'player2_id': player2_id,
         'player1_form': player1_form,
         'player2_form': player2_form,
-        'player1_awards': player1_awards,
-        'player2_awards': player2_awards,
         'player1_image': player1_image,
         'player2_image': player2_image,
         'player1': player1,
@@ -295,7 +291,30 @@ def about(request):
     }
     return render(request, "about.html", context=context)
 
-# function for updating league leadeers sectioin
+# htmx linked function for show career awards
+def show_career_awards_player1(request, player1_name, player1_id):
+    player1_awards = get_player_awards(player_name=player1_name, player_id=player1_id)
+
+    context = {
+        "player1_awards": player1_awards,
+        "player_name": player1_name
+    }
+
+    return render(request, "partials/career_awards_player1.html", context=context)
+
+
+# htmx linked function for show career awards
+def show_career_awards_player2(request, player2_name, player2_id):
+    player2_awards = get_player_awards(player_name=player2_name, player_id=player2_id)
+
+    context = {
+        "player2_awards": player2_awards,
+        "player_name": player2_name
+    }
+
+    return render(request, "partials/career_awards_player2.html", context=context)
+
+# htmx linked function for updating league leadeers sectioin
 def update_league_leaders(request):
     proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
 

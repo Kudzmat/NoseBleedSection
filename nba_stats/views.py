@@ -101,6 +101,7 @@ def player_details(request, player_full_name, player_id):
         if graph_form.is_valid():
             career_category = graph_form.cleaned_data['career_category']
             stat_option = graph_form.cleaned_data['stat_option']
+
             title = graph_form.get_graph_title(stat_option)
             graph = get_player_graph(player_id=player_id, player_name=player_full_name, career_stats=career_stats,
                                      stat_category=stat_option, career_category=career_category,
@@ -403,109 +404,22 @@ def compare_profiles(request, player1_full_name, player1_id, player2_full_name, 
     # get players info from session
     # players_info = request.session.get("player_info", None)
     player_compare_info = request.session.get('player_compare_info', None)  # info on 2 players from home page
-    #
-    # if players_info is not None:
-    #
-    #     # get player IDs
-    #     player1_id = players_info[0]
-    #     player2_id = players_info[1]
-    #
-    #     # Get player names
-    #     player1_full_name = players_info[2]
-    #     player2_full_name = players_info[3]
-    #
-    #     # get players headshots
-    #     player1_headshot = get_player_image(player1_id, player1_full_name)
-    #     player2_headshot = get_player_image(player2_id, player2_full_name)
-    #
-    #     # Get players yearly stats
-    #     player1_stats = player_career_numbers(player1_id)
-    #     player2_stats = player_career_numbers(player2_id)
-    #
-    #     for season_data in player1_stats:
-    #
-    #         # points per game
-    #         if season_data['GP'] > 0 and season_data['PTS'] is not None:
-    #             season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
-    #         else:
-    #             season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
-    #
-    #         # assists per game
-    #         if season_data['GP'] > 0 and season_data['AST'] is not None:
-    #             season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
-    #         else:
-    #             season_data['APG'] = 0
-    #
-    #         # blocks per game
-    #         if season_data['GP'] > 0 and season_data['BLK'] is not None:
-    #             season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
-    #         else:
-    #             season_data['BLKPG'] = 0
-    #
-    #         # rebounds per game
-    #         if season_data['GP'] > 0 and season_data['REB'] is not None:
-    #             season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
-    #         else:
-    #             season_data['RPG'] = 0
-    #
-    #         # steals per game
-    #         if season_data['GP'] > 0 and season_data['STL'] is not None:
-    #             season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
-    #         else:
-    #             season_data['STLPG'] = 0
-    #
-    #         # Certain players (specifically from before 1980) don't have a 3pt %
-    #         if season_data['FG3_PCT'] is None:
-    #             season_data['FG3_PCT'] = 0
-    #
-    #     for season_data in player2_stats:
-    #
-    #         # points per game
-    #         if season_data['GP'] > 0 and season_data['PTS'] is not None:
-    #             season_data['PPG'] = round(season_data['PTS'] / season_data['GP'], 2)
-    #         else:
-    #             season_data['PPG'] = 0  # To avoid division by zero in case GP is 0
-    #
-    #         # assists per game
-    #         if season_data['GP'] > 0 and season_data['AST'] is not None:
-    #             season_data['APG'] = round(season_data['AST'] / season_data['GP'], 1)
-    #         else:
-    #             season_data['APG'] = 0
-    #
-    #         # blocks per game
-    #         if season_data['GP'] > 0 and season_data['BLK'] is not None:
-    #             season_data['BLKPG'] = round(season_data['BLK'] / season_data['GP'], 1)
-    #         else:
-    #             season_data['BLKPG'] = 0
-    #
-    #         # rebounds per game
-    #         if season_data['GP'] > 0 and season_data['REB'] is not None:
-    #             season_data['RPG'] = round(season_data['REB'] / season_data['GP'], 1)
-    #         else:
-    #             season_data['RPG'] = 0
-    #
-    #         # steals per game
-    #         if season_data['GP'] > 0 and season_data['STL'] is not None:
-    #             season_data['STLPG'] = round(season_data['STL'] / season_data['GP'], 1)
-    #         else:
-    #             season_data['STLPG'] = 0
-    #
-    #         # Certain players (specifically from before 1980) don't have a 3pt %
-    #         if season_data['FG3_PCT'] is None:
-    #             season_data['FG3_PCT'] = 0
 
     if player_compare_info:
-        # get player IDs
-        player1_id = player_compare_info[0]
-        player2_id = player_compare_info[1]
 
         # Get player names
         player1_full_name = player_compare_info[2]
         player2_full_name = player_compare_info[3]
 
         # get players headshots
-        player1_headshot = get_player_image(player1_id)
-        player2_headshot = get_player_image(player2_id)
+        player1_headshot, player1_bio, player1_id = fetch_player_data(player1_full_name)
+        player2_headshot, player2_bio, player2_id = fetch_player_data(player2_full_name)
+
+        del player1_bio['_state']  # to avoid TypeError
+        del player2_bio['_state']  # to avoid TypeError
+
+        player1_headshot = [player1_headshot.player_image_url, player1_headshot.background_colour]
+        player2_headshot = [player2_headshot.player_image_url, player2_headshot.background_colour]
 
         # Get players yearly stats
         player1_career_stats = player_career_numbers(player1_id)
@@ -601,7 +515,7 @@ def compare_profiles(request, player1_full_name, player1_id, player2_full_name, 
             # Append graph to players info list and store in session for use in next view
             # This list will hold all the info we need for the comparison view
             comparison_info = [player1_id, player2_id, player1_headshot, player2_headshot, player1_full_name,
-                               player2_full_name, graph]
+                               player2_full_name, graph, player1_bio, player2_bio]
             request.session['comparison_info'] = comparison_info
             return redirect('nba_stats:show_graph', player1_full_name=player1_full_name, player1_id=player1_id,
                             player2_full_name=player2_full_name, player2_id=player2_id)
@@ -614,6 +528,8 @@ def compare_profiles(request, player1_full_name, player1_id, player2_full_name, 
 
     context = {'player_form': player_form,
                'player1_headshot': player1_headshot,
+               'player1_bio': player1_bio,
+               'player2_bio': player2_bio,
                'player2_headshot': player2_headshot,
                'player1_full_name': player1_full_name,
                'player2_full_name': player2_full_name,
@@ -644,6 +560,10 @@ def show_graph(request, player1_full_name, player1_id, player2_full_name, player
     player1_full_name = comparison_info[4]
     player2_full_name = comparison_info[5]
 
+    # get player bios
+    player1_bio = comparison_info[7]
+    player2_bio = comparison_info[8]
+
     # Get graph
     graph = comparison_info[6]
 
@@ -658,6 +578,8 @@ def show_graph(request, player1_full_name, player1_id, player2_full_name, player
                'graph': graph,
                'player1_id': player1_id,
                'player2_id': player2_id,
+               'player1_bio': player1_bio,
+               'player2_bio': player2_bio
                }
 
     return render(request, "nba_stats/graph_comparison.html", context)

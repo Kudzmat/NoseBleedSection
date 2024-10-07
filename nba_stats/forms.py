@@ -87,12 +87,13 @@ class TeamSearchForm(forms.Form):
 
 # form for getting more stats
 class StatsDropdownForm(forms.Form):
-    option = forms.ChoiceField(choices=STAT_OPTIONS, label="Career Totals")
-
+    option = forms.ChoiceField(choices=STAT_OPTIONS, label="Career Totals", required=True, error_messages={'required':'Please select an option'})
 
 # form for stats comparison
+
+
 class StatsCompForm(forms.Form):
-    option = forms.ChoiceField(choices=COMP_OPTIONS, label="")
+    option = forms.ChoiceField(choices=COMP_OPTIONS, label="", required=True, error_messages={'required':'Please select an option'})
 
     # this method will allow me to get the selected option's readable value to use for the graph's title
     def get_graph_title(self, selected_option):
@@ -115,8 +116,8 @@ class PlayerCompareForm(forms.Form):
 
 
 class PlayerGraphForm(forms.Form):
-    career_category = forms.ChoiceField(label='Career Category', choices=STAT_OPTIONS)
-    stat_option = forms.ChoiceField(choices=GRAPH_OPTIONS, label="Stat Category")
+    career_category = forms.ChoiceField(label='Career Category', choices=STAT_OPTIONS, required=True, error_messages={'required':'Please select a category'})
+    stat_option = forms.ChoiceField(choices=GRAPH_OPTIONS, label="Stat Category", required=True, error_messages={'required':'Please select a stat option'})
 
     # this method will allow me to get the selected option's readable value to use for the graph's title
     def get_graph_title(self, selected_option):
