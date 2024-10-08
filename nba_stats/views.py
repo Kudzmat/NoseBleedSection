@@ -16,7 +16,7 @@ def player_details(request, player_full_name, player_id):
 
     elif player_info is None:
         # Search for the player data
-        player_headshot, player_bio, player_id = fetch_player_data(player_full_name)
+        player_headshot, player_bio, player_id = fetch_player_data(player_full_name, player_id)
 
         player_headshot = [player_headshot.player_image_url, player_headshot.background_colour]
 
