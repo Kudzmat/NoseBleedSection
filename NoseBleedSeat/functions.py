@@ -11,6 +11,7 @@ SMARTPROXY_USERNAME = os.getenv('SMARTPROXY_USERNAME')
 SMARTPROXY_PASSWORD = os.getenv('SMARTPROXY_PASSWORD')
 
 
+
 def fetch_player_data(player_name, player_id=None):
     """Helper function to fetch or create player headshot and bio."""
 
