@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +40,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -48,11 +49,13 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Application definition
 
-ALLOWED_HOSTS = ['limitless-basin-36434-9b35839c4566.herokuapp.com', 'shotgeek.com', '127.0.0.1']
+ALLOWED_HOSTS = ['https://limitless-basin-36434-9b35839c4566.herokuapp.com/', 'https://www.shotgeek.com', 'http://127.0.0.1:8000']
 
-CSRF_TRUSTED_ORIGINS = ['https://limitless-basin-36434-9b35839c4566.herokuapp.com', ' https://shotgeek.com']
+CSRF_TRUSTED_ORIGINS = ['https://limitless-basin-36434-9b35839c4566.herokuapp.com', 'https://www.shotgeek.com', 'http://127.0.0.1:8000']
+
 
 INSTALLED_APPS = [
+
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -60,6 +63,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
+    "whitenoise.runserver_nostatic",
     "nba_news",
     "nba_stats",
     "nba_teams",
@@ -150,25 +154,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'error.log'),
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    },
-}
+WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
 # Configure Django App for Heroku.
 import django_on_heroku
