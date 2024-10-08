@@ -249,6 +249,7 @@ class Command(BaseCommand):
             {
                 'team_id': 1610612759,
                 'team_full_name': 'San Antonio Spurs',
+                'team_name': 'Spurs',
                 'team_abbreviated': 'SAS',
                 'team_city': 'San Antonio',
                 'team_logo_url': 'https://cdn.nba.com/logos/nba/1610612759/global/L/logo.svg',
