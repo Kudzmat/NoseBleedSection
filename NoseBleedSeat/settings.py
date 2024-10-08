@@ -14,9 +14,11 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-
 # Load environment variables from .env file
 load_dotenv()
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,24 +27,35 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+STATIC_URL = "static/"
+MEDIA_URL = '/media/'
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-enfgxe59+e1kt+c#unqrutb9y#_0)+aht&+@5@^r@pupks1wt8"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Application definition
 
-ALLOWED_HOSTS = ['limitless-basin-36434-9b35839c4566.herokuapp.com', 'shotgeek.com']
+ALLOWED_HOSTS = ['https://limitless-basin-36434-9b35839c4566.herokuapp.com/', 'https://www.shotgeek.com', 'http://127.0.0.1:8000']
 
-CSRF_TRUSTED_ORIGINS = ['https://limitless-basin-36434-9b35839c4566.herokuapp.com', ' https://shotgeek.com']
-
+CSRF_TRUSTED_ORIGINS = ['https://limitless-basin-36434-9b35839c4566.herokuapp.com', 'https://www.shotgeek.com', 'http://127.0.0.1:8000']
 
 
 INSTALLED_APPS = [
+
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -50,6 +63,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
+    "whitenoise.runserver_nostatic",
     "nba_news",
     "nba_stats",
     "nba_teams",
@@ -64,6 +78,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -135,18 +150,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    STATIC_DIR,
-]
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
 # Configure Django App for Heroku.
 import django_on_heroku
