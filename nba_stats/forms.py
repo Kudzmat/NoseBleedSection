@@ -54,7 +54,7 @@ class PlayerSearchForm(forms.Form):
         required=True,
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Search player or team',
+                'placeholder': 'Search a player',
                 'class': 'form-control',
                 'aria-label': 'Player Name'
             }
