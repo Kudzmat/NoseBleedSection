@@ -11,19 +11,25 @@ SMARTPROXY_USERNAME = os.getenv('SMARTPROXY_USERNAME')
 SMARTPROXY_PASSWORD = os.getenv('SMARTPROXY_PASSWORD')
 
 
-def fetch_player_data(player_name):
+def fetch_player_data(player_name, player_id=None):
     """Helper function to fetch or create player headshot and bio."""
+
     player_headshot = PlayerHeadShot.objects.filter(player_name=player_name).first()
     player_bio_data = PlayerBio.objects.filter(player_name=player_name).first()
 
     if not player_headshot:
-        player_info = players.find_players_by_full_name(player_name)
+
+        # find with player id if we have it
+        if player_id:
+            player_info = players.find_player_by_id(player_id)
+        else:
+            player_info = players.find_players_by_full_name(player_name)
+            player_id = player_info[0]['id']
 
         if not player_info:
             return None, None
 
         # one more check by player id
-        player_id = player_info[0]['id']
         player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
         if player_headshot:
             pass

@@ -65,7 +65,8 @@
           <tr>
             <td>
               <a href="{% url 'nba_stats:player_details' player_full_name=player.1 player_id=player.0 %}">
-                <img src="{{ player.8 }}" style="background-color: {{ team_info.4 }}" class="rounded-circle img-fluid" alt="Player Image" width="50" height="50">
+                <img src="{{ player.8 }}" style="background-color: {{ team_info.4 }}; width: 10%;" class="rounded-circle img-fluid" alt="Player Image">
+
                 {{ player.1 }}
               </a>
             </td>
