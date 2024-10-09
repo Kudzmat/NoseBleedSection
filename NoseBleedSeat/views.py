@@ -196,7 +196,7 @@ def home(request):
         player1_headshot, player1_bio, player1_id = fetch_player_data(player1)
         player2_headshot, player2_bio, player2_id = fetch_player_data(player2)
 
-        if not player1_headshot or not player2_headshot:
+        if not player1_headshot or not player2_headshot or not player1_bio or not player2_bio or not player1_id or not player2_id:
             raise ValueError("Player not found")
 
     except ValueError as e:
