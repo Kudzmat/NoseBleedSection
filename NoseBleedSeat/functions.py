@@ -10,44 +10,37 @@ SMARTPROXY_URL = os.getenv('SMARTPROXY_URL')
 SMARTPROXY_USERNAME = os.getenv('SMARTPROXY_USERNAME')
 SMARTPROXY_PASSWORD = os.getenv('SMARTPROXY_PASSWORD')
 
-
-
 def fetch_player_data(player_name, player_id=None):
     """Helper function to fetch or create player headshot and bio."""
 
     player_headshot = PlayerHeadShot.objects.filter(player_name=player_name).first()
     player_bio_data = PlayerBio.objects.filter(player_name=player_name).first()
 
-    if not player_headshot:
-
-        # find with player id if we have it
-        if player_id:
-            player_info = players.find_player_by_id(player_id)
-        else:
-            player_info = players.find_players_by_full_name(player_name)
-            player_id = player_info[0]['id']
+    if player_id is None:
+        player_info = players.find_players_by_full_name(player_name)
+        player_id = player_info[0]['id']
+        player_name = player_info[0]['full_name']
 
         if not player_info:
             return None, None
 
-        # one more check by player id
-        player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
-        if player_headshot:
-            pass
-        else:
-            player_name = player_info[0]['full_name']
-            player_image = get_player_image(player_id)
-            player_url = player_image[0]
-            player_team_id = player_image[1]
+    # one more check by player id
+    player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
+    if player_headshot:
+        pass
+    else:
+        player_image = get_player_image(player_id)
+        player_url = player_image[0]
+        player_team_id = player_image[1]
 
-            player_headshot = PlayerHeadShot.objects.create(
-                player_id=player_id,
-                player_name=player_name,
-                player_image_url=player_url,
-                team_id=player_team_id,
-                background_colour=None
-            )
-            player_headshot.save()
+        player_headshot = PlayerHeadShot.objects.create(
+            player_id=player_id,
+            player_name=player_name,
+            player_image_url=player_url,
+            team_id=player_team_id,
+            background_colour=None
+        )
+        player_headshot.save()
 
     player_id = player_headshot.player_id
     player_name = player_headshot.player_name
