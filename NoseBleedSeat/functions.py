@@ -15,14 +15,17 @@ def fetch_player_data(player_name, player_id=None):
 
     player_headshot = PlayerHeadShot.objects.filter(player_name=player_name).first()
     player_bio_data = PlayerBio.objects.filter(player_name=player_name).first()
-
+    
+    # check for player info using player name
     if player_id is None:
         player_info = players.find_players_by_full_name(player_name)
-        player_id = player_info[0]['id']
-        player_name = player_info[0]['full_name']
-
+        
+        # if player data is not found return none
         if not player_info:
-            return None, None
+            return None, None, None
+        else:
+            player_id = player_info[0]['id']
+            player_name = player_info[0]['full_name']
 
     # one more check by player id
     player_headshot = PlayerHeadShot.objects.filter(player_id=player_id).first()
