@@ -276,7 +276,6 @@ def home(request):
         'player2': player2,
         'player1_bio': player1_bio,
         'player2_bio': player2_bio,
-        'league_leaders': get_league_leaders(),
         'word_of_the_day': word_of_the_day
     }
 
@@ -426,4 +425,4 @@ def update_league_leaders(request):
         'stat_leaders': stat_leaders
     }
 
-    return render(request, 'partials/league_leaders_table.html', context=context)
+    return render(request, 'partials/league_leaders.html', context=context)
