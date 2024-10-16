@@ -1,0 +1,32 @@
+        <!-- NBA Stat Leaders Table -->
+        <div class="row mt-5" id="league-leaders">
+             <div class="col-12">
+                 <h2><b>NBA Stat Leaders</b></h2>
+                <table class="table table-striped table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th scope="col">Player Profile</th>
+                            <th>Player Name</th>
+                            <th scope="col">Category</th>
+                            <th>Numbers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category, data in stat_leaders.items %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <a href="{% url 'nba_stats:player_details' player_full_name=data.0 player_id=data.4 %}">
+                                        <img src="{{ data.2 }}" style="background-color: {{ data.3 }}" class="rounded-circle img-fluid w-25" alt="Player Image">
+                                    </a>
+                                </div>
+                            </td>
+                            <td><h5 class="ml-3" style="color: #b4513e;"><b>{{ data.0 }}</b></h5></td>
+                            <td><h5 class="ml-3" style="color: #b4513e;">{{ category }}</h5></td>
+                            <td><h5 class="ml-3" style="color: #b4513e;">{{ data.1 }}</h5></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+             </div>
+        </div>
