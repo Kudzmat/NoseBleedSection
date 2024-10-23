@@ -421,6 +421,7 @@ def update_league_leaders(request):
 
                 league_leaders_data.leaders = stat_leaders
 
+
     context = {
         'stat_leaders': stat_leaders
     }
