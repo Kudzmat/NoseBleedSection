@@ -28,13 +28,13 @@
                     <h6><b>Year:</b> {{ player_bio.year }}</h6>
                     <h6><b>Position:</b> {{ player_bio.position }} | <b>Status:</b> {{ player_bio.status }}</h6>
                     <h6><b>PPG:</b> {{ player_bio.PTS }} | <b>RPG:</b> {{ player_bio.REB }} | <b>APG:</b> {{ player_bio.AST }}</h6>
-                    <button class="btn btn-outline-success mt-3"
+                 <!-- <button class="btn btn-outline-success mt-3"
                             hx-get="{% url 'nba_stats:update_player_bio' player_id=player_id player_name=player_full_name %}"
                             hx-target="#player-bio"
                             hx-swap="outerHTML"
                             hx-trigger="click">
                         Update Bio
-                    </button>
+                    </button> -->
                 </div>
 
                 <!-- Career Awards -->
