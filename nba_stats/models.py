@@ -57,9 +57,11 @@ class PlayerBio(models.Model):
     team_id = models.IntegerField(default=0000000000)
     team_name = models.CharField(max_length=50, blank=True, null=True, default="N/A")
     status = models.CharField(max_length=50, blank=True, null=True, default="N/A")
-    PTS = models.FloatField(blank=True, null=True, default=0)  # Points per game
-    REB = models.FloatField(blank=True, null=True, default=0)  # Rebounds per game
-    AST = models.FloatField(blank=True, null=True, default=0)  # Assists per game
+    PTS = models.FloatField(blank=True, null=False, default=0)  # Points per game
+    REB = models.FloatField(blank=True, null=False, default=0)  # Rebounds per game
+    AST = models.FloatField(blank=True, null=False, default=0)  # Assists per game
+    BLK = models.FloatField(blank=True, null=False, default=0)  # Blocks per game
+    STL = models.FloatField(blank=True, null=False, default=0)  # Steals per game
     date = models.DateField(default=timezone.now, blank=True)  # Automatically set to today's date
 
     def save(self, *args, **kwargs):
