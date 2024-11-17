@@ -224,17 +224,58 @@ def get_league_leaders():
     return stat_leaders
 
 
-def get_player_bio(player_id):
-    # Construct the proxy URL
-    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
+def get_per_game_stats(player_id):
+    stats = []
+    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id)
+    career_dict = player_stats.get_normalized_dict()
+    player_career_regular_season_totals = career_dict['CareerTotalsRegularSeason'][0]  # get career totals
+    games_played = int(player_career_regular_season_totals['GP'])
 
+    # points per game
+    ppg = round(int(player_career_regular_season_totals['PTS']) / games_played, 1)
+    stats.append(ppg)
+
+    # rebounds per game
+    reb = round(int(player_career_regular_season_totals['REB']) / games_played, 1)
+    stats.append(reb)
+
+    # assists per game
+    assists = round(int(player_career_regular_season_totals['AST']) / games_played, 1)
+    stats.append(assists)
+
+    # steals per game
+    steals = round(int(player_career_regular_season_totals['STL']) / games_played, 1)
+    stats.append(steals)
+
+    # blocks per game
+    blocks = round(int(player_career_regular_season_totals['BLK']) / games_played, 1)
+    stats.append(blocks)
+
+    # years played
+    years = len(career_dict['SeasonTotalsRegularSeason'])
+    stats.append(years)
+
+    return stats
+
+
+def get_player_bio(player_id):
     bio = {}
 
     # get player info
-    player_info = commonplayerinfo.CommonPlayerInfo(player_id, proxy=proxy_url)
+    player_info = commonplayerinfo.CommonPlayerInfo(player_id)
     player_bio = player_info.get_dict()
 
     # player stats
+    per_game_stats = get_per_game_stats(player_id)
+    bio['PTS'] = per_game_stats[0]  # points
+    bio['REB'] = per_game_stats[1]  # rebounds
+    bio['AST'] = per_game_stats[2]  # assists
+    bio['STL'] = per_game_stats[3]  # steals
+    bio['BLK'] = per_game_stats[4]  # blocks
+    bio['year'] = per_game_stats[5]  # years played
+
+    """
+    This is how to get the current season's averages, will be useful for later updates
     player_stats = player_bio['resultSets'][1]['rowSet'][0]
 
     # points
@@ -248,6 +289,7 @@ def get_player_bio(player_id):
     # reb
     player_reb = player_stats[5]
     bio['REB'] = player_reb
+    """
 
     # player info
     player_data = player_bio['resultSets'][0]['rowSet'][0]
@@ -265,7 +307,7 @@ def get_player_bio(player_id):
     bio['weight'] = player_data[12]
 
     # years
-    bio['year'] = player_data[13]
+    #bio['year'] = player_data[13]
 
     # jersey number
     bio['number'] = player_data[14]
