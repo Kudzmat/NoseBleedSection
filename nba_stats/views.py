@@ -117,7 +117,7 @@ def player_details(request, player_full_name, player_id):
                'player_id': player_id,
                'form': form,
                'player_bio': player_bio,
-               'player_awards': player_awards,
+               #'player_awards': player_awards,
                'graph_form': graph_form
                }
 
@@ -193,7 +193,7 @@ def regular_season(request, player_full_name, player_id):
                'player_stats': player_stats,
                'player_id': player_id,
                'player_bio': player_bio,
-               'player_awards': player_awards
+               #'player_awards': player_awards
                }
 
     return render(request, 'nba_stats/regular_season.html', context=context)
@@ -268,7 +268,7 @@ def post_season(request, player_full_name, player_id):
                'player_stats': player_stats,
                'player_id': player_id,
                'player_bio': player_bio,
-               'player_awards': player_awards
+               #'player_awards': player_awards
                }
 
     return render(request, 'nba_stats/post_season.html', context=context)
@@ -307,7 +307,7 @@ def regular_season_rankings(request, player_full_name, player_id):
                'player_stats': player_stats,
                'player_id': player_id,
                'player_bio': player_bio,
-               'player_awards': player_awards
+               #'player_awards': player_awards
                }
 
     return render(request, 'nba_stats/regular_season_rankings.html', context=context)
@@ -346,7 +346,7 @@ def post_season_rankings(request, player_full_name, player_id):
                'player_stats': player_stats,
                'player_id': player_id,
                'player_bio': player_bio,
-               'player_awards': player_awards
+               #'player_awards': player_awards
                }
 
     return render(request, 'nba_stats/post_season_rankings.html', context=context)
@@ -659,7 +659,8 @@ def update_player_bio(request, player_id, player_name):
         player_bio_data.PTS = player_bio.get('PTS', 0)
         player_bio_data.REB = player_bio.get('REB', 0)
         player_bio_data.AST = player_bio.get('AST', 0)
-        player_bio_data.date = today
+        player_bio_data.BLK = player_bio.get('BLK', 0)
+        player_bio_data.STL = player_bio.get('STL', 0)
 
         # save updated data
         player_bio_data.save()

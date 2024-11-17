@@ -49,7 +49,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Application definition
 
-ALLOWED_HOSTS = ['https://limitless-basin-36434-9b35839c4566.herokuapp.com/', 'https://www.shotgeek.com', 'http://127.0.0.1:8000']
+ALLOWED_HOSTS = ['https://limitless-basin-36434-9b35839c4566.herokuapp.com/', 'https://www.shotgeek.com', 'http://127.0.0.1:8000', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = ['https://limitless-basin-36434-9b35839c4566.herokuapp.com', 'https://www.shotgeek.com', 'http://127.0.0.1:8000']
 

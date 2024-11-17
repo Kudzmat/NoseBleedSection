@@ -62,7 +62,6 @@ class PlayerBio(models.Model):
     AST = models.FloatField(blank=True, null=False, default=0)  # Assists per game
     BLK = models.FloatField(blank=True, null=False, default=0)  # Blocks per game
     STL = models.FloatField(blank=True, null=False, default=0)  # Steals per game
-    date = models.DateField(default=timezone.now, blank=True)  # Automatically set to today's date
 
     def save(self, *args, **kwargs):
         # Set team name based on team_id
@@ -73,7 +72,7 @@ class PlayerBio(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.player_name} Bio. Last Update ({self.date})"
+        return f"{self.player_name} Bio"
 
 
 class CareerAwards(models.Model):

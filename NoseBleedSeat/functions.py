@@ -79,7 +79,7 @@ def fetch_player_data(player_name, player_id=None):
             player_bio_data.save()
 
     player_bio = player_bio_data.__dict__
-    player_bio['date'] = player_bio['date'].isoformat()  # to convert date object into string
+    #player_bio['date'] = player_bio['date'].isoformat()  # to convert date object into string
 
     return player_headshot, player_bio, player_id
 
