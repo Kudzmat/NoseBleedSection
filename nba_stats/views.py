@@ -616,7 +616,7 @@ def update_player_awards(request, player_id, player_name):
     today = timezone.now().date()
     player_awards_data = CareerAwards.objects.filter(player_id=player_id).first()
 
-    if player_awards_data.date == today:
+    if player_awards_data:
         player_awards = player_awards_data.accomplishments
     else:
         # update the player awards and date
