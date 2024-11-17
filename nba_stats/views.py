@@ -616,6 +616,7 @@ def update_player_awards(request, player_id, player_name):
     today = timezone.now().date()
     player_awards_data = CareerAwards.objects.filter(player_id=player_id).first()
 
+    # check if award data already exists
     if player_awards_data:
         player_awards = player_awards_data.accomplishments
     else:
