@@ -72,7 +72,9 @@ def fetch_player_data(player_name, player_id=None):
                 status=player_bio.get('status', ''),
                 PTS=player_bio.get('PTS', 0),
                 REB=player_bio.get('REB', 0),
-                AST=player_bio.get('AST', 0)
+                AST=player_bio.get('AST', 0),
+                BLK=player_bio.get('BLK', 0),
+                STL=player_bio.get('STL', 0),
             )
             player_bio_data.save()
 
