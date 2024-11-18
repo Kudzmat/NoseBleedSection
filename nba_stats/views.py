@@ -63,10 +63,10 @@ def player_details(request, player_full_name, player_id):
             season_data['FG3_PCT'] = 0
 
     # get player awards
-    player_awards = get_player_awards(player_full_name, player_id)
+    #player_awards = get_player_awards(player_full_name, player_id)
 
     # save information in session for quicker access
-    player_page_info = [player_headshot, player_awards, player_bio, career_stats]
+    player_page_info = [player_headshot, player_bio, career_stats]
     request.session['player_page_info'] = player_page_info
 
     # Initialize forms
@@ -117,7 +117,6 @@ def player_details(request, player_full_name, player_id):
                'player_id': player_id,
                'form': form,
                'player_bio': player_bio,
-               #'player_awards': player_awards,
                'graph_form': graph_form
                }
 
@@ -131,11 +130,10 @@ def regular_season(request, player_full_name, player_id):
 
     if player_page_info:
         player_headshot = player_page_info[0]
-        player_awards = player_page_info[1]
-        player_bio = player_page_info[2]
+        player_bio = player_page_info[1]
 
         # get regular season stats
-        career_stats = player_page_info[3]
+        career_stats = player_page_info[2]
         player_stats = career_stats['SeasonTotalsRegularSeason']
 
     else:
@@ -206,11 +204,10 @@ def post_season(request, player_full_name, player_id):
 
     if player_page_info:
         player_headshot = player_page_info[0]
-        player_awards = player_page_info[1]
-        player_bio = player_page_info[2]
+        player_bio = player_page_info[1]
 
         # get regular season stats
-        career_stats = player_page_info[3]
+        career_stats = player_page_info[2]
         player_stats = career_stats['SeasonTotalsPostSeason']
 
     else:
@@ -281,11 +278,10 @@ def regular_season_rankings(request, player_full_name, player_id):
 
     if player_page_info:
         player_headshot = player_page_info[0]
-        player_awards = player_page_info[1]
-        player_bio = player_page_info[2]
+        player_bio = player_page_info[1]
 
         # get regular season stats
-        career_stats = player_page_info[3]
+        career_stats = player_page_info[2]
         player_stats = career_stats['SeasonRankingsRegularSeason']
 
     else:
@@ -320,11 +316,10 @@ def post_season_rankings(request, player_full_name, player_id):
 
     if player_page_info:
         player_headshot = player_page_info[0]
-        player_awards = player_page_info[1]
-        player_bio = player_page_info[2]
+        player_bio = player_page_info[1]
 
         # get regular season stats
-        career_stats = player_page_info[3]
+        career_stats = player_page_info[2]
         player_stats = career_stats['SeasonRankingsPostSeason']
 
     else:
@@ -622,9 +617,14 @@ def update_player_awards(request, player_id, player_name):
     else:
         # update the player awards and date
         player_awards = get_accolades(player_id)
-        player_awards_data.accomplishments = player_awards
-        player_awards_data.date = today
-        player_awards_data.save()
+
+        player_awards_instance = CareerAwards.objects.create(
+            player_id=player_id,
+            player_name=player_name,
+            accomplishments=player_awards,
+            date=today
+        )
+        player_awards_instance.save()
 
     context = {
         "player_awards": player_awards,
