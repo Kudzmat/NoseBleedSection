@@ -270,7 +270,7 @@ def get_player_bio(player_id):
     bio = {}
 
     # get player info
-    player_info = commonplayerinfo.CommonPlayerInfo(player_id, proxy=proxy_url)
+    player_info = commonplayerinfo.CommonPlayerInfo(player_id=player_id, proxy=proxy_url)
     player_bio = player_info.get_dict()
 
     # player stats
@@ -344,7 +344,7 @@ def get_accolades(player_id):
     accolades_history = {}
 
     # get list of accolades
-    player_accolades = playerawards.PlayerAwards(player_id, proxy=proxy_url)
+    player_accolades = playerawards.PlayerAwards(player_id=player_id, proxy=proxy_url)
 
     # add award descriptions to accolades empty list
     player_awards = player_accolades.get_data_frames()[0]
