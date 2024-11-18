@@ -10,16 +10,17 @@ SMARTPROXY_URL = os.getenv('SMARTPROXY_URL')
 SMARTPROXY_USERNAME = os.getenv('SMARTPROXY_USERNAME')
 SMARTPROXY_PASSWORD = os.getenv('SMARTPROXY_PASSWORD')
 
+
 def fetch_player_data(player_name, player_id=None):
     """Helper function to fetch or create player headshot and bio."""
 
     player_headshot = PlayerHeadShot.objects.filter(player_name=player_name).first()
     player_bio_data = PlayerBio.objects.filter(player_name=player_name).first()
-    
+
     # check for player info using player name
     if player_id is None:
         player_info = players.find_players_by_full_name(player_name)
-        
+
         # if player data is not found return none
         if not player_info:
             return None, None, None
@@ -79,7 +80,7 @@ def fetch_player_data(player_name, player_id=None):
             player_bio_data.save()
 
     player_bio = player_bio_data.__dict__
-    #player_bio['date'] = player_bio['date'].isoformat()  # to convert date object into string
+    # player_bio['date'] = player_bio['date'].isoformat()  # to convert date object into string
 
     return player_headshot, player_bio, player_id
 
@@ -202,7 +203,8 @@ def get_league_leaders():
                     player_headshot_instance = PlayerHeadShot.objects.create(
                         player_id=player_id,
                         player_name=player_name,
-                        player_image_url=player_headshot[0] if player_headshot else "https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small_2x/default-avatar-photo-placeholder-profile-picture-vector.jpg",
+                        player_image_url=player_headshot[
+                            0] if player_headshot else "https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small_2x/default-avatar-photo-placeholder-profile-picture-vector.jpg",
                         team_id=player_headshot[1] if player_headshot else 0,
                         background_colour=None  # Will be dynamically set later
                     )
@@ -307,7 +309,7 @@ def get_player_bio(player_id):
     bio['weight'] = player_data[12]
 
     # years
-    #bio['year'] = player_data[13]
+    # bio['year'] = player_data[13]
 
     # jersey number
     bio['number'] = player_data[14]
