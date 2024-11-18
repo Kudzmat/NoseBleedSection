@@ -227,8 +227,12 @@ def get_league_leaders():
 
 
 def get_per_game_stats(player_id):
+        
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
     stats = []
-    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id)
+    
+    player_stats = playercareerstats.PlayerCareerStats(player_id=player_id, proxy=proxy_url)
     career_dict = player_stats.get_normalized_dict()
     player_career_regular_season_totals = career_dict['CareerTotalsRegularSeason'][0]  # get career totals
     games_played = int(player_career_regular_season_totals['GP'])
@@ -261,10 +265,12 @@ def get_per_game_stats(player_id):
 
 
 def get_player_bio(player_id):
+    # Construct the proxy URL
+    proxy_url = f"http://{SMARTPROXY_USERNAME}:{SMARTPROXY_PASSWORD}@gate.smartproxy.com:10001"
     bio = {}
 
     # get player info
-    player_info = commonplayerinfo.CommonPlayerInfo(player_id)
+    player_info = commonplayerinfo.CommonPlayerInfo(player_id, proxy=proxy_url)
     player_bio = player_info.get_dict()
 
     # player stats
