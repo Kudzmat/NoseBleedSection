@@ -588,7 +588,7 @@ def player_graph(request, player_full_name, player_id, category):
         player_headshot = player_page_info[0]
         player_awards = player_page_info[1]
         player_bio = player_page_info[2]
-        graph = player_page_info[4]
+        graph = player_page_info[3]
 
     # Initialize forms
     player_form = PlayerSearchForm()
