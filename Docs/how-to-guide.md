@@ -1,8 +1,6 @@
-# How To Be A Shot Geek
+# ShotGeek How-To Guide  
 
-If you're reading this, it likely means you consider yourself a "shot sicko." You're not satisfied with just hearing about how great the players 
-from the 90s were; you want to see the data, analyze the trends, and compare them with what you observe today. Our product, ShotGeek, will help 
-you do just that and more. This guide will show you how the app operates and how to use its various features. Today, you become a Shot Geek!
+Welcome to ShotGeek! Here’s a quick guide to help you navigate the platform and make the most of its features.
 
 ---
 
