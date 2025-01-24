@@ -303,38 +303,63 @@ def get_player_bio(player_id):
     player_data = player_bio['resultSets'][0]['rowSet'][0]
 
     # college / high school
-    bio['education'] = player_data[8]
+    if player_data[8] == "":
+        bio['education'] = "N/A"
+    else:
+        bio['education'] = player_data[8]
 
     # country
-    bio['country'] = player_data[9]
+    if player_data[9] == "":
+        bio['country'] = "N/A"
+    else:
+        bio['country'] = player_data[9]
 
     # height
-    bio['height'] = player_data[11]
+    if player_data[11] == "":
+        bio['height'] = 00.00
+    else:
+        bio['height'] = player_data[11]
 
-    # weght
-    bio['weight'] = player_data[12]
+    # weight
+    if player_data[12] == "":
+        bio['weight'] = 00.00
+    else:
+        bio['weight'] = player_data[12]
 
     # years
     # bio['year'] = player_data[13]
 
     # jersey number
-    bio['number'] = player_data[14]
+    if player_data[14] == "":
+        bio['number'] = 0
+    else:
+        bio['number'] = player_data[14]
 
     # position
-    bio['position'] = player_data[15]
+    if player_data[15] == "":
+        bio['position'] = "N/A"
+    else:
+        bio['position'] = player_data[15]
 
     # play status
-    bio['status'] = player_data[16]
-    status = bio['status']
+    if player_data[16] == "":
+        bio['status'] = "N/A"
+    else:
+        bio['status'] = player_data[16]
 
     # team
-    bio['team'] = player_data[19]
+    if player_data[19] == "":
+        bio['team'] = "N/A"
+    else:
+        bio['team'] = player_data[19]
 
     # team id
-    bio['team_id'] = int(player_data[18])
+    if player_data[18] == "":
+        bio['team_id'] = 1610612752  # putting Knicks as the default id so that players can have an orange background
+    else:
+        bio['team_id'] = int(player_data[18])
 
     return bio
-
 
 def get_accolades(player_id):
     # Construct the proxy URL
