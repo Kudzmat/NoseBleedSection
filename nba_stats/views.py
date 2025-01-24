@@ -586,8 +586,7 @@ def player_graph(request, player_full_name, player_id, category):
 
     if player_page_info:
         player_headshot = player_page_info[0]
-        player_awards = player_page_info[1]
-        player_bio = player_page_info[2]
+        player_bio = player_page_info[1]
         graph = player_page_info[3]
 
     # Initialize forms
@@ -596,7 +595,6 @@ def player_graph(request, player_full_name, player_id, category):
     context = {'player_form': player_form,
                'player_headshot': player_headshot,
                'player_full_name': player_full_name,
-               'player_awards': player_awards,
                'player_bio': player_bio,
                'graph': graph,
                'player_id': player_id,
@@ -604,7 +602,6 @@ def player_graph(request, player_full_name, player_id, category):
                }
 
     return render(request, "nba_stats/player_graph.html", context=context)
-
 
 def update_player_awards(request, player_id, player_name):
     # Check if league leaders already exist for today
